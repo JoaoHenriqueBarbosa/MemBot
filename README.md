@@ -1,18 +1,24 @@
-# Projeto ai-jrnl
-
-Instalação do projeto:
-
-```bash
-bun install
-```
-
-# Projeto Docker com PostgreSQL e Ollama
-
-Este projeto configura dois contêineres Docker: um banco de dados PostgreSQL e um contêiner Ollama com suporte a GPUs.
+# AI Journal
+Este projeto é uma aplicação web que permite aos usuários digitarem entradas de diário que serão categorizadas automaticamente e guardadas em um banco de dados.
 
 ## Pré-requisitos
 
-- Docker instalado na sua máquina.
+- Docker
+- Bun
+
+## Instalação das dependências do projeto:
+
+```bash
+bun i
+```
+
+## Execução do projeto:
+
+```bash
+bun dev
+```
+
+Mas antes de executar o projeto, você precisa iniciar dois contêineres Docker: um banco de dados PostgreSQL e um contêiner Ollama.
 
 ## Iniciando os contêineres
 
@@ -69,3 +75,4 @@ docker rm my_postgres_db ollama
 
 - Certifique-se de que o arquivo `init.sql` esteja no diretório atual de onde você está executando o comando `docker run` para o PostgreSQL.
 - O volume `ollama` é utilizado para armazenar dados persistentes do contêiner Ollama. Você pode verificar o conteúdo deste volume conforme necessário.
+- Por que não usar o Docker Compose? Porque o Docker Compose não permite que eu possa te dar a escolha de usar ou não a GPU.

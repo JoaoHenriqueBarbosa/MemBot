@@ -13,40 +13,49 @@ const server = Bun.serve<{ authToken: string }>({
 	websocket: {
 		// this is called when a message is received
 		async message(ws, message) {
-			console.log(`Received ${message}`);
-			// send back a message
-			ws.send(`You said: ${message}`);
-
 			try {
 				const messageObject = JSON.parse(message as string);
+				console.log(`Received message: ${message}`);
 
 				if (messageObject.type === "init") {
-					// await ollama.delete({
-					// 	model: "gemma2"
-					// })
-					return;
-					// check if ollama is running and has gemma2 installed
 					const list = await ollama.list();
 
-					if (list.models.find(model => model.name === "gemma2") === undefined) {
+					if (list.models.find(model => model.name === "gemma2:latest") === undefined) {
 						console.log("Installing gemma2...");
 						const puller = await ollama.pull({
 							model: "gemma2",
 							stream: true
 						});
 
-						ws.send("Installing gemma2...");
-
 						for await (const progress of puller) {
-							console.log(progress);
 							ws.send(JSON.stringify({
 								type: "pull-progress",
 								data: progress
 							}));
 						}
+					} else {
+						ws.send('{ "type": "init" }');
+					}
+				} else if (messageObject.type === "message") {
+					ws.send(JSON.stringify({ type: "message", data: messageObject.data, role: "user" }));
+
+					const response = await ollama.chat({
+						model: "gemma2",
+						messages: [{
+							role: "user",
+							content: messageObject.data
+						}],
+						stream: true
+					});
+
+					const id = Math.random().toString(36).substring(7);
+
+					for await (const message of response) {
+						ws.send(JSON.stringify({ type: "message", id, data: message.message.content, role: "robot", done: message.done }));
 					}
 				}
 			} catch (e) {
+				console.log(e);
 				console.error(`Failed to parse message: ${message}`);
 			}
 		},
