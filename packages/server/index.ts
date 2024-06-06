@@ -1,17 +1,14 @@
 import ollama from "ollama";
 import { Message } from "./types.js";
 
-// {"type":"pull-progress","data":{"status":"pulling ff1d1fc78170","digest":"sha256:ff1d1fc78170d787ee1201778e2dd65ea211654ca5fb7d69b5a2e7b123a50373","total":5443143296,"completed":426517248}}
 const server = Bun.serve<{ authToken: string }>({
 	async fetch(req, server) {
-		// upgrade the request to a WebSocket
 		if (server.upgrade(req)) {
-			return; // do not return a Response
+			return;
 		}
 		return new Response("Upgrade failed", { status: 500 });
 	},
 	websocket: {
-		// this is called when a message is received
 		async message(ws, message) {
 			try {
 				const messageObject = JSON.parse(message as string);
