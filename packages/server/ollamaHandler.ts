@@ -1,6 +1,6 @@
 import ollama from "ollama";
 import { ServerWebSocket } from "bun";
-import { Message } from "./types";
+import { Message } from "./types.js";
 
 // Store chat history
 let chatHistory: Message[] = [];
