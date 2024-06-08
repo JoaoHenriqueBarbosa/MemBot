@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
-import { Message } from "@ai-jrnl/server";
+import { Message } from "ollama";
 import { Remark } from "react-remark";
 
 const ucFirst = (str: string) => str[0].toUpperCase() + str.slice(1);
@@ -24,44 +24,40 @@ function App() {
     const socket = new WebSocket("ws://localhost:3000");
 
     socket.addEventListener("message", (event) => {
-      const message = JSON.parse(event.data) as Message;
+      const wsMessage = JSON.parse(event.data) as WebSocketMessage;
 
-      const actions: Record<Message["type"], () => void> = {
-        message: () => {
+      switch (wsMessage.type) {
+        case "message":
           setMessages((prevMessages) => {
             if (
-              message.id &&
-              prevMessages.find((msg) => msg.id === message.id)
+              wsMessage.id &&
+              prevMessages.find((msg) => msg.id === wsMessage.id)
             ) {
               return prevMessages.map((msg) =>
-                msg.id === message.id
-                  ? { ...msg, data: msg.data + message.data }
+                msg.id === wsMessage.id
+                  ? { ...msg, content: (msg.content || "") + (wsMessage.data || "") }
                   : msg
               );
             }
 
-            return [...prevMessages, message];
+            return [...prevMessages, { role: wsMessage.role || "assistant", content: wsMessage.data || "" }];
           });
-        },
-        "pull-progress": () => {
+          break;
+        case "pull-progress":
           setPageStatus("pulling");
-          setPullingStatus(message.data.status);
+          setPullingStatus(wsMessage.data.status);
+          setModelSize(wsMessage.data.total);
+          setPullProgress(wsMessage.data.completed);
 
-          setModelSize(message.data.total);
-
-          setPullProgress(message.data.completed);
-
-          if (message.data.status === "success") {
+          if (wsMessage.data.status === "success") {
             setPageStatus("chat");
             setModelSize(null);
           }
-        },
-        init: () => {
+          break;
+        case "init":
           setPageStatus("chat");
-        },
-      };
-
-      actions[message.type]();
+          break;
+      }
     });
 
     socket.addEventListener("open", () => {
@@ -125,10 +121,10 @@ function App() {
         {messages.map((message, i) => (
           <div className="message-wrapper" key={i}>
             <div className="avatar">
-              <div className={`role ${message.role}`}>{message.role}</div>
+              <div className={`role ${message.role || "assistant"}`}>{message.role || "assistant"}</div>
             </div>
             <div className="message">
-            <Remark>{message.data}</Remark>
+            <Remark>{message.content || ""}</Remark>
           </div>
           </div>
         ))}
