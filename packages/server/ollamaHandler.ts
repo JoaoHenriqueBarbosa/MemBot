@@ -1,9 +1,9 @@
-import ollama from "ollama";
+import ollama, { Message } from "ollama";
 import { ServerWebSocket } from "bun";
-import { Message } from "./types.js";
+import { WebSocketMessage } from "./types.js";
 
 // Store chat history
-let chatHistory: Omit<Message, 'type' | 'id' | 'done' | 'data'>[] = [];
+let chatHistory: Message[] = [];
 
 export const handleInit = async (ws: ServerWebSocket<{ authToken: string }>) => {
     const list = await ollama.list();
@@ -28,8 +28,9 @@ export const handleInit = async (ws: ServerWebSocket<{ authToken: string }>) => 
 
 export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string }>, messageData: string) => {
     // Add user message to chat history
-    chatHistory.push({ role: "user", content: messageData });
-    ws.send(JSON.stringify({ type: "message", data: messageData, role: "user", content: messageData }));
+    const userMessage: Message = { role: "user", content: messageData };
+    chatHistory.push(userMessage);
+    ws.send(JSON.stringify({ type: "message", data: messageData, role: "user" } as WebSocketMessage));
 
     const response = await ollama.chat({
         model: "gemma2",
@@ -40,11 +41,18 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
     const id = Math.random().toString(36).substring(7);
     let fullResponse = "";
 
-    for await (const message of response) {
-        fullResponse += message.message.content;
-        ws.send(JSON.stringify({ type: "message", id, data: message.message.content, role: "robot", done: message.done, content: message.message.content }));
+    for await (const chunk of response) {
+        fullResponse += chunk.message.content;
+        ws.send(JSON.stringify({
+            type: "message",
+            id,
+            data: chunk.message.content,
+            role: "assistant",
+            done: chunk.done
+        } as WebSocketMessage));
     }
 
     // Add assistant's full response to chat history
-    chatHistory.push({ role: "assistant", content: fullResponse });
+    const assistantMessage: Message = { role: "assistant", content: fullResponse };
+    chatHistory.push(assistantMessage);
 };
