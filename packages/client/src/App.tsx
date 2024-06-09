@@ -1,16 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
-import { Message } from "ollama";
 import { Remark } from "react-remark";
-import { WebSocketMessage } from "../../server/types";
-import { WebSocketMessage } from "../../server/types";
+import { WebSocketMessage } from "@ai-jrnl/server/types";
+import { adaptativeHumanByteReader } from "./utils/functions";
 
 const ucFirst = (str: string) => str[0].toUpperCase() + str.slice(1);
 
-// {"type":"pull-progress","data":{"status":"pulling ff1d1fc78170","digest":"sha256:ff1d1fc78170d787ee1201778e2dd65ea211654ca5fb7d69b5a2e7b123a50373","total":5443143296,"completed":426517248}}
-
 function App() {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<WebSocketMessage[]>([]);
   const [message, setMessage] = useState<string>("");
   const [pullingStatus, setPullingStatus] = useState<string>(
     "Establishing connection..."
@@ -37,21 +34,22 @@ function App() {
             ) {
               return prevMessages.map((msg) =>
                 msg.id === wsMessage.id
-                  ? { ...msg, content: (msg.content || "") + (wsMessage.data || "") }
+                  ? { ...msg, content: (msg.content || "") + (wsMessage.content || "") }
                   : msg
               );
             }
 
-            return [...prevMessages, { role: wsMessage.role || "assistant", content: wsMessage.data || "" }];
+            return [...prevMessages, wsMessage];
           });
           break;
         case "pull-progress":
           setPageStatus("pulling");
-          setPullingStatus(wsMessage.data.status);
-          setModelSize(wsMessage.data.total);
-          setPullProgress(wsMessage.data.completed);
+          console.log(wsMessage.content);
+          setPullingStatus(wsMessage.content.status);
+          setModelSize(wsMessage.content.total);
+          setPullProgress(wsMessage.content.completed);
 
-          if (wsMessage.data.status === "success") {
+          if (wsMessage.content.status === "success") {
             setPageStatus("chat");
             setModelSize(null);
           }
@@ -74,7 +72,7 @@ function App() {
   }, []);
 
   const sendMessage = (message: string) => {
-    conn.current?.send(`{"type":"message","data":"${message}"}`);
+    conn.current?.send(`{"type":"message","content":"${message}"}`);
   };
 
   if (pageStatus === "idle") {
@@ -94,7 +92,7 @@ function App() {
         <div>
           {pullProgress !== null &&
             modelSize !== null &&
-            pullingStatus === "pulling" && (
+            pullingStatus.includes("pulling") && (
               <div>
                 <div className="progress">
                   <div
@@ -104,8 +102,8 @@ function App() {
                     }}
                   />
                 </div>
-                {(pullProgress / 1024 / 1024).toFixed(2)} MB /{" "}
-                {(modelSize / 1024 / 1024).toFixed(2)} MB
+                {adaptativeHumanByteReader(pullProgress)} /{" "}
+                {adaptativeHumanByteReader(modelSize)}
               </div>
             )}
           {pullingStatus !== "pulling" && ucFirst(pullingStatus)}

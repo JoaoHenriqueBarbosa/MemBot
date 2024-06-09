@@ -9,7 +9,7 @@ export const handleMessage = async (ws: ServerWebSocket<{ authToken: string }>, 
         if (messageObject.type === "init") {
             await handleInit(ws);
         } else if (messageObject.type === "message") {
-            await handleUserMessage(ws, messageObject.data);
+            await handleUserMessage(ws, messageObject.content);
         }
     } catch (e) {
         console.log(e);

@@ -18,7 +18,7 @@ export const handleInit = async (ws: ServerWebSocket<{ authToken: string }>) => 
         for await (const progress of puller) {
             ws.send(JSON.stringify({
                 type: "pull-progress",
-                data: progress
+                content: progress
             }));
         }
     } else {
@@ -30,7 +30,7 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
     // Add user message to chat history
     const userMessage: Message = { role: "user", content: messageData };
     chatHistory.push(userMessage);
-    ws.send(JSON.stringify({ type: "message", data: messageData, role: "user" } as WebSocketMessage));
+    ws.send(JSON.stringify({ type: "message", content: messageData, role: "user" } as WebSocketMessage));
 
     const response = await ollama.chat({
         model: "gemma2",
@@ -46,7 +46,7 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
         ws.send(JSON.stringify({
             type: "message",
             id,
-            data: chunk.message.content,
+            content: chunk.message.content,
             role: "assistant",
             done: chunk.done
         } as WebSocketMessage));

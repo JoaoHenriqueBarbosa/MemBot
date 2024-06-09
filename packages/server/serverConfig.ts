@@ -1,4 +1,3 @@
-import { WebSocketHandler } from "bun";
 import { handleMessage } from "./messageHandler.js";
 
 export const createServer = () => {
@@ -10,7 +9,7 @@ export const createServer = () => {
             return new Response("Upgrade failed", { status: 500 });
         },
         websocket: {
-            message: handleMessage as WebSocketHandler["message"],
+            message: handleMessage,
         },
     });
 };
