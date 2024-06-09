@@ -3,6 +3,7 @@ import "./App.css";
 import { Message } from "ollama";
 import { Remark } from "react-remark";
 import { WebSocketMessage } from "../../server/types";
+import { WebSocketMessage } from "../../server/types";
 
 const ucFirst = (str: string) => str[0].toUpperCase() + str.slice(1);
 
