@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { Message } from "ollama";
 import { Remark } from "react-remark";
+import { WebSocketMessage } from "../../server/types";
 
 const ucFirst = (str: string) => str[0].toUpperCase() + str.slice(1);
 
@@ -79,7 +80,7 @@ function App() {
     return (
       <div>
         <h1>AI Journal</h1>
-        <p>Estabishing connection...</p>
+        <p>Establishing connection...</p>
       </div>
     );
   }
