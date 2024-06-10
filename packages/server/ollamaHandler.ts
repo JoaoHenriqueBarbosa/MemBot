@@ -1,8 +1,8 @@
 import ollama, { Message } from "ollama";
 import { ServerWebSocket } from "bun";
 import { WebSocketMessage, Category } from "./types.js";
-import { ChatOpenAI } from "langchain/chat_models/openai";
-import { HumanMessage } from "langchain/schema";
+import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { Ollama } from "@langchain/community/llms/ollama";
 
 // Store chat history
 let chatHistory: Message[] = [];
@@ -61,18 +61,34 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
 };
 
 export const categorizeMessage = async (content: string): Promise<Category> => {
-    const model = new ChatOpenAI({
-        modelName: "gemma2",
-        temperature: 0,
+    const categories = ["financial", "health and well-being", "work/projects", "relationships", "goals/progress"];
+
+    const lcOllama = new Ollama({
+        baseUrl: "http://localhost:11434", // Default value
+        model: "gemma2", // Default value
     });
 
-    const response = await model.call([
-        new HumanMessage(
-            `Categorize the following diary entry into one of these categories: financial, health and well-being, work/projects, relationships, or goals/progress. Only respond with the category name.
+    if (!lcOllama) {
+        throw new Error("Failed to create Ollama instance");
+    }
 
-Entry: ${content}`
-        ),
+    const promptTemplate = ChatPromptTemplate.fromMessages([
+        ["system", "You are a diary entry bot. You are here to help users categorize their diary entries. You categorize diary entries into one of the following categories: {categories}."],
+        ["user", "{content}. Your response will be only one word. What category does this diary entry belong to?"],
     ]);
 
-    return response.content as Category;
+    if (!promptTemplate) {
+        throw new Error("Failed to create prompt template");
+    }
+
+    const lcOllamaWithPrompt = lcOllama.withStructuredOutput(promptTemplate);
+
+    const response = await lcOllamaWithPrompt.invoke(promptTemplate, {
+        content,
+        categories
+    });
+
+    console.log(JSON.stringify(response, null, 2));
+
+    return response.toString() as Category;
 };
