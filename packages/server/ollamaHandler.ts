@@ -1,6 +1,8 @@
 import ollama, { Message } from "ollama";
 import { ServerWebSocket } from "bun";
-import { WebSocketMessage } from "./types.js";
+import { WebSocketMessage, Category } from "./types.js";
+import { ChatOpenAI } from "langchain/chat_models/openai";
+import { HumanMessage } from "langchain/schema";
 
 // Store chat history
 let chatHistory: Message[] = [];
@@ -26,11 +28,11 @@ export const handleInit = async (ws: ServerWebSocket<{ authToken: string }>) => 
     }
 };
 
-export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string }>, messageData: string) => {
+export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string }>, messageData: WebSocketMessage) => {
     // Add user message to chat history
-    const userMessage: Message = { role: "user", content: messageData };
+    const userMessage: Message = { role: "user", content: messageData.content };
     chatHistory.push(userMessage);
-    ws.send(JSON.stringify({ type: "message", content: messageData, role: "user" } as WebSocketMessage));
+    ws.send(JSON.stringify({ ...messageData, role: "user" }));
 
     const response = await ollama.chat({
         model: "gemma2",
@@ -48,11 +50,29 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
             id,
             content: chunk.message.content,
             role: "assistant",
-            done: chunk.done
+            done: chunk.done,
+            category: messageData.category
         } as WebSocketMessage));
     }
 
     // Add assistant's full response to chat history
     const assistantMessage: Message = { role: "assistant", content: fullResponse };
     chatHistory.push(assistantMessage);
+};
+
+export const categorizeMessage = async (content: string): Promise<Category> => {
+    const model = new ChatOpenAI({
+        modelName: "gemma2",
+        temperature: 0,
+    });
+
+    const response = await model.call([
+        new HumanMessage(
+            `Categorize the following diary entry into one of these categories: financial, health and well-being, work/projects, relationships, or goals/progress. Only respond with the category name.
+
+Entry: ${content}`
+        ),
+    ]);
+
+    return response.content as Category;
 };
