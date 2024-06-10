@@ -83,12 +83,18 @@ export const categorizeMessage = async (content: string): Promise<Category> => {
 
     const lcOllamaWithPrompt = lcOllama.withStructuredOutput(promptTemplate);
 
-    const response = await lcOllamaWithPrompt.invoke(promptTemplate, {
+    const response = await lcOllamaWithPrompt.invoke({
         content,
-        categories
+        categories: categories.join(", ")
     });
 
     console.log(JSON.stringify(response, null, 2));
 
-    return response.toString() as Category;
+    // Ensure the response is a valid category
+    const category = categories.find(cat => cat.toLowerCase() === response.toLowerCase());
+    if (!category) {
+        console.warn(`Invalid category returned: ${response}. Defaulting to "goals/progress".`);
+        return "goals/progress";
+    }
+    return category as Category;
 };
