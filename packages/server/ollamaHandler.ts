@@ -1,7 +1,7 @@
 import ollama, { Message } from "ollama";
 import { ServerWebSocket } from "bun";
 import { WebSocketMessage, CategorizedMessage, Category } from "./types.js";
-import { ChatOpenAI } from "langchain/chat_models/openai";
+import { ChatOllama } from "langchain/chat_models/ollama";
 import { HumanMessage } from "langchain/schema";
 
 // Store chat history
@@ -60,8 +60,9 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
 };
 
 export const handleCategorization = async (ws: ServerWebSocket<{ authToken: string }>, message: CategorizedMessage) => {
-    const model = new ChatOpenAI({
-        modelName: "gemma2",
+    const model = new ChatOllama({
+        baseUrl: "http://localhost:11434",
+        model: "gemma2",
         temperature: 0,
     });
 
