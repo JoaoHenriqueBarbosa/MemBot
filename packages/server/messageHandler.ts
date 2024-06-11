@@ -1,29 +1,15 @@
 import { ServerWebSocket } from "bun";
-import { handleInit, handleUserMessage, categorizeMessage } from "./ollamaHandler.js";
-import { WebSocketMessage } from "./types.js";
+import { handleInit, handleUserMessage } from "./ollamaHandler.js";
 
-export const handleMessage = async (ws: ServerWebSocket<{ authToken: string }>, message: string | Buffer): Promise<void> => {
+export const handleMessage = async (ws: ServerWebSocket<{ authToken: string }>, message: string | Buffer) => {
     try {
-        const messageObject = JSON.parse(message as string) as WebSocketMessage;
+        const messageObject = JSON.parse(message as string);
         console.log(`Received message: ${message}`);
 
-        switch (messageObject.type) {
-            case "init":
-                await handleInit(ws);
-                break;
-            case "message":
-                if (messageObject.categorize) {
-                    const category = await categorizeMessage(messageObject.content);
-                    messageObject.category = category;
-                }
-                await handleUserMessage(ws, messageObject);
-                break;
-            case "pull-progress":
-                // Just forward the pull-progress message to the client
-                ws.send(JSON.stringify(messageObject));
-                break;
-            default:
-                console.warn(`Unknown message type: ${messageObject.type}`);
+        if (messageObject.type === "init") {
+            await handleInit(ws);
+        } else if (messageObject.type === "message") {
+            await handleUserMessage(ws, messageObject.data);
         }
     } catch (e) {
         console.log(e);
