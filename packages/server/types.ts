@@ -5,7 +5,12 @@ export type WebSocketMessage = {
     role?: "user" | "assistant";
     done?: boolean;
     content?: any;
-    category?: string;
+    category?: Category;
 };
 
 export type Category = "financial" | "health and well-being" | "work/projects" | "relationships" | "goals/progress";
+
+export interface CategorizedMessage extends WebSocketMessage {
+    categorize: true;
+    category: Category;
+}
