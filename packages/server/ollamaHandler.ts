@@ -1,13 +1,13 @@
 import ollama, { Message } from "ollama";
 import { ServerWebSocket } from "bun";
-import { WebSocketMessage, Category } from "./types.js";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
 import { Ollama } from "@langchain/community/llms/ollama";
+import { WebSocketMessage, Category } from "./types.js";
 
 // Store chat history
 let chatHistory: Message[] = [];
 
-export const handleInit = async (ws: ServerWebSocket<{ authToken: string }>) => {
+export const handleInit = async (ws: ServerWebSocket<{ authToken: string }>): Promise<void> => {
     const list = await ollama.list();
 
     if (list.models.find(model => model.name === "gemma2:latest") === undefined) {
@@ -28,7 +28,7 @@ export const handleInit = async (ws: ServerWebSocket<{ authToken: string }>) => 
     }
 };
 
-export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string }>, messageData: WebSocketMessage) => {
+export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string }>, messageData: WebSocketMessage): Promise<void> => {
     // Add user message to chat history
     const userMessage: Message = { role: "user", content: messageData.content };
     chatHistory.push(userMessage);
@@ -64,22 +64,15 @@ export const categorizeMessage = async (content: string): Promise<Category> => {
     const categories = ["financial", "health and well-being", "work/projects", "relationships", "goals/progress"];
 
     const lcOllama = new Ollama({
-        baseUrl: "http://localhost:11434", // Default value
-        model: "gemma2", // Default value
+        baseUrl: "http://localhost:11434",
+        model: "gemma2",
     });
-
-    if (!lcOllama) {
-        throw new Error("Failed to create Ollama instance");
-    }
 
     const promptTemplate = ChatPromptTemplate.fromMessages([
         ["system", "You are a diary entry bot. You are here to help users categorize their diary entries. You categorize diary entries into one of the following categories: {categories}."],
         ["user", "{content}. Your response will be only one word. What category does this diary entry belong to?"],
     ]);
 
-    if (!promptTemplate) {
-        throw new Error("Failed to create prompt template");
-    }
 
     const lcOllamaWithPrompt = lcOllama.withStructuredOutput(promptTemplate);
 
