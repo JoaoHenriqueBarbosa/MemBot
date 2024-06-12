@@ -1,6 +1,6 @@
 import ollama, { Message } from "ollama";
 import { ServerWebSocket } from "bun";
-import { WebSocketMessage } from "./types.js";
+import { WebSocketMessage, Category } from "./types.js";
 
 // Store chat history
 let chatHistory: Message[] = [];
@@ -26,11 +26,17 @@ export const handleInit = async (ws: ServerWebSocket<{ authToken: string }>) => 
     }
 };
 
-export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string }>, messageData: string) => {
+export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string }>, messageData: string, categorize: boolean = false) => {
     // Add user message to chat history
     const userMessage: Message = { role: "user", content: messageData };
     chatHistory.push(userMessage);
     ws.send(JSON.stringify({ type: "message", content: messageData, role: "user" } as WebSocketMessage));
+
+    let category: Category | undefined;
+
+    if (categorize) {
+        category = await categorizeEntry(messageData);
+    }
 
     const response = await ollama.chat({
         model: "gemma2",
@@ -48,7 +54,8 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
             id,
             content: chunk.message.content,
             role: "assistant",
-            done: chunk.done
+            done: chunk.done,
+            category: category
         } as WebSocketMessage));
     }
 
@@ -56,3 +63,19 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
     const assistantMessage: Message = { role: "assistant", content: fullResponse };
     chatHistory.push(assistantMessage);
 };
+
+async function categorizeEntry(entry: string): Promise<Category> {
+    const prompt = `Categorize the following diary entry into one of these categories: financial, health and well-being, work/projects, relationships, or goals/progress. Only respond with the category name.
+
+Entry: ${entry}
+
+Category:`;
+
+    const response = await ollama.generate({
+        model: "gemma2",
+        prompt: prompt,
+    });
+
+    const category = response.response.trim().toLowerCase() as Category;
+    return category;
+}
