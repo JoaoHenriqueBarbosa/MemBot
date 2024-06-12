@@ -1,5 +1,5 @@
 .avatar {
-  width: 50px;
+  width: 100px;
   display: flex;
   justify-content: end;
   flex-shrink: 0;
@@ -16,21 +16,22 @@
 }
 
 .role {
-  padding: 4px;
-  border-radius: 5px;
+  padding: 4px 10px;
+  border-radius: 15px;
   color: white;
   font-size: 12px;
   font-weight: bold;
   width: fit-content;
   height: fit-content;
+  border: 1px solid;
 }
 
 .user {
-  background-color: #5f7c10;
+  border-color: #5f7c10;
 }
 
 .assistant {
-  background-color: #393bb3;
+  border-color: #393bb3;
 }
 
 .chat-input {
@@ -82,3 +83,33 @@
   border-radius: 5px;
 }
 
+.category {
+  padding: 4px;
+  border-radius: 5px;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  width: fit-content;
+  height: fit-content;
+}
+
+/* export type Category = "financial" | "health and well-being" | "work/projects" | "relationships" | "goals/progress"; */
+.financial {
+  background-color: #267239;
+}
+
+.health-and-well-being {
+  background-color: #b32d00;
+}
+
+.work-projects {
+  background-color: #8a6e00;
+}
+
+.relationships {
+  background-color: #af4600;
+}
+
+.goals-progress {
+  background-color: #0099cc;
+}

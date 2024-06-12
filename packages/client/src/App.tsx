@@ -17,6 +17,7 @@ function App() {
   );
   const [pullProgress, setPullProgress] = useState<number | null>(null);
   const [modelSize, setModelSize] = useState<number | null>(null);
+  const [categorize, setCategorize] = useState<boolean>(false);
   const conn = useRef<WebSocket | null>(null);
 
   useEffect(() => {
@@ -72,7 +73,11 @@ function App() {
   }, []);
 
   const sendMessage = (message: string) => {
-    conn.current?.send(`{"type":"message","content":"${message}"}`);
+    conn.current?.send(JSON.stringify({
+      type: "message",
+      content: message,
+      categorize: categorize
+    }));
   };
 
   if (pageStatus === "idle") {
@@ -116,6 +121,14 @@ function App() {
     <div>
       <div className="header">
         <h1>AI Journal</h1>
+        <label>
+          <input
+            type="checkbox"
+            checked={categorize}
+            onChange={(e) => setCategorize(e.target.checked)}
+          />
+          Categorize entries
+        </label>
       </div>
       <div className="chat">
         {messages.map((message, i) => (
@@ -124,8 +137,13 @@ function App() {
               <div className={`role ${message.role || "assistant"}`}>{message.role || "assistant"}</div>
             </div>
             <div className="message">
-            <Remark>{message.content || ""}</Remark>
-          </div>
+              {message.category && (
+                <div className={`category ${message.category.replace(/\s/g, "-")}`}>
+                  {message.category}
+                </div>
+              )}
+              <Remark>{message.content || ""}</Remark>
+            </div>
           </div>
         ))}
       </div>
