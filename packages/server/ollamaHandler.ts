@@ -1,8 +1,6 @@
 import ollama, { Message } from "ollama";
 import { ServerWebSocket } from "bun";
-import { WebSocketMessage, CategorizedMessage, Category } from "./types.js";
-import { ChatOllama } from "langchain/chat_models/ollama";
-import { HumanMessage } from "langchain/schema";
+import { WebSocketMessage } from "./types.js";
 
 // Store chat history
 let chatHistory: Message[] = [];
@@ -57,31 +55,4 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
     // Add assistant's full response to chat history
     const assistantMessage: Message = { role: "assistant", content: fullResponse };
     chatHistory.push(assistantMessage);
-};
-
-export const handleCategorization = async (ws: ServerWebSocket<{ authToken: string }>, message: CategorizedMessage) => {
-    const model = new ChatOllama({
-        baseUrl: "http://localhost:11434",
-        model: "gemma2",
-        temperature: 0,
-    });
-
-    const prompt = `Categorize the following diary entry into one of these categories: financial, health and well-being, work/projects, relationships, or goals/progress. Only respond with the category name.
-
-Entry: "${message.content}"`;
-
-    const response = await model.call([new HumanMessage(prompt)]);
-    const category = response.content as Category;
-
-    ws.send(JSON.stringify({
-        type: "message",
-        id: message.id,
-        content: message.content,
-        role: "user",
-        category: category,
-        done: true
-    } as CategorizedMessage));
-
-    // Here you would typically save the categorized entry to the database
-    console.log(`Categorized entry: ${message.content} as ${category}`);
 };
