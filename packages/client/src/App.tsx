@@ -140,6 +140,12 @@ function App() {
               {message.category && (
                 <div className={`category ${message.category.replace(/\s/g, "-")}`}>
                   {message.category}
+                  {message.category === "financial" && message.product && (
+                    <span> | Product: {message.product}</span>
+                  )}
+                  {message.category === "financial" && message.quantity && (
+                    <span> | Quantity: {message.quantity}</span>
+                  )}
                 </div>
               )}
               <Remark>{message.content || ""}</Remark>
