@@ -33,9 +33,16 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
     ws.send(JSON.stringify({ type: "message", content: messageData, role: "user" } as WebSocketMessage));
 
     let category: Category | undefined;
+    let product: string | null = null;
+    let quantity: number | null = null;
 
     if (categorize) {
         category = await categorizeEntry(messageData);
+        if (category === "financial") {
+            const entities = await extractEntitiesBasedOnCategory(messageData, category);
+            product = entities.product;
+            quantity = entities.quantity;
+        }
     }
 
     const response = await ollama.chat({
@@ -55,7 +62,9 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
             content: chunk.message.content,
             role: "assistant",
             done: chunk.done,
-            category: category
+            category: category,
+            product: product,
+            quantity: quantity
         } as WebSocketMessage));
     }
 
@@ -82,9 +91,28 @@ Category:`;
 
 async function extractEntitiesBasedOnCategory(entry: string, category: Category) {
     if (category === "financial") {
-        // Extract financial entities
-        
+        const prompt = `Extract the product and quantity from the following financial diary entry. Respond with a JSON object containing "product" and "quantity" fields. If either is not present, set the value to null.
+
+Entry: ${entry}
+
+JSON:`;
+
+        const response = await ollama.generate({
+            model: "gemma2",
+            prompt: prompt,
+        });
+
+        try {
+            const result = JSON.parse(response.response.trim());
+            return {
+                product: result.product || null,
+                quantity: result.quantity !== undefined ? Number(result.quantity) : null
+            };
+        } catch (error) {
+            console.error("Failed to parse JSON response:", error);
+            return { product: null, quantity: null };
+        }
     }
 
-    return {};
+    return { product: null, quantity: null };
 }
