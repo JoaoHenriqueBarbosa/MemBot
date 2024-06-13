@@ -6,6 +6,8 @@ export type WebSocketMessage = {
     done?: boolean;
     content?: any;
     category?: string;
+    product?: string;
+    quantity?: number;
 };
 
 export type Category = "financial" | "health and well-being" | "work/projects" | "relationships" | "goals/progress";

@@ -89,9 +89,16 @@ Category:`;
     return category;
 }
 
+function trimJSON(entry: string) {
+    const firstOccurrence = entry.indexOf("{");
+    const lastOccurrence = entry.lastIndexOf("}");
+    const trimmed = entry.substring(firstOccurrence + 1, lastOccurrence);
+    return `{${trimmed}}`;
+}
+
 async function extractEntitiesBasedOnCategory(entry: string, category: Category) {
     if (category === "financial") {
-        const prompt = `Extract the product and quantity from the following financial diary entry. Respond with a JSON object containing "product" and "quantity" fields. If either is not present, set the value to null.
+        const prompt = `Extract the product and quantity from the following financial diary entry. Respond with a JSON object containing "product", "quantity" and "price" fields. If either is not present, set the value to null.
 
 Entry: ${entry}
 
@@ -101,9 +108,10 @@ JSON:`;
             model: "gemma2",
             prompt: prompt,
         });
+        console.log("Extracted entities:", trimJSON(response.response.trim()));
 
         try {
-            const result = JSON.parse(response.response.trim());
+            const result = JSON.parse(trimJSON(response.response.trim()));
             return {
                 product: result.product || null,
                 quantity: result.quantity !== undefined ? Number(result.quantity) : null
