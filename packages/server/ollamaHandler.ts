@@ -79,3 +79,12 @@ Category:`;
     const category = response.response.trim().toLowerCase() as Category;
     return category;
 }
+
+async function extractEntitiesBasedOnCategory(entry: string, category: Category) {
+    if (category === "financial") {
+        // Extract financial entities
+        
+    }
+
+    return {};
+}
