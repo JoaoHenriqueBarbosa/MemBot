@@ -146,6 +146,9 @@ function App() {
                   {message.category === "financial" && message.quantity && (
                     <span> | Quantity: {message.quantity}</span>
                   )}
+                  {message.category === "financial" && message.price && (
+                    <span> | Price: ${message.price.toFixed(2)}</span>
+                  )}
                 </div>
               )}
               <Remark>{message.content || ""}</Remark>

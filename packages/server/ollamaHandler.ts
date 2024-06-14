@@ -35,6 +35,7 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
     let category: Category | undefined;
     let product: string | null = null;
     let quantity: number | null = null;
+    let price: number | null = null;
 
     if (categorize) {
         category = await categorizeEntry(messageData);
@@ -42,6 +43,7 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
             const entities = await extractEntitiesBasedOnCategory(messageData, category);
             product = entities.product;
             quantity = entities.quantity;
+            price = entities.price;
         }
     }
 
@@ -64,7 +66,8 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
             done: chunk.done,
             category: category,
             product: product,
-            quantity: quantity
+            quantity: quantity,
+            price: price
         } as WebSocketMessage));
     }
 
@@ -98,7 +101,7 @@ function trimJSON(entry: string) {
 
 async function extractEntitiesBasedOnCategory(entry: string, category: Category) {
     if (category === "financial") {
-        const prompt = `Extract the product and quantity from the following financial diary entry. Respond with a JSON object containing "product", "quantity" and "price" fields. If either is not present, set the value to null.
+        const prompt = `Extract the product, quantity, and price from the following financial diary entry. Respond with a JSON object containing "product", "quantity", and "price" fields. If any is not present, set the value to null.
 
 Entry: ${entry}
 
@@ -114,13 +117,14 @@ JSON:`;
             const result = JSON.parse(trimJSON(response.response.trim()));
             return {
                 product: result.product || null,
-                quantity: result.quantity !== undefined ? Number(result.quantity) : null
+                quantity: result.quantity !== undefined ? Number(result.quantity) : null,
+                price: result.price !== undefined ? Number(result.price) : null
             };
         } catch (error) {
             console.error("Failed to parse JSON response:", error);
-            return { product: null, quantity: null };
+            return { product: null, quantity: null, price: null };
         }
     }
 
-    return { product: null, quantity: null };
+    return { product: null, quantity: null, price: null };
 }
