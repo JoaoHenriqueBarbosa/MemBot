@@ -33,18 +33,11 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
     ws.send(JSON.stringify({ type: "message", content: messageData, role: "user" } as WebSocketMessage));
 
     let category: Category | undefined;
-    let product: string | null = null;
-    let quantity: number | null = null;
-    let price: number | null = null;
+    let entities: Record<string, any> = {};
 
     if (categorize) {
         category = await categorizeEntry(messageData);
-        if (category === "financial") {
-            const entities = await extractEntitiesBasedOnCategory(messageData, category);
-            product = entities.product;
-            quantity = entities.quantity;
-            price = entities.price;
-        }
+        entities = await extractEntitiesBasedOnCategory(messageData, category);
     }
 
     const response = await ollama.chat({
@@ -100,31 +93,86 @@ function trimJSON(entry: string) {
 }
 
 async function extractEntitiesBasedOnCategory(entry: string, category: Category) {
-    if (category === "financial") {
-        const prompt = `Extract the product, quantity, and price from the following financial diary entry. Respond with a JSON object containing "product", "quantity", and "price" fields. If any is not present, set the value to null.
+    let prompt = `Extract the following information from this ${category} diary entry. Respond with a JSON object containing the specified fields. If any field is not present, set its value to null.
 
 Entry: ${entry}
 
-JSON:`;
+Fields to extract:`;
 
-        const response = await ollama.generate({
-            model: "gemma2",
-            prompt: prompt,
-        });
-        console.log("Extracted entities:", trimJSON(response.response.trim()));
-
-        try {
-            const result = JSON.parse(trimJSON(response.response.trim()));
-            return {
-                product: result.product || null,
-                quantity: result.quantity !== undefined ? Number(result.quantity) : null,
-                price: result.price !== undefined ? Number(result.price) : null
-            };
-        } catch (error) {
-            console.error("Failed to parse JSON response:", error);
-            return { product: null, quantity: null, price: null };
-        }
+    switch (category) {
+        case "financial":
+            prompt += `
+- amount (number)
+- type ("income" or "expense")
+- payment_method (string)`;
+            break;
+        case "health and well-being":
+            prompt += `
+- activity_type ("exercise", "meditation", or "other")
+- duration (string, e.g. "30 minutes")
+- intensity ("low", "medium", or "high")
+- meal_description (string)
+- calories (number)
+- emotion_description (string)
+- emotion_intensity (number between 1 and 10)
+- trigger (string)
+- medical_appointment_date (date string)
+- specialty (string)
+- consultation_reason (string)
+- recommendations (string)`;
+            break;
+        case "work/projects":
+            prompt += `
+- task_description (string)
+- task_status ("pending", "in_progress", or "completed")
+- priority ("low", "medium", or "high")
+- meeting_date (date string)
+- participants (string)
+- topics_discussed (string)
+- decisions_made (string)
+- progress_report (string)
+- obstacles_faced (string)`;
+            break;
+        case "relationships":
+            prompt += `
+- person (string)
+- interaction_type ("conversation", "activity", or "other")
+- interaction_description (string)
+- feelings (string)
+- event_date (date string)
+- event_description (string)
+- emotional_impact (string)
+- conflict_description (string)
+- resolution (string)`;
+            break;
+        case "goals/progress":
+            prompt += `
+- goal_start_date (date string)
+- goal_end_date (date string)
+- goal_description (string)
+- status ("not_started", "in_progress", "completed", or "abandoned")
+- milestones (string)
+- progress (string)`;
+            break;
+        default:
+            return {};
     }
 
-    return { product: null, quantity: null, price: null };
+    prompt += `
+
+JSON:`;
+
+    const response = await ollama.generate({
+        model: "gemma2",
+        prompt: prompt,
+    });
+    console.log("Extracted entities:", trimJSON(response.response.trim()));
+
+    try {
+        const result = JSON.parse(trimJSON(response.response.trim()));
+        return result;
+    } catch (error) {
+        console.error("Failed to parse JSON response:", error);
+        return {};
+    }
 }
