@@ -138,17 +138,23 @@ function App() {
             </div>
             <div className="message">
               {message.category && (
-                <div className={`category ${message.category.replace(/\s/g, "-")}`}>
+                <div className={`category ${message.category?.replace(/\s/g, "-")}`}>
                   {message.category}
-                  {message.category === "financial" && message.product && (
-                    <span> | Product: {message.product}</span>
+                  {message.category === "financial" && (
+                    <>
+                      {message.amount && <span> | Amount: ${message.amount.toFixed(2)}</span>}
+                      {message.type && <span> | Type: {message.type}</span>}
+                      {message.payment_method && <span> | Payment Method: {message.payment_method}</span>}
+                    </>
                   )}
-                  {message.category === "financial" && message.quantity && (
-                    <span> | Quantity: {message.quantity}</span>
+                  {message.category === "health and well-being" && (
+                    <>
+                      {message.activity_type && <span> | Activity: {message.activity_type}</span>}
+                      {message.duration && <span> | Duration: {message.duration}</span>}
+                      {message.intensity && <span> | Intensity: {message.intensity}</span>}
+                    </>
                   )}
-                  {message.category === "financial" && message.price && (
-                    <span> | Price: ${message.price.toFixed(2)}</span>
-                  )}
+                  {/* Add more category-specific displays here */}
                 </div>
               )}
               <Remark>{message.content || ""}</Remark>
