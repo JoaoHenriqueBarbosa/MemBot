@@ -5,7 +5,7 @@ export type WebSocketMessage = {
     role?: "user" | "assistant";
     done?: boolean;
     content?: any;
-    category?: string;
+    category?: Category;
     product?: string;
     quantity?: number;
     price?: number;
