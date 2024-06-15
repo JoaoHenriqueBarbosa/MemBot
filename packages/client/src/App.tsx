@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { Remark } from "react-remark";
-import { WebSocketMessage } from "@ai-jrnl/server/types";
+import { WebSocketMessage, Category } from "@ai-jrnl/server/types";
 import { adaptativeHumanByteReader } from "./utils/functions";
 
 const ucFirst = (str: string) => str[0].toUpperCase() + str.slice(1);
@@ -142,7 +142,7 @@ function App() {
                   {message.category}
                   {message.category === "financial" && (
                     <>
-                      {message.amount && <span> | Amount: ${message.amount.toFixed(2)}</span>}
+                      {message.amount !== undefined && <span> | Amount: ${Number(message.amount).toFixed(2)}</span>}
                       {message.type && <span> | Type: {message.type}</span>}
                       {message.payment_method && <span> | Payment Method: {message.payment_method}</span>}
                     </>
