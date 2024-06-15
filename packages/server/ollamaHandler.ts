@@ -58,9 +58,7 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
             role: "assistant",
             done: chunk.done,
             category: category,
-            product: product,
-            quantity: quantity,
-            price: price
+            ...entities
         } as WebSocketMessage));
     }
 

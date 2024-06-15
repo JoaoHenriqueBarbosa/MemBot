@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { Remark } from "react-remark";
-import { WebSocketMessage, Category } from "@ai-jrnl/server/types";
+import { WebSocketMessage } from "@ai-jrnl/server/types";
 import { adaptativeHumanByteReader } from "./utils/functions";
 
 const ucFirst = (str: string) => str[0].toUpperCase() + str.slice(1);
@@ -138,23 +138,8 @@ function App() {
             </div>
             <div className="message">
               {message.category && (
-                <div className={`category ${message.category?.replace(/\s/g, "-")}`}>
+                <div className={`category ${message.category.replace(/\s/g, "-")}`}>
                   {message.category}
-                  {message.category === "financial" && (
-                    <>
-                      {message.amount !== undefined && <span> | Amount: ${Number(message.amount).toFixed(2)}</span>}
-                      {message.type && <span> | Type: {message.type}</span>}
-                      {message.payment_method && <span> | Payment Method: {message.payment_method}</span>}
-                    </>
-                  )}
-                  {message.category === "health and well-being" && (
-                    <>
-                      {message.activity_type && <span> | Activity: {message.activity_type}</span>}
-                      {message.duration && <span> | Duration: {message.duration}</span>}
-                      {message.intensity && <span> | Intensity: {message.intensity}</span>}
-                    </>
-                  )}
-                  {/* Add more category-specific displays here */}
                 </div>
               )}
               <Remark>{message.content || ""}</Remark>

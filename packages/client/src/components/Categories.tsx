@@ -1,18 +1,38 @@
-import React from 'react';
+import React from "react";
 import { WebSocketMessage } from "@ai-jrnl/server/types";
 
-export const FinancialCategory: React.FC<{ message: WebSocketMessage }> = ({ message }) => (
+export const FinancialCategory: React.FC<{ message: WebSocketMessage }> = ({
+  message,
+}) => (
   <>
-    {message.amount !== undefined && <span> | Amount: ${Number(message.amount).toFixed(2)}</span>}
+    {message.entities?.amount !== undefined && (
+      <span>
+        {" "}
+        | Amount: $
+        {typeof message.entities?.amount === "number"
+          ? message.entities?.amount.toFixed(2)
+          : Number(message.entities?.amount).toFixed(2)}
+      </span>
+    )}
     {message.type && <span> | Type: {message.type}</span>}
-    {message.payment_method && <span> | Payment Method: {message.payment_method}</span>}
+    {message.entities?.payment_method && (
+      <span> | Payment Method: {message.entities?.payment_method}</span>
+    )}
   </>
 );
 
-export const HealthCategory: React.FC<{ message: WebSocketMessage }> = ({ message }) => (
+export const HealthCategory: React.FC<{ message: WebSocketMessage }> = ({
+  message,
+}) => (
   <>
-    {message.activity_type && <span> | Activity: {message.activity_type}</span>}
-    {message.duration && <span> | Duration: {message.duration}</span>}
-    {message.intensity && <span> | Intensity: {message.intensity}</span>}
+    {message.entities?.activity_type && (
+      <span> | Activity: {message.entities?.activity_type}</span>
+    )}
+    {message.entities?.duration && (
+      <span> | Duration: {message.entities?.duration}</span>
+    )}
+    {message.entities?.intensity && (
+      <span> | Intensity: {message.entities?.intensity}</span>
+    )}
   </>
 );
