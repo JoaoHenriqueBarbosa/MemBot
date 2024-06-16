@@ -100,6 +100,7 @@ Fields to extract:`;
     switch (category) {
         case "financial":
             prompt += `
+- entry_date (date string)
 - description (string)
 - amount (number)
 - type ("income" or "expense")
@@ -107,6 +108,7 @@ Fields to extract:`;
             break;
         case "health and well-being":
             prompt += `
+- entry_date (date string)
 - activity_type ("exercise", "meditation", or "other")
 - duration (string, e.g. "30 minutes")
 - intensity ("low", "medium", or "high")
@@ -122,6 +124,7 @@ Fields to extract:`;
             break;
         case "work/projects":
             prompt += `
+- entry_date (date string)
 - task_description (string)
 - task_status ("pending", "in_progress", or "completed")
 - priority ("low", "medium", or "high")
@@ -134,6 +137,7 @@ Fields to extract:`;
             break;
         case "relationships":
             prompt += `
+- entry_date (date string)
 - person (string)
 - interaction_type ("conversation", "activity", or "other")
 - interaction_description (string)
