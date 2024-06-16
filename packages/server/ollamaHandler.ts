@@ -100,6 +100,7 @@ Fields to extract:`;
     switch (category) {
         case "financial":
             prompt += `
+- description (string)
 - amount (number)
 - type ("income" or "expense")
 - payment_method (string)`;
