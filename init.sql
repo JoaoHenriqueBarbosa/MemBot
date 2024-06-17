@@ -18,9 +18,9 @@ CREATE TABLE financial (
     entry_date DATE NOT NULL,
     description TEXT NOT NULL,
     amount DECIMAL(10, 2) NOT NULL,
-    type VARCHAR(50) NOT NULL, -- "income" or "expense"
+    direction VARCHAR(50) NOT NULL, -- "in" or "out"
     payment_method VARCHAR(50),
-    CONSTRAINT chk_financial_type CHECK (type IN ('income', 'expense'))
+    CONSTRAINT chk_financial_direction CHECK (direction IN ('in', 'out'))
 );
 
 -- Health and Well-being Table
