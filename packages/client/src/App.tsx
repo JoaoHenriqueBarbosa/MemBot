@@ -13,7 +13,7 @@ function App() {
   const [pullingStatus, setPullingStatus] = useState<string>(
     "Establishing connection..."
   );
-  const [pageStatus, setPageStatus] = useState<"chat" | "pulling" | "idle">(
+  const [pageStatus, setPageStatus] = useState<"chat" | "pulling" | "idle" | "docker-not-running">(
     "idle"
   );
   const [pullProgress, setPullProgress] = useState<number | null>(null);
@@ -25,6 +25,10 @@ function App() {
     const socket = new WebSocket("ws://localhost:3000");
 
     socket.addEventListener("message", (event) => {
+      if (event.data === "docker-not-running") {
+        setPageStatus("docker-not-running");
+        return;
+      }
       const wsMessage = JSON.parse(event.data) as WebSocketMessage;
 
       switch (wsMessage.type) {
@@ -80,6 +84,15 @@ function App() {
       categorize: categorize
     }));
   };
+
+  if (pageStatus === "docker-not-running") {
+    return (
+      <div>
+        <h1>AI Journal</h1>
+        <p>Docker is not running. Please start Ollama Docker and refresh the page.</p>
+      </div>
+    );
+  }
 
   if (pageStatus === "idle") {
     return (

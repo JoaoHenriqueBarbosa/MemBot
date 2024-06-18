@@ -11,7 +11,10 @@ export const handleMessage = async (ws: ServerWebSocket<{ authToken: string }>, 
         } else if (messageObject.type === "message") {
             await handleUserMessage(ws, messageObject.content, messageObject.categorize);
         }
-    } catch (e) {
+    } catch (e: any) {
+        if (e.toString().toLowerCase().includes("refused")) {
+            ws.send("docker-not-running");
+        }
         console.log(e);
         console.error(`Failed to parse message: ${message}`);
     }
