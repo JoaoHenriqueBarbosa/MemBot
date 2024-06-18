@@ -19,6 +19,7 @@ function App() {
   const [pullProgress, setPullProgress] = useState<number | null>(null);
   const [modelSize, setModelSize] = useState<number | null>(null);
   const [categorize, setCategorize] = useState<boolean>(false);
+  const [requestingInfo, setRequestingInfo] = useState<string | null>(null);
   const conn = useRef<WebSocket | null>(null);
 
   useEffect(() => {
@@ -47,6 +48,7 @@ function App() {
 
             return [...prevMessages, wsMessage];
           });
+          setRequestingInfo(null);
           break;
         case "pull-progress":
           setPageStatus("pulling");
@@ -62,6 +64,9 @@ function App() {
           break;
         case "init":
           setPageStatus("chat");
+          break;
+        case "request_info":
+          setRequestingInfo(wsMessage.entityName);
           break;
       }
     });
@@ -168,13 +173,21 @@ function App() {
       </div>
       <div className="chat-input">
         <textarea
-          placeholder="Type a message..."
+          placeholder={requestingInfo ? `Please provide information for: ${requestingInfo}` : "Type a message..."}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         ></textarea>
         <button
           onClick={() => {
-            sendMessage(message);
+            if (requestingInfo) {
+              conn.current?.send(JSON.stringify({
+                type: "additional_info",
+                entityName: requestingInfo,
+                content: message
+              }));
+            } else {
+              sendMessage(message);
+            }
             setMessage("");
           }}
         >
