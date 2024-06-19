@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { Remark } from "react-remark";
 import { WebSocketMessage } from "@ai-jrnl/server/types";
+import { FinancialCategory, HealthCategory, WorkProjectsCategory, RelationshipsCategory, GoalsProgressCategory } from "./components/Categories";
 import { adaptativeHumanByteReader } from "./utils/functions";
 import { FinancialCategory, HealthCategory, WorkProjectsCategory, RelationshipsCategory, GoalsProgressCategory } from "./components/Categories";
 
@@ -90,50 +91,55 @@ function App() {
     }));
   };
 
-  if (pageStatus === "docker-not-running") {
-    return (
-      <div>
-        <h1>AI Journal</h1>
-        <p>Docker is not running. Please start Ollama Docker and refresh the page.</p>
-      </div>
-    );
-  }
+  const renderPageStatus = () => {
+    switch (pageStatus) {
+      case "docker-not-running":
+        return (
+          <div>
+            <h1>AI Journal</h1>
+            <p>Docker is not running. Please start Ollama Docker and refresh the page.</p>
+          </div>
+        );
+      case "idle":
+        return (
+          <div>
+            <h1>AI Journal</h1>
+            <p>Establishing connection...</p>
+          </div>
+        );
+      case "pulling":
+        return (
+          <div>
+            <h1>AI Journal</h1>
+            <h2>Installing gemma2...</h2>
+            <div>
+              {pullProgress !== null &&
+                modelSize !== null &&
+                pullingStatus.includes("pulling") && (
+                  <div>
+                    <div className="progress">
+                      <div
+                        className="progress-bar"
+                        style={{
+                          width: `${(pullProgress / modelSize) * 100}%`,
+                        }}
+                      />
+                    </div>
+                    {adaptativeHumanByteReader(pullProgress)} /{" "}
+                    {adaptativeHumanByteReader(modelSize)}
+                  </div>
+                )}
+              {pullingStatus !== "pulling" && ucFirst(pullingStatus)}
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
-  if (pageStatus === "idle") {
-    return (
-      <div>
-        <h1>AI Journal</h1>
-        <p>Establishing connection...</p>
-      </div>
-    );
-  }
-
-  if (pageStatus === "pulling") {
-    return (
-      <div>
-        <h1>AI Journal</h1>
-        <h2>Installing gemma2...</h2>
-        <div>
-          {pullProgress !== null &&
-            modelSize !== null &&
-            pullingStatus.includes("pulling") && (
-              <div>
-                <div className="progress">
-                  <div
-                    className="progress-bar"
-                    style={{
-                      width: `${(pullProgress / modelSize) * 100}%`,
-                    }}
-                  />
-                </div>
-                {adaptativeHumanByteReader(pullProgress)} /{" "}
-                {adaptativeHumanByteReader(modelSize)}
-              </div>
-            )}
-          {pullingStatus !== "pulling" && ucFirst(pullingStatus)}
-        </div>
-      </div>
-    );
+  if (pageStatus !== "chat") {
+    return renderPageStatus();
   }
 
   return (
