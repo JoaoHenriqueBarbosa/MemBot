@@ -51,9 +51,14 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
         }
     }
 
+    const aiInstructions = `You are an AI Journal assistant. Your role is to provide kind and supportive responses to user's diary entries. Always acknowledge the user's entry, offer encouragement, and if appropriate, provide a gentle suggestion or question for reflection. Keep your responses concise, around 2-3 sentences. The user's entry has been categorized as "${category || 'uncategorized'}".`;
+
     const response = await ollama.chat({
         model: "gemma2",
-        messages: chatHistory,
+        messages: [
+            { role: "system", content: aiInstructions },
+            ...chatHistory
+        ],
         stream: true
     });
 
