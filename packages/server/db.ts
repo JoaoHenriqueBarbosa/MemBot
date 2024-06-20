@@ -16,7 +16,7 @@ export async function storeEntry(category: Category, entities: Record<string, an
 
     // Store in general_entries table
     const generalEntryQuery = `
-      INSERT INTO general_entries (entry_date, description, category)
+      INSERT INTO public.general_entries (entry_date, description, category)
       VALUES ($1, $2, $3)
     `;
     await client.query(generalEntryQuery, [new Date(), entities.description || '', category]);
@@ -28,7 +28,7 @@ export async function storeEntry(category: Category, entities: Record<string, an
     switch (category) {
       case 'financial':
         categoryQuery = `
-          INSERT INTO financial (entry_date, description, amount, direction, payment_method)
+          INSERT INTO public.financial (entry_date, description, amount, direction, payment_method)
           VALUES ($1, $2, $3, $4, $5)
         `;
         categoryValues = [
@@ -41,7 +41,7 @@ export async function storeEntry(category: Category, entities: Record<string, an
         break;
       case 'health and well-being':
         categoryQuery = `
-          INSERT INTO health_wellbeing (entry_date, activity_type, duration, intensity, meal_description, calories, emotion_description, emotion_intensity, trigger, medical_appointment_date, specialty, consultation_reason, recommendations)
+          INSERT INTO public.health_wellbeing (entry_date, activity_type, duration, intensity, meal_description, calories, emotion_description, emotion_intensity, trigger, medical_appointment_date, specialty, consultation_reason, recommendations)
           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
         `;
         categoryValues = [
@@ -62,7 +62,7 @@ export async function storeEntry(category: Category, entities: Record<string, an
         break;
       case 'work/projects':
         categoryQuery = `
-          INSERT INTO work_projects (entry_date, task_description, task_status, priority, meeting_date, participants, topics_discussed, decisions_made, progress_report, obstacles_faced)
+          INSERT INTO public.work_projects (entry_date, task_description, task_status, priority, meeting_date, participants, topics_discussed, decisions_made, progress_report, obstacles_faced)
           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
         `;
         categoryValues = [
@@ -80,7 +80,7 @@ export async function storeEntry(category: Category, entities: Record<string, an
         break;
       case 'relationships':
         categoryQuery = `
-          INSERT INTO relationships (entry_date, person, interaction_type, interaction_description, feelings, event_date, event_description, emotional_impact, conflict_description, resolution)
+          INSERT INTO public.relationships (entry_date, person, interaction_type, interaction_description, feelings, event_date, event_description, emotional_impact, conflict_description, resolution)
           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
         `;
         categoryValues = [
@@ -98,7 +98,7 @@ export async function storeEntry(category: Category, entities: Record<string, an
         break;
       case 'goals/progress':
         categoryQuery = `
-          INSERT INTO goals_progress (goal_start_date, goal_end_date, goal_description, status, milestones, progress)
+          INSERT INTO public.goals_progress (goal_start_date, goal_end_date, goal_description, status, milestones, progress)
           VALUES ($1, $2, $3, $4, $5, $6)
         `;
         categoryValues = [
