@@ -4,7 +4,7 @@ import { Category } from './types.js';
 const pool = new Pool({
   user: 'myuser',
   host: 'localhost',
-  database: 'mydatabase',
+  database: 'ai_jrnl',
   password: 'mypassword',
   port: 5432,
 });

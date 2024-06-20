@@ -1,6 +1,7 @@
 import ollama, { Message } from "ollama";
 import { ServerWebSocket } from "bun";
 import { WebSocketMessage, Category } from "./types.js";
+import { storeEntry } from "./db.js";
 
 // Store chat history
 let chatHistory: Message[] = [];
@@ -38,6 +39,16 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
     if (categorize) {
         category = await categorizeEntry(messageData);
         entities = await extractEntitiesBasedOnCategory(messageData, category);
+
+        // Store the entry in the database
+        if (category) {
+            try {
+                await storeEntry(category, entities);
+                console.log("Entry stored successfully");
+            } catch (error) {
+                console.error("Error storing entry:", error);
+            }
+        }
     }
 
     const response = await ollama.chat({

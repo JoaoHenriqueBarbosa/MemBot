@@ -29,7 +29,7 @@ Para iniciar um contêiner PostgreSQL, execute o seguinte comando:
 ```sh
 docker run -d \
   --name my_postgres_db \
-  -e POSTGRES_DB=mydatabase \
+  -e POSTGRES_DB=ai_journal \
   -e POSTGRES_USER=myuser \
   -e POSTGRES_PASSWORD=mypassword \
   -p 5432:5432 \

@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import { Remark } from "react-remark";
 import { WebSocketMessage } from "@ai-jrnl/server/types";
-import { FinancialCategory, HealthCategory, WorkProjectsCategory, RelationshipsCategory, GoalsProgressCategory } from "./components/Categories";
 import { adaptativeHumanByteReader } from "./utils/functions";
 import { FinancialCategory, HealthCategory, WorkProjectsCategory, RelationshipsCategory, GoalsProgressCategory } from "./components/Categories";
 
@@ -65,9 +64,6 @@ function App() {
           break;
         case "init":
           setPageStatus("chat");
-          break;
-        case "request_info":
-          setRequestingInfo(wsMessage.entityName);
           break;
       }
     });

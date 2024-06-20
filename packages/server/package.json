@@ -9,7 +9,10 @@
   "dependencies": {
     "bun-types": "latest",
     "ollama": "^0.5.2",
-    "zod": "1",
-    "pg": "^8.11.3"
+    "pg": "^8.12.0",
+    "zod": "1"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.11.6"
   }
 }
