@@ -15,17 +15,17 @@
     "react-remark": "^2.1.0"
   },
   "devDependencies": {
+    "@ai-jrnl/server": "0.0.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
     "@typescript-eslint/parser": "^7.13.1",
     "@vitejs/plugin-react-swc": "^3.5.0",
+    "bun-types": "latest",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
     "typescript": "^5.2.2",
-    "vite": "^5.3.1",
-    "@ai-jrnl/server": "0.0.1",
-    "bun-types": "latest"
+    "vite": "^5.3.1"
   }
 }

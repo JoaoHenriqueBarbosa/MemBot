@@ -3,7 +3,6 @@ import "./App.css";
 import { Remark } from "react-remark";
 import { WebSocketMessage } from "@ai-jrnl/server/types";
 import { adaptativeHumanByteReader } from "./utils/functions";
-import { FinancialCategory, HealthCategory, WorkProjectsCategory, RelationshipsCategory, GoalsProgressCategory } from "./components/Categories";
 
 const ucFirst = (str: string) => str[0].toUpperCase() + str.slice(1);
 
@@ -161,11 +160,6 @@ function App() {
               {message.category && (
                 <div className={`category ${message.category.replace(/\s/g, "-")}`}>
                   {message.category}
-                  {message.category === "financial" && <FinancialCategory message={message} />}
-                  {message.category === "health and well-being" && <HealthCategory message={message} />}
-                  {message.category === "work/projects" && <WorkProjectsCategory message={message} />}
-                  {message.category === "relationships" && <RelationshipsCategory message={message} />}
-                  {message.category === "goals/progress" && <GoalsProgressCategory message={message} />}
                 </div>
               )}
               <Remark>{message.content || ""}</Remark>

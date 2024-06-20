@@ -6,7 +6,6 @@ export type WebSocketMessage = {
     done?: boolean;
     content?: any;
     category?: Category;
-    entities?: Record<string, any>;
     entityName?: string;
 };
 

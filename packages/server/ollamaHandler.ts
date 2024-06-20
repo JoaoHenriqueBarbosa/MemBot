@@ -29,8 +29,7 @@ export const handleInit = async (ws: ServerWebSocket<{ authToken: string }>) => 
 
 export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string }>, messageData: string, categorize: boolean = false) => {
     // Add user message to chat history
-    const userMessage: Message = { role: "user", content: messageData };
-    chatHistory.push(userMessage);
+    let userMessage: Message = { role: "user", content: messageData };
     ws.send(JSON.stringify({ type: "message", content: messageData, role: "user" } as WebSocketMessage));
 
     let category: Category | undefined;
@@ -45,20 +44,17 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
             try {
                 await storeEntry(category, entities);
                 console.log("Entry stored successfully");
+                userMessage = { role: "user", content: `Você é um assistente de diário. Por favor, notifique o usuário que a entrada foi armazenada com sucesso na categoria ${category}. Informações guardadas: ${JSON.stringify(entities)}.` };
             } catch (error) {
                 console.error("Error storing entry:", error);
             }
         }
     }
-
-    const aiInstructions = `You are an AI Journal assistant. Your role is to provide kind and supportive responses to user's diary entries. Always acknowledge the user's entry, offer encouragement, and if appropriate, provide a gentle suggestion or question for reflection. Keep your responses concise, around 2-3 sentences. The user's entry has been categorized as "${category || 'uncategorized'}".`;
+    chatHistory.push(userMessage);
 
     const response = await ollama.chat({
         model: "gemma2",
-        messages: [
-            { role: "system", content: aiInstructions },
-            ...chatHistory
-        ],
+        messages: chatHistory,
         stream: true
     });
 
@@ -74,7 +70,6 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
             role: "assistant",
             done: chunk.done,
             category: category,
-            entities
         } as WebSocketMessage));
     }
 
