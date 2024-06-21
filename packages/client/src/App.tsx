@@ -2,8 +2,8 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { DashboardView } from "./components/dashboard-view";
-import { ChatbotView } from "./components/ChatbotView";
-import { SettingsView } from "./components/SettingsView";
+import { ChatbotView } from "./components/chatbot-view";
+import { SettingsView } from "./components/settings-view";
 
 function App() {
   return (

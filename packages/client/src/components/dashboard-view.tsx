@@ -1,8 +1,8 @@
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { Sidebar } from "./Sidebar"
-import { Header } from "./Header"
-import { DashboardContent } from "./DashboardContent"
-import { ChatbotContent } from "./ChatbotContent"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Sidebar } from "./sidebar";
+import { Header } from "./header";
+import { DashboardContent } from "./dashboard-content";
+import { JournalContent } from "./journal-content";
 
 export function DashboardView() {
   return (
@@ -13,19 +13,20 @@ export function DashboardView() {
         <main className="grid flex-1 items-start gap-8 p-4 sm:px-6 sm:py-0 md:gap-12">
           <Tabs defaultValue="dashboard">
             <TabsList>
-              <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-              <TabsTrigger value="chatbot">Chatbot</TabsTrigger>
+              <TabsTrigger value="dashboard">Financial</TabsTrigger>
+              <TabsTrigger value="journal">Journal</TabsTrigger>
             </TabsList>
-            <TabsContent value="dashboard" className="flex flex-col gap-8">
-              <DashboardContent />
-            </TabsContent>
-            <TabsContent value="chatbot">
-              <ChatbotContent />
-            </TabsContent>
+            <div className="mt-8">
+              <TabsContent value="dashboard">
+                <DashboardContent />
+              </TabsContent>
+              <TabsContent value="journal">
+                <JournalContent />
+              </TabsContent>
+            </div>
           </Tabs>
         </main>
       </div>
     </div>
-  )
+  );
 }
-
