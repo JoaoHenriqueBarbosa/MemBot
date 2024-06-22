@@ -1,8 +1,6 @@
-/* eslint-disable */
 @tailwind base;
-@tailwind components;
-@tailwind utilities;
-/* eslint-enable */
+  @tailwind components;
+  @tailwind utilities;
   
   @layer base {
     :root {
@@ -63,12 +61,10 @@
   }
 
   @layer base {
-    /* eslint-disable */
     * {
       @apply border-border;
     }
     body {
       @apply bg-background text-foreground;
     }
-    /* eslint-enable */
   }
