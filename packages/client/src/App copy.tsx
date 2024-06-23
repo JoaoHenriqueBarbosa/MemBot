@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import "./App.css";
+import "./App.scss";
 import { Remark } from "react-remark";
 import { WebSocketMessage } from "@ai-jrnl/server/types";
 import { adaptativeHumanByteReader } from "./lib/utils";
