@@ -2,11 +2,11 @@ import { Pool } from 'pg';
 import { Category } from './types.js';
 
 const pool = new Pool({
-  user: 'myuser',
-  host: 'localhost',
-  database: 'ai_jrnl',
-  password: 'mypassword',
-  port: 5432,
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
 });
 
 export async function storeEntry(category: Category, entities: Record<string, any>) {

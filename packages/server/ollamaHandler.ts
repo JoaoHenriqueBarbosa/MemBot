@@ -3,16 +3,18 @@ import { ServerWebSocket } from "bun";
 import { WebSocketMessage, Category } from "./types.js";
 import { storeEntry } from "./db.js";
 
-// Store chat history
+const MODEL_NAME = process.env.MODEL_NAME || "gemma2";
+
+// Store chat history                                                                                                                                     
 let chatHistory: Message[] = [];
 
 export const handleInit = async (ws: ServerWebSocket<{ authToken: string }>) => {
     const list = await ollama.list();
 
-    if (list.models.find(model => model.name === "gemma2:latest") === undefined) {
-        console.log("Installing gemma2...");
+    if (list.models.find(model => model.name === `${MODEL_NAME}:latest`) === undefined) {
+        console.log(`Installing ${MODEL_NAME}...`);
         const puller = await ollama.pull({
-            model: "gemma2",
+            model: MODEL_NAME,
             stream: true
         });
 
@@ -53,7 +55,7 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
     chatHistory.push(userMessage);
 
     const response = await ollama.chat({
-        model: "gemma2",
+        model: MODEL_NAME,
         messages: chatHistory,
         stream: true
     });
@@ -86,7 +88,7 @@ Entry: ${entry}
 Category:`;
 
     const response = await ollama.generate({
-        model: "gemma2",
+        model: MODEL_NAME,
         prompt: prompt,
     });
 
@@ -173,7 +175,7 @@ Fields to extract:`;
 JSON:`;
 
     const response = await ollama.generate({
-        model: "gemma2",
+        model: MODEL_NAME,
         prompt: prompt,
     });
     console.log("Extracted entities:", trimJSON(response.response.trim()));
