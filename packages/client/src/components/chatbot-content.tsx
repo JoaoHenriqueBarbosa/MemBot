@@ -11,6 +11,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { SendIcon } from "lucide-react";
 import { WebSocketMessage } from "@ai-jrnl/server/types";
 import { adaptativeHumanByteReader } from "@/lib/utils";
+import { Remark } from "react-remark";
 
 export function ChatbotContent() {
   const [messages, setMessages] = useState<WebSocketMessage[]>([]);
@@ -24,6 +25,7 @@ export function ChatbotContent() {
   const [pullProgress, setPullProgress] = useState<number | null>(null);
   const [modelSize, setModelSize] = useState<number | null>(null);
   const [categorize, setCategorize] = useState<boolean>(false);
+  const messagesContentRef = useRef<HTMLDivElement | null>(null);
   const conn = useRef<WebSocket | null>(null);
 
   useEffect(() => {
@@ -70,6 +72,14 @@ export function ChatbotContent() {
           break;
         case "init":
           setPageStatus("chat");
+          setTimeout(() => {
+            const offsetTop = messagesContentRef.current?.offsetTop;
+
+            messagesContentRef.current?.style.setProperty(
+              "height",
+              `calc(100vh - ${offsetTop}px - 60px - 25px)`
+            );
+          });
           break;
       }
     });
@@ -103,7 +113,7 @@ export function ChatbotContent() {
 
   if (pageStatus !== "chat") {
     return (
-      <Card className="w-full max-w-md mx-auto">
+      <Card className="w-full">
         <CardContent>
           <div className="space-y-4">
             {pageStatus === "docker-not-running" && (
@@ -142,7 +152,7 @@ export function ChatbotContent() {
   }
 
   return (
-    <Card className="w-full max-w-md mx-auto">
+    <Card className="w-full">
       <CardHeader className="flex flex-row items-center justify-between">
         <div className="flex items-center space-x-4">
           <Avatar>
@@ -166,13 +176,13 @@ export function ChatbotContent() {
           <span className="text-sm">Categorize entries</span>
         </label>
       </CardHeader>
-      <CardContent>
+      <CardContent ref={messagesContentRef}>
         <div className="space-y-4">
           {messages.map((message, i) => (
             <div
               key={i}
               className={`flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm ${
-                message.role === "assistant"
+                message.role === "user"
                   ? "ml-auto bg-primary text-primary-foreground"
                   : "bg-muted"
               }`}
@@ -184,7 +194,9 @@ export function ChatbotContent() {
                   {message.category}
                 </div>
               )}
-              {message.content}
+              <div className="remark-content">
+                <Remark>{message.content}</Remark>
+              </div>
             </div>
           ))}
         </div>

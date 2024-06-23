@@ -1,0 +1,160 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 100% 97%;
+    --foreground: 339 20% 20%;
+    --card: 210 100% 97%;
+    --card-foreground: 339 20% 20%;
+    --popover: 210 100% 97%;
+    --popover-foreground: 339 20% 20%;
+    --primary: 308 56% 85%;
+    --primary-foreground: 210 22% 22%;
+    --secondary: 196 75% 88%;
+    --secondary-foreground: 210 22% 22%;
+    --muted: 210 100% 95%;
+    --muted-foreground: 210 22% 22%;
+    --accent: 211 86% 70%;
+    --accent-foreground: 210 22% 22%;
+    --destructive: 0 93% 73%;
+    --destructive-foreground: 210 22% 22%;
+    --border: 210 40% 80%;
+    --input: 210 40% 56%;
+    --ring: 210 40% 60%;
+    --radius: 0.5rem;
+    --chart-1: 308 56% 85%;
+    --chart-2: 211 96% 70%;
+    --chart-3: 45 100% 80%;
+    --chart-4: 180 60% 85%;
+    --chart-5: 120 50% 80%;
+  }
+
+  .dark {
+    --background: 210 22% 22%;
+    --foreground: 339 20% 20%;
+    --card: 210 22% 22%;
+    --card-foreground: 339 20% 20%;
+    --popover: 210 22% 22%;
+    --popover-foreground: 339 20% 20%;
+    --primary: 308 56% 85%;
+    --primary-foreground: 210 100% 97%;
+    --secondary: 196 75% 88%;
+    --secondary-foreground: 210 100% 97%;
+    --muted: 210 22% 22%;
+    --muted-foreground: 339 20% 20%;
+    --accent: 211 86% 70%;
+    --accent-foreground: 210 100% 97%;
+    --destructive: 0 93% 73%;
+    --destructive-foreground: 210 100% 97%;
+    --border: 210 40% 80%;
+    --input: 210 40% 56%;
+    --ring: 210 40% 60%;
+    --radius: 0.5rem;
+    --chart-1: 308 56% 85%;
+    --chart-2: 211 96% 70%;
+    --chart-3: 45 100% 80%;
+    --chart-4: 180 60% 85%;
+    --chart-5: 120 50% 80%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Simple markup css for html generated from markdown */
+
+  .remark-content {
+    @apply p-1;
+
+    h1, h2, h3, h4, h5, h6 {
+      @apply font-bold;
+    }
+
+    h1 {
+      @apply text-4xl;
+    }
+
+    h2 {
+      @apply text-3xl;
+    }
+
+    h3 {
+      @apply text-2xl;
+    }
+
+    h4 {
+      @apply text-xl;
+    }
+
+    h5 {
+      @apply text-lg;
+    }
+
+    h6 {
+      @apply text-base;
+    }
+
+    p {
+      @apply my-4;
+
+      &:first-child {
+        @apply m-0;
+      }
+
+      &:last-child {
+        @apply m-0;
+      }
+    }
+
+    ul {
+      @apply list-disc pl-8;
+    }
+
+    ol {
+      @apply list-decimal pl-8;
+    }
+
+    li {
+      @apply my-2;
+    }
+
+    a {
+      @apply text-primary underline;
+    }
+
+    blockquote {
+      @apply border-l-4 border-primary pl-4 my-4;
+    }
+
+    pre {
+      @apply bg-muted p-4 my-4 rounded;
+    }
+
+    code {
+      @apply bg-muted p-1 rounded;
+    }
+
+    table {
+      @apply w-full my-4;
+    }
+
+    th, td {
+      @apply border border-border p-2;
+    }
+
+    th {
+      @apply bg-primary-foreground text-primary rounded-t;
+    }
+
+    td {
+      @apply bg-card-foreground;
+    }
+  }
+}
