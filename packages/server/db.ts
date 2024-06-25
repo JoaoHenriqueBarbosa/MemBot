@@ -1,4 +1,4 @@
-import { db } from './db/connection';
+import { db } from './db/connection.js';
 import { Category } from './types.js';
 
 const pool = db.getPool();
