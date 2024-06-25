@@ -1,4 +1,4 @@
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
 import { Badge } from "@/components/ui/badge"
 import { DollarSignIcon, WalletIcon } from "lucide-react"
@@ -6,25 +6,32 @@ import { DollarSignIcon, WalletIcon } from "lucide-react"
 export function DashboardContent() {
   return (
     <div className="flex flex-col gap-8">
-      <div className="grid gap-8 lg:grid-cols-2">
+      <div className="grid gap-8 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Income</CardTitle>
             <DollarSignIcon className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">$45,231.89</div>
-            <p className="text-xs text-muted-foreground">+20.1% from last month</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Expenses</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Expenses</CardTitle>
             <WalletIcon className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">$12,345.67</div>
-            <p className="text-xs text-muted-foreground">-5.2% from last month</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium">Balance</CardTitle>
+            <WalletIcon className="w-4 h-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">$12,345.67</div>
           </CardContent>
         </Card>
       </div>
@@ -32,7 +39,6 @@ export function DashboardContent() {
         <Card>
           <CardHeader>
             <CardTitle>Recent Transactions</CardTitle>
-            <CardDescription>A table showing the most recent transactions.</CardDescription>
           </CardHeader>
           <CardContent>
             <Table>
@@ -42,6 +48,7 @@ export function DashboardContent() {
                   <TableHead>Description</TableHead>
                   <TableHead>Amount</TableHead>
                   <TableHead>Type</TableHead>
+                  <TableHead>Payment Method</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -52,6 +59,9 @@ export function DashboardContent() {
                   <TableCell>
                     <Badge variant="secondary">Expense</Badge>
                   </TableCell>
+                  <TableCell>
+                    Credit card
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>2023-06-05</TableCell>
@@ -59,6 +69,9 @@ export function DashboardContent() {
                   <TableCell className="text-right">$250.00</TableCell>
                   <TableCell>
                     <Badge variant="secondary">Income</Badge>
+                  </TableCell>
+                  <TableCell>
+                    Credit card
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -68,6 +81,9 @@ export function DashboardContent() {
                   <TableCell>
                     <Badge variant="secondary">Expense</Badge>
                   </TableCell>
+                  <TableCell>
+                    Credit card
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>2023-06-15</TableCell>
@@ -76,6 +92,9 @@ export function DashboardContent() {
                   <TableCell>
                     <Badge variant="secondary">Income</Badge>
                   </TableCell>
+                  <TableCell>
+                    Credit card
+                  </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>2023-06-20</TableCell>
@@ -83,6 +102,9 @@ export function DashboardContent() {
                   <TableCell className="text-right">$250.00</TableCell>
                   <TableCell>
                     <Badge variant="secondary">Expense</Badge>
+                  </TableCell>
+                  <TableCell>
+                    Credit card
                   </TableCell>
                 </TableRow>
               </TableBody>
