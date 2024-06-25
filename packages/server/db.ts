@@ -1,13 +1,7 @@
-import { Pool } from 'pg';
+import { db } from './db/connection';
 import { Category } from './types.js';
 
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT ? parseInt(process.env.DB_PORT) : 5432,
-});
+const pool = db.getPool();
 
 export async function storeEntry(category: Category, entities: Record<string, any>) {
   const client = await pool.connect();
