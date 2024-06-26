@@ -1,9 +1,58 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
-import { DollarSignIcon, WalletIcon } from "lucide-react"
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { DollarSignIcon, WalletIcon } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { formatCurrency } from "@/lib/utils";
+
+const fetchFinancialData = async () => {
+  const response = await fetch("/api/financial");
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  return response.json();
+};
+
+const fetchTotalIncome = async () => {
+  const response = await fetch("/api/financial/income");
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  return response.json();
+};
+
+const fetchTotalExpense = async () => {
+  const response = await fetch("/api/financial/expense");
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  return response.json();
+};
+
+const fetchBalance = async () => {
+  const response = await fetch("/api/financial/balance");
+  if (!response.ok) {
+    throw new Error("Network response was not ok");
+  }
+  return response.json();
+};
 
 export function DashboardContent() {
+  const { data: financialData } = useQuery({
+    queryKey: ["financial"],
+    queryFn: fetchFinancialData,
+  });
+  const { data: totalIncome } = useQuery(["totalIncome"], fetchTotalIncome);
+  const { data: totalExpense } = useQuery(["totalExpense"], fetchTotalExpense);
+  const { data: balance } = useQuery(["balance"], fetchBalance);
+
   return (
     <div className="flex flex-col gap-8">
       <div className="grid gap-8 lg:grid-cols-3">
@@ -13,16 +62,22 @@ export function DashboardContent() {
             <DollarSignIcon className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$45,231.89</div>
+            <div className="text-2xl font-bold">
+              {formatCurrency(totalIncome?.totalIncome || 0)}
+            </div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Total Expenses</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Total Expenses
+            </CardTitle>
             <WalletIcon className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$12,345.67</div>
+            <div className="text-2xl font-bold">
+              {formatCurrency(totalExpense?.totalExpense || 0)}
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -31,7 +86,9 @@ export function DashboardContent() {
             <WalletIcon className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$12,345.67</div>
+            <div className="text-2xl font-bold">
+              {formatCurrency(balance?.balance || 0)}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -52,66 +109,28 @@ export function DashboardContent() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow>
-                  <TableCell>2023-06-01</TableCell>
-                  <TableCell>Acme Inc. - Monthly Subscription</TableCell>
-                  <TableCell className="text-right">$99.99</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary">Expense</Badge>
-                  </TableCell>
-                  <TableCell>
-                    Credit card
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>2023-06-05</TableCell>
-                  <TableCell>Customer A - Order #12345</TableCell>
-                  <TableCell className="text-right">$250.00</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary">Income</Badge>
-                  </TableCell>
-                  <TableCell>
-                    Credit card
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>2023-06-10</TableCell>
-                  <TableCell>Rent - Office Space</TableCell>
-                  <TableCell className="text-right">$1,500.00</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary">Expense</Badge>
-                  </TableCell>
-                  <TableCell>
-                    Credit card
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>2023-06-15</TableCell>
-                  <TableCell>Customer B - Order #54321</TableCell>
-                  <TableCell className="text-right">$175.00</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary">Income</Badge>
-                  </TableCell>
-                  <TableCell>
-                    Credit card
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>2023-06-20</TableCell>
-                  <TableCell>Utilities - Electricity</TableCell>
-                  <TableCell className="text-right">$250.00</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary">Expense</Badge>
-                  </TableCell>
-                  <TableCell>
-                    Credit card
-                  </TableCell>
-                </TableRow>
+                {financialData?.slice(0, 5).map((transaction: any) => (
+                  <TableRow key={transaction.id}>
+                    <TableCell>
+                      {new Date(transaction.entry_date).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell>{transaction.description}</TableCell>
+                    <TableCell className="text-right">
+                      {formatCurrency(transaction.amount)}
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="secondary">
+                        {transaction.direction === "in" ? "Income" : "Expense"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>{transaction.payment_method}</TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </CardContent>
         </Card>
       </div>
     </div>
-  )
+  );
 }
