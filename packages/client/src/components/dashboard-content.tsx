@@ -11,9 +11,10 @@ import { Badge } from "@/components/ui/badge";
 import { DollarSignIcon, WalletIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { formatCurrency } from "@/lib/utils";
+import { API_HOST } from "@/lib/consts";
 
 const fetchFinancialData = async () => {
-  const response = await fetch("/api/financial");
+  const response = await fetch(`${API_HOST}/api/financial`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -21,7 +22,7 @@ const fetchFinancialData = async () => {
 };
 
 const fetchTotalIncome = async () => {
-  const response = await fetch("/api/financial/income");
+  const response = await fetch(`${API_HOST}/api/financial/income`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -29,7 +30,7 @@ const fetchTotalIncome = async () => {
 };
 
 const fetchTotalExpense = async () => {
-  const response = await fetch("/api/financial/expense");
+  const response = await fetch(`${API_HOST}/api/financial/expense`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
@@ -37,7 +38,7 @@ const fetchTotalExpense = async () => {
 };
 
 const fetchBalance = async () => {
-  const response = await fetch("/api/financial/balance");
+  const response = await fetch(`${API_HOST}/api/financial/balance`);
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
