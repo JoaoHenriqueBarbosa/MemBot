@@ -49,9 +49,18 @@ export function DashboardContent() {
     queryKey: ["financial"],
     queryFn: fetchFinancialData,
   });
-  const { data: totalIncome } = useQuery(["totalIncome"], fetchTotalIncome);
-  const { data: totalExpense } = useQuery(["totalExpense"], fetchTotalExpense);
-  const { data: balance } = useQuery(["balance"], fetchBalance);
+  const { data: totalIncome } = useQuery({
+    queryKey: ["totalIncome"],
+    queryFn: fetchTotalIncome,
+  });
+  const { data: totalExpense } = useQuery({
+    queryKey: ["totalExpense"],
+    queryFn: fetchTotalExpense,
+  });
+  const { data: balance } = useQuery({
+    queryKey: ["balance"],
+    queryFn: fetchBalance,
+  });
 
   return (
     <div className="flex flex-col gap-8">
