@@ -1,7 +1,7 @@
 import ollama, { Message } from "ollama";
 import { ServerWebSocket } from "bun";
 import { WebSocketMessage, Category } from "./types.js";
-import { storeEntry } from "./db.js";
+import { storeEntry } from "./storeEntry.js";
 
 const MODEL_NAME = process.env.MODEL_NAME || "gemma2";
 

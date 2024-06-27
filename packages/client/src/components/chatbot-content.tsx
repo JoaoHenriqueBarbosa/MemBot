@@ -12,6 +12,7 @@ import { SendIcon } from "lucide-react";
 import { WebSocketMessage } from "@ai-jrnl/server/types";
 import { adaptativeHumanByteReader } from "@/lib/utils";
 import { Remark } from "react-remark";
+import { API_HOST } from "@/lib/consts";
 
 export function ChatbotContent() {
   const [messages, setMessages] = useState<WebSocketMessage[]>([]);
@@ -29,7 +30,7 @@ export function ChatbotContent() {
   const conn = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:3000");
+    const socket = new WebSocket(`ws://${API_HOST}`);
 
     socket.addEventListener("message", (event) => {
       if (event.data === "docker-not-running") {
