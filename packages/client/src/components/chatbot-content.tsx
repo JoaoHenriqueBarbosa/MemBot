@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { SendIcon } from "lucide-react";
-import { WebSocketMessage } from "@ai-jrnl/server/types";
+import { WebSocketMessage } from "@ai-jrnl/server/utils/types";
 import { adaptativeHumanByteReader } from "@/lib/utils";
 import { Remark } from "react-remark";
 import { API_HOST } from "@/lib/consts";

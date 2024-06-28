@@ -1,4 +1,4 @@
-import { createServer } from "./serverConfig.js";
+import { createServer } from "./utils/serverConfig.js";
 
 const server = createServer();
 

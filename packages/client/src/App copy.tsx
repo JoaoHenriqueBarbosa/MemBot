@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.scss";
 import { Remark } from "react-remark";
-import { WebSocketMessage } from "@ai-jrnl/server/types";
+import { WebSocketMessage } from "@ai-jrnl/server/utils/types";
 import { adaptativeHumanByteReader } from "./lib/utils";
 
 const ucFirst = (str: string) => str[0].toUpperCase() + str.slice(1);

@@ -1,5 +1,5 @@
-import { handleMessage } from "./messageHandler.js";
-import { serveRest } from "./api/rest.js";
+import { handleMessage } from "../handlers/messageHandler.js";
+import { serveRest } from "../api/rest.js";
 
 export const createServer = () => {
     return Bun.serve<{ authToken: string }>({
