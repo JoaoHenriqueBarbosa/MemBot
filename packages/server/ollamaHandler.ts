@@ -2,21 +2,14 @@ import ollama, { Message } from "ollama";
 import { ServerWebSocket } from "bun";
 import { WebSocketMessage, Category } from "./types.js";
 import { storeEntry } from "./storeEntry.js";
+import { getLanguageStrings } from "./languageStrings.js";
 
 const MODEL_NAME = process.env.MODEL_NAME || "gemma2";
 
-const ptBR = {
-    instructionFeedback1: "Você é um assistente de diário. Por favor, notifique o usuário que a entrada foi armazenada com sucesso na categoria",
-    instructionFeedback2: "Informações guardadas",
-}
-
-const en = {
-    instructionFeedback1: "You are a diary assistant. Please notify the user that the entry has been successfully stored in the category",
-    instructionFeedback2: "Saved information",
-}
-
 // Store chat history                                                                                                                                     
 let chatHistory: Message[] = [];
+
+const strings = getLanguageStrings();
 
 export const handleInit = async (ws: ServerWebSocket<{ authToken: string }>) => {
     const list = await ollama.list();
@@ -56,14 +49,7 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
             try {
                 await storeEntry(category, entities);
                 console.log("Entry stored successfully");
-                let instructionFeedback1 = ptBR.instructionFeedback1;
-                let instructionFeedback2 = ptBR.instructionFeedback2;
-
-                if (process.env.LANGUAGE === "en") {
-                    instructionFeedback1 = en.instructionFeedback1;
-                    instructionFeedback2 = en.instructionFeedback2;
-                }
-                userMessage = { role: "user", content: `${instructionFeedback1} ${category}. ${instructionFeedback2}: ${JSON.stringify(entities)}.` };
+                userMessage = { role: "user", content: `${strings.instructionFeedback1} ${category}. ${strings.instructionFeedback2}: ${JSON.stringify(entities)}.` };
             } catch (error) {
                 console.error("Error storing entry:", error);
             }
