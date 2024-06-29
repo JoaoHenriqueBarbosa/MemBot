@@ -1,12 +1,23 @@
 import { ClientResponse } from "../../db/response.js";
+import Database from "../../db/connection.js";
+import { getLanguageStrings } from "../../utils/languageStrings.js";
 
 export async function getGeneralEntries(req: Request): Promise<Response> {
     try {
-        // TODO: Implement the logic to fetch general entries from the database
-        const generalEntries = []; // This should be replaced with actual data fetching
-        return new ClientResponse(JSON.stringify(generalEntries), { status: 200 });
+        const db = Database.getInstance();
+        const client = await db.connect();
+
+        try {
+            const result = await client.query('SELECT * FROM general_entries ORDER BY date DESC');
+            const generalEntries = result.rows;
+
+            return new ClientResponse(JSON.stringify(generalEntries), { status: 200 });
+        } finally {
+            client.release();
+        }
     } catch (error) {
         console.error("Error fetching general entries:", error);
-        return new ClientResponse(JSON.stringify({ error: "Internal Server Error" }), { status: 500 });
+        const strings = getLanguageStrings();
+        return new ClientResponse(JSON.stringify({ error: strings.internalServerError }), { status: 500 });
     }
 }
