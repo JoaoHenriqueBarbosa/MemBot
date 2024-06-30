@@ -5,6 +5,14 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export function ucFirst (str: string) { 
+    return str[0].toUpperCase() + str.slice(1);
+}
+
+export function formatDate(date: string): string {
+    return new Date(date).toLocaleDateString();
+}
+
 export function formatCurrency(amount: number): string {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',

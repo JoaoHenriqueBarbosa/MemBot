@@ -1,8 +1,8 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Sidebar } from "./sidebar";
 import { Header } from "./header";
-import { DashboardContent } from "./dashboard-content";
-import { JournalContent } from "./journal-content";
+import { FinancialContent } from "./financial-content";
+import { GeneralContent } from "./general-content";
 
 export function DashboardView() {
   return (
@@ -11,17 +11,17 @@ export function DashboardView() {
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
         <Header />
         <main className="grid flex-1 items-start gap-8 p-4 sm:px-6 sm:py-0 md:gap-12">
-          <Tabs defaultValue="dashboard">
+          <Tabs defaultValue="general">
             <TabsList>
-              <TabsTrigger value="dashboard">Financial</TabsTrigger>
-              <TabsTrigger value="journal">Journal</TabsTrigger>
+              <TabsTrigger value="general">General</TabsTrigger>
+              <TabsTrigger value="financial">Financial</TabsTrigger>
             </TabsList>
             <div className="mt-8">
-              <TabsContent value="dashboard">
-                <DashboardContent />
+              <TabsContent value="general">
+                <GeneralContent />
               </TabsContent>
-              <TabsContent value="journal">
-                <JournalContent />
+              <TabsContent value="financial">
+                <FinancialContent />
               </TabsContent>
             </div>
           </Tabs>

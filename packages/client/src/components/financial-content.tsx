@@ -45,7 +45,7 @@ const fetchBalance = async () => {
   return response.json();
 };
 
-export function DashboardContent() {
+export function FinancialContent() {
   const { data: financialData } = useQuery({
     queryKey: ["financial"],
     queryFn: fetchFinancialData,
