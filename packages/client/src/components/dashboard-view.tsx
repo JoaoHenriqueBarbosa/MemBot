@@ -4,6 +4,7 @@ import { Header } from "./header";
 import { FinancialContent } from "./financial-content";
 import { GeneralContent } from "./general-content";
 import { HealthWellbeingContent } from "./health-wellbeing-content";
+import { WorkProjectsContent } from "./work-projects-content";
 
 export function DashboardView() {
   return (
@@ -17,6 +18,7 @@ export function DashboardView() {
               <TabsTrigger value="general">General</TabsTrigger>
               <TabsTrigger value="financial">Financial</TabsTrigger>
               <TabsTrigger value="health-wellbeing">Health & Wellbeing</TabsTrigger>
+              <TabsTrigger value="work-projects">Work/Projects</TabsTrigger>
             </TabsList>
             <div className="mt-8">
               <TabsContent value="general">
@@ -27,6 +29,9 @@ export function DashboardView() {
               </TabsContent>
               <TabsContent value="health-wellbeing">
                 <HealthWellbeingContent />
+              </TabsContent>
+              <TabsContent value="work-projects">
+                <WorkProjectsContent />
               </TabsContent>
             </div>
           </Tabs>
