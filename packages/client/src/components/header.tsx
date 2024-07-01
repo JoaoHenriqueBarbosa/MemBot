@@ -94,7 +94,7 @@ export function Header() {
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon" className="overflow-hidden rounded-full">
             <img
-              src="/placeholder.svg"
+              src="/placeholder-user.jpg"
               width={36}
               height={36}
               alt="Avatar"
