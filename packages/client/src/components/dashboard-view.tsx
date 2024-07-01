@@ -6,6 +6,7 @@ import { GeneralContent } from "./general-content";
 import { HealthWellbeingContent } from "./health-wellbeing-content";
 import { WorkProjectsContent } from "./work-projects-content";
 import { RelationshipsContent } from "./relationships-content";
+import { GoalsProgressContent } from "./goals-progress-content";
 
 export function DashboardView() {
   return (
@@ -21,6 +22,7 @@ export function DashboardView() {
               <TabsTrigger value="health-wellbeing">Health & Wellbeing</TabsTrigger>
               <TabsTrigger value="work-projects">Work/Projects</TabsTrigger>
               <TabsTrigger value="relationships">Relationships</TabsTrigger>
+              <TabsTrigger value="goals-progress">Goals & Progress</TabsTrigger>
             </TabsList>
             <div className="mt-8">
               <TabsContent value="general">
@@ -37,6 +39,9 @@ export function DashboardView() {
               </TabsContent>
               <TabsContent value="relationships">
                 <RelationshipsContent />
+              </TabsContent>
+              <TabsContent value="goals-progress">
+                <GoalsProgressContent />
               </TabsContent>
             </div>
           </Tabs>
