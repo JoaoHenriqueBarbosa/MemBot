@@ -2,6 +2,7 @@ import { getBalance, getFinancial, getTotalExpense, getTotalIncome } from "./han
 import { getGeneralEntries } from "./handlers/general.js";
 import { getHealthWellbeingEntries, getTotalExerciseTime, getAverageEmotionIntensity } from "./handlers/health_wellbeing.js";
 import { getWorkProjects, getTotalTasks, getCompletedTasks } from "./handlers/work_projects.js";
+import { getRelationships, getTotalInteractions, getMostFrequentPerson } from "./handlers/relationships.js";
 
 export const routeActions: Record<string, (req: Request) => Promise<Response>> = {
     "/api/financial": getFinancial,
@@ -15,4 +16,7 @@ export const routeActions: Record<string, (req: Request) => Promise<Response>> =
     "/api/work-projects": getWorkProjects,
     "/api/work-projects/total-tasks": getTotalTasks,
     "/api/work-projects/completed-tasks": getCompletedTasks,
+    "/api/relationships": getRelationships,
+    "/api/relationships/total-interactions": getTotalInteractions,
+    "/api/relationships/most-frequent-person": getMostFrequentPerson,
 };
