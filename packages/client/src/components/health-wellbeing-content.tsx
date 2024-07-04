@@ -106,7 +106,7 @@ export function HealthWellbeingContent() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {healthData?.slice(0, 5).map((entry: any) => (
+                {healthData?.map((entry: any) => (
                   <TableRow key={entry.id}>
                     <TableCell>
                       {new Date(entry.entry_date).toLocaleDateString()}
