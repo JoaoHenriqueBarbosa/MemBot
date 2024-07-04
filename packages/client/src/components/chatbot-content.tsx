@@ -15,7 +15,63 @@ import { Remark } from "react-remark";
 import { API_HOST } from "@/lib/consts";
 
 export function ChatbotContent() {
-  const [messages, setMessages] = useState<WebSocketMessage[]>([]);
+  const [messages, setMessages] = useState<WebSocketMessage[]>([
+    {
+        "type": "message",
+        "id": "2",
+        "role": "user",
+        "content": "Hello, can you help me with my project?"
+    },
+    {
+        "type": "message",
+        "id": "3",
+        "role": "assistant",
+        "content": "Sure, what do you need help with?"
+    },
+    {
+        "type": "message",
+        "id": "4",
+        "role": "user",
+        "content": "I need some advice on using TypeScript with Node.js."
+    },
+    {
+        "type": "message",
+        "id": "5",
+        "role": "assistant",
+        "content": "TypeScript is great for adding type safety to your Node.js projects. Do you have any specific questions?"
+    },
+    {
+        "type": "message",
+        "id": "8",
+        "role": "user",
+        "content": "Sure, here is a snippet from my tsconfig.json."
+    },
+    {
+        "type": "message",
+        "id": "10",
+        "role": "assistant",
+        "content": "Thanks for sharing. I recommend using ts-node for seamless execution of TypeScript files."
+    },
+    {
+        "type": "message",
+        "id": "11",
+        "role": "user",
+        "content": "That's a good idea. I'll try it out."
+    },
+    {
+        "type": "message",
+        "id": "13",
+        "role": "user",
+        "content": "It worked! Thanks for your help."
+    },
+    {
+        "type": "message",
+        "id": "14",
+        "role": "assistant",
+        "content": "You're welcome! Let me know if you need anything else."
+    }
+]
+);
   const [message, setMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [pullingStatus, setPullingStatus] = useState<string>(
@@ -160,7 +216,7 @@ export function ChatbotContent() {
   }
 
   return (
-    <Card className="w-full">
+    <Card className="w-full chatbot">
       <CardHeader className="flex flex-row items-center justify-between">
         <div className="flex items-center space-x-4">
           <Avatar>
@@ -184,7 +240,7 @@ export function ChatbotContent() {
           <span className="text-sm">Categorize entries</span>
         </label>
       </CardHeader>
-      <CardContent ref={messagesContentRef}>
+      <CardContent ref={messagesContentRef} className="messages">
         <div className="space-y-4">
           {messages.map((message, i) => (
             <div
