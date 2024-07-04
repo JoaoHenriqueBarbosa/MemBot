@@ -8,7 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { SendIcon } from "lucide-react";
+import { SendIcon, Loader2 } from "lucide-react";
 import { WebSocketMessage } from "@ai-jrnl/server/utils/types";
 import { adaptativeHumanByteReader } from "@/lib/utils";
 import { Remark } from "react-remark";
@@ -17,6 +17,7 @@ import { API_HOST } from "@/lib/consts";
 export function ChatbotContent() {
   const [messages, setMessages] = useState<WebSocketMessage[]>([]);
   const [message, setMessage] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [pullingStatus, setPullingStatus] = useState<string>(
     "Establishing connection..."
   );
@@ -58,6 +59,9 @@ export function ChatbotContent() {
 
             return [...prevMessages, wsMessage];
           });
+          if (wsMessage.done) {
+            setIsLoading(false);
+          }
           break;
         case "pull-progress":
           setPageStatus("pulling");
@@ -108,8 +112,11 @@ export function ChatbotContent() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    sendMessage(message);
-    setMessage("");
+    if (message.trim() && !isLoading) {
+      setIsLoading(true);
+      sendMessage(message);
+      setMessage("");
+    }
   };
 
   if (pageStatus !== "chat") {
@@ -215,8 +222,12 @@ export function ChatbotContent() {
             className="flex-1"
             autoComplete="off"
           />
-          <Button type="submit" size="icon">
-            <SendIcon className="w-4 h-4" />
+          <Button type="submit" size="icon" disabled={isLoading || !message.trim()}>
+            {isLoading ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <SendIcon className="w-4 h-4" />
+            )}
             <span className="sr-only">Send</span>
           </Button>
         </form>
