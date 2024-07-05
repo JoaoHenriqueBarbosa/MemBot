@@ -99,21 +99,24 @@ export function ChatbotContent() {
       switch (wsMessage.type) {
         case "message":
           setMessages((prevMessages) => {
-            if (
-              wsMessage.id &&
-              prevMessages.find((msg) => msg.id === wsMessage.id)
-            ) {
-              return prevMessages.map((msg) =>
-                msg.id === wsMessage.id
-                  ? {
-                      ...msg,
-                      content: (msg.content || "") + (wsMessage.content || ""),
-                    }
-                  : msg
-              );
-            }
+            const newMessages = wsMessage.id && prevMessages.find((msg) => msg.id === wsMessage.id)
+              ? prevMessages.map((msg) =>
+                  msg.id === wsMessage.id
+                    ? {
+                        ...msg,
+                        content: (msg.content || "") + (wsMessage.content || ""),
+                      }
+                    : msg
+                )
+              : [...prevMessages, wsMessage];
+            
+            setTimeout(() => {
+              if (messagesContentRef.current) {
+                messagesContentRef.current.scrollTop = messagesContentRef.current.scrollHeight;
+              }
+            }, 0);
 
-            return [...prevMessages, wsMessage];
+            return newMessages;
           });
           if (wsMessage.done) {
             setIsLoading(false);
