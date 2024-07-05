@@ -1,4 +1,3 @@
-import "./App.scss";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { DashboardView } from "./components/dashboard-view";
 import { ChatbotView } from "./components/chatbot-view";
