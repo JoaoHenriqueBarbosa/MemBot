@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { DashboardView } from "./components/dashboard-view";
 import { ChatbotView } from "./components/chatbot-view";
-import { SettingsView } from "./components/settings-view";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
@@ -13,7 +12,6 @@ function App() {
         <Routes>
           <Route path="/" element={<DashboardView />} />
           <Route path="/chatbot" element={<ChatbotView />} />
-          <Route path="/settings" element={<SettingsView />} />
         </Routes>
       </Router>
     </QueryClientProvider>

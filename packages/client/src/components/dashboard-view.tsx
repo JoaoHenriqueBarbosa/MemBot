@@ -5,9 +5,7 @@ import { Header } from "./header";
 import { FinancialContent } from "./financial-content";
 import { GeneralContent } from "./general-content";
 import { HealthWellbeingContent } from "./health-wellbeing-content";
-import { WorkProjectsContent } from "./work-projects-content";
 import { RelationshipsContent } from "./relationships-content";
-import { GoalsProgressContent } from "./goals-progress-content";
 import { useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
 
@@ -18,9 +16,7 @@ export function DashboardView() {
     { value: "general", label: "General" },
     { value: "financial", label: "Financial" },
     { value: "health-wellbeing", label: "Health & Wellbeing" },
-    { value: "work-projects", label: "Work/Projects" },
     { value: "relationships", label: "Relationships" },
-    { value: "goals-progress", label: "Goals & Progress" },
   ];
 
   return (
@@ -62,14 +58,8 @@ export function DashboardView() {
               <TabsContent value="health-wellbeing">
                 <HealthWellbeingContent />
               </TabsContent>
-              <TabsContent value="work-projects">
-                <WorkProjectsContent />
-              </TabsContent>
               <TabsContent value="relationships">
                 <RelationshipsContent />
-              </TabsContent>
-              <TabsContent value="goals-progress">
-                <GoalsProgressContent />
               </TabsContent>
             </div>
           </Tabs>

@@ -112,7 +112,7 @@ export function HealthWellbeingContent() {
                       {new Date(entry.entry_date).toLocaleDateString()}
                     </TableCell>
                     <TableCell>{entry.activity_type}</TableCell>
-                    <TableCell>{entry.duration}</TableCell>
+                    <TableCell>{entry.duration?.minutes}</TableCell>
                     <TableCell>
                       <Badge variant="secondary">
                         {entry.intensity}
