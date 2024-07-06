@@ -1,5 +1,10 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 import { Sidebar } from "./sidebar";
 import { Header } from "./header";
 import { FinancialContent } from "./financial-content";
@@ -10,7 +15,7 @@ import { useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
 
 export function DashboardView() {
-  const [activeTab, setActiveTab] = useState("general");
+  const [activeTab, setActiveTab] = useState("financial");
 
   const tabs = [
     { value: "general", label: "General" },
@@ -24,6 +29,12 @@ export function DashboardView() {
       <Sidebar />
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
         <Header />
+        <h1 className="text-2xl font-semibold pl-8">
+          Welcome back! 👋
+        </h1>
+        <h2 className="text-md font-medium text-muted-foreground pl-8">
+          Here's a summary of your progress
+        </h2>
         <main className="grid flex-1 items-start gap-8 p-4 sm:px-6 sm:py-0 md:gap-12">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
             <div className="flex justify-between items-center">
@@ -41,14 +52,17 @@ export function DashboardView() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   {tabs.map((tab) => (
-                    <DropdownMenuItem key={tab.value} onSelect={() => setActiveTab(tab.value)}>
+                    <DropdownMenuItem
+                      key={tab.value}
+                      onSelect={() => setActiveTab(tab.value)}
+                    >
                       {tab.label}
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <div className="mt-8">
+            <div className="mt-6">
               <TabsContent value="general">
                 <GeneralContent />
               </TabsContent>

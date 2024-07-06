@@ -38,9 +38,6 @@ export function GeneralContent() {
 
   return (
     <div className="flex flex-col h-full w-full mx-auto">
-      <header className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">My Diary</h1>
-      </header>
       <div className="grid gap-4">
         {entries.map((entry) => (
           <Card key={entry.id} className="p-4 sm:p-6">

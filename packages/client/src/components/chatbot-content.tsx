@@ -77,6 +77,14 @@ export function ChatbotContent() {
           if (wsMessage.content.status === "success") {
             setPageStatus("chat");
             setModelSize(null);
+            setTimeout(() => {
+              const offsetTop = messagesContentRef.current?.offsetTop;
+  
+              messagesContentRef.current?.style.setProperty(
+                "height",
+                `calc(100vh - ${offsetTop}px - 60px - 25px)`
+              );
+            });
           }
           break;
         case "init":
@@ -146,7 +154,7 @@ export function ChatbotContent() {
             )}
             {pageStatus === "pulling" && (
               <div
-                className="flex items-center justify-center"
+                className="flex flex-col items-center justify-center gap-8"
                 style={{
                   height: "calc(100vh - 60px - 40px)",
                 }}
