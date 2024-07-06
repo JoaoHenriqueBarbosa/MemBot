@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Progress } from "@/components/ui/progress";
 import { SendIcon, Loader2 } from "lucide-react";
 import { WebSocketMessage } from "@ai-jrnl/server/utils/types";
 import { adaptativeHumanByteReader } from "@/lib/utils";
@@ -154,17 +155,11 @@ export function ChatbotContent() {
                 {pullProgress !== null &&
                   modelSize !== null &&
                   pullingStatus.includes("pulling") && (
-                    <div>
-                      <div className="progress">
-                        <div
-                          className="progress-bar"
-                          style={{
-                            width: `${(pullProgress / modelSize) * 100}%`,
-                          }}
-                        />
+                    <div className="w-full max-w-xs">
+                      <Progress value={(pullProgress / modelSize) * 100} className="mb-2" />
+                      <div className="text-sm text-center">
+                        {adaptativeHumanByteReader(pullProgress)} / {adaptativeHumanByteReader(modelSize)}
                       </div>
-                      {adaptativeHumanByteReader(pullProgress)} /{" "}
-                      {adaptativeHumanByteReader(modelSize)}
                     </div>
                   )}
                 {pullingStatus !== "pulling" && pullingStatus}
