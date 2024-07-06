@@ -53,7 +53,7 @@ export function ChatbotContent() {
                     : msg
                 )
               : [...prevMessages, wsMessage];
-            
+
             setTimeout(() => {
               if (messagesContentRef.current) {
                 messagesContentRef.current.scrollTop = messagesContentRef.current.scrollHeight;
@@ -124,7 +124,7 @@ export function ChatbotContent() {
 
   if (pageStatus !== "chat") {
     return (
-      <Card className="w-full">
+      <Card className="w-full h-full">
         <CardContent>
           <div className="space-y-4">
             {pageStatus === "docker-not-running" && (
@@ -133,10 +133,24 @@ export function ChatbotContent() {
                 the page.
               </p>
             )}
-            {pageStatus === "idle" && <p>Establishing connection...</p>}
+            {pageStatus === "idle" && (
+              <div
+                className="flex items-center justify-center"
+                style={{
+                  height: "calc(100vh - 60px - 40px)",
+                }}
+              >
+                <Loader2 className="w-8 h-8 animate-spin" />
+              </div>
+            )}
             {pageStatus === "pulling" && (
-              <div>
-                <h2>Installing gemma2...</h2>
+              <div
+                className="flex items-center justify-center"
+                style={{
+                  height: "calc(100vh - 60px - 40px)",
+                }}
+              >
+                <h2>Installing AI model...</h2>
                 {pullProgress !== null &&
                   modelSize !== null &&
                   pullingStatus.includes("pulling") && (
@@ -225,7 +239,11 @@ export function ChatbotContent() {
             className="flex-1"
             autoComplete="off"
           />
-          <Button type="submit" size="icon" disabled={isLoading || !message.trim()}>
+          <Button
+            type="submit"
+            size="icon"
+            disabled={isLoading || !message.trim()}
+          >
             {isLoading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
