@@ -2,26 +2,35 @@ import { Link, useLocation } from "react-router-dom"
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb"
-import { MenuIcon, Package2Icon, LayoutDashboardIcon, BotIcon, SettingsIcon, LogOutIcon } from "lucide-react"
+import { MenuIcon, Package2Icon, LayoutDashboardIcon, BotIcon, SettingsIcon, LogOutIcon, GlobeIcon } from "lucide-react"
+import { useTranslation } from 'react-i18next'
+import { changeLanguage } from '@/i18n'
 
 export function Header() {
   const location = useLocation()
+  const { t, i18n } = useTranslation()
 
   const getBreadcrumbTitle = () => {
     switch (location.pathname) {
       case "/":
-        return "Dashboard"
+        return t("dashboard")
       case "/chatbot":
-        return "Chatbot"
+        return t("chatbot")
       case "/settings":
-        return "Settings"
+        return t("settings")
       default:
-        return "Unknown"
+        return t("unknown")
     }
   }
 
+  const toggleLanguage = () => {
+    const newLang = i18n.language === 'en' ? 'ptBR' : 'en'
+    changeLanguage(newLang)
+  }
+
   return (
-    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+    <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+      <div className="flex items-center gap-4">
       <Sheet>
         <SheetTrigger asChild>
           <Button size="icon" variant="outline" className="sm:hidden">
@@ -72,7 +81,7 @@ export function Header() {
       <Breadcrumb className="hidden md:flex">
         <BreadcrumbList>
           <BreadcrumbItem>
-            <Link to="/">Home</Link>
+            <Link to="/">{t("home")}</Link>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -80,6 +89,10 @@ export function Header() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
+      <Button onClick={toggleLanguage} variant="outline" size="icon">
+        <GlobeIcon className="h-4 w-4" />
+        <span className="sr-only">{t("changeLanguage")}</span>
+      </Button>
     </header>
   )
 }
