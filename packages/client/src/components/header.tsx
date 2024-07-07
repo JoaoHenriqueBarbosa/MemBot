@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbSeparator, BreadcrumbPage } from "@/components/ui/breadcrumb"
 import { MenuIcon, Package2Icon, LayoutDashboardIcon, BotIcon, SettingsIcon, LogOutIcon, GlobeIcon } from "lucide-react"
 import { useTranslation } from 'react-i18next'
-import { changeLanguage } from '@/i18n'
 
 export function Header() {
   const location = useLocation()
@@ -25,7 +24,7 @@ export function Header() {
 
   const toggleLanguage = () => {
     const newLang = i18n.language === 'en' ? 'ptBR' : 'en'
-    changeLanguage(newLang)
+    i18n.changeLanguage(newLang)
   }
 
   return (
@@ -49,21 +48,21 @@ export function Header() {
             </Link>
             <Link to="/" className="flex items-center gap-4 px-2.5 text-foreground">
               <LayoutDashboardIcon className="h-5 w-5" />
-              Dashboard
+              {t("dashboard")}
             </Link>
             <Link
               to="/chatbot"
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
               <BotIcon className="h-5 w-5" />
-              Chatbot
+              {t("chatbot")}
             </Link>
             <Link
               to="/settings"
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
               <SettingsIcon className="h-5 w-5" />
-              Settings
+              {t("settings")}
             </Link>
             <button
               onClick={() => {
@@ -73,7 +72,7 @@ export function Header() {
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
               <LogOutIcon className="h-5 w-5" />
-              Logout
+              {t("logout")}
             </button>
           </nav>
         </SheetContent>
