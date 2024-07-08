@@ -9,6 +9,12 @@ import {
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
 import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import {
   MenuIcon,
   Package2Icon,
   LayoutDashboardIcon,
@@ -36,9 +42,8 @@ export function Header() {
     }
   };
 
-  const toggleLanguage = () => {
-    const newLang = i18n.language === "en" ? "ptBR" : "en";
-    i18n.changeLanguage(newLang);
+  const changeLanguage = (lang: string) => {
+    i18n.changeLanguage(lang);
   };
 
   return (
@@ -104,10 +109,22 @@ export function Header() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <Button onClick={toggleLanguage} variant="outline" size="icon">
-        <GlobeIcon className="h-4 w-4" />
-        <span className="sr-only">{t("changeLanguage")}</span>
-      </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="icon">
+            <GlobeIcon className="h-4 w-4" />
+            <span className="sr-only">{t("changeLanguage")}</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem onClick={() => changeLanguage("en")}>
+            English
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => changeLanguage("ptBR")}>
+            Português (BR)
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </header>
   );
 }
