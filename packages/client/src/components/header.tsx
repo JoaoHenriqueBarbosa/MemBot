@@ -19,8 +19,6 @@ import {
   Package2Icon,
   LayoutDashboardIcon,
   BotIcon,
-  SettingsIcon,
-  LogOutIcon,
   GlobeIcon,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -78,23 +76,6 @@ export function Header() {
               <BotIcon className="h-5 w-5" />
               {t("chatbot")}
             </Link>
-            <Link
-              to="/settings"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <SettingsIcon className="h-5 w-5" />
-              {t("settings")}
-            </Link>
-            <button
-              onClick={() => {
-                // Add logout logic here
-                console.log("Logout clicked");
-              }}
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <LogOutIcon className="h-5 w-5" />
-              {t("logout")}
-            </button>
           </nav>
         </SheetContent>
       </Sheet>
@@ -117,10 +98,10 @@ export function Header() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => changeLanguage("en")}>
+          <DropdownMenuItem onClick={() => changeLanguage("en")} selected={i18n.language === "en"}>
             English
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => changeLanguage("ptBR")}>
+          <DropdownMenuItem onClick={() => changeLanguage("ptBR")} selected={i18n.language === "ptBR"}>
             Português (BR)
           </DropdownMenuItem>
         </DropdownMenuContent>
