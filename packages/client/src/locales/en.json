@@ -13,5 +13,16 @@
   "toggleMenu": "Toggle menu",
   "companyName": "Company Name",
   "home": "Home",
-  "changeLanguage": "Change language"
+  "changeLanguage": "Change language",
+  "totalExerciseTime": "Total Exercise Time",
+  "hoursValue": "{{value}} hours",
+  "averageEmotionIntensity": "Average Emotion Intensity",
+  "intensityValue": "{{value}}/10",
+  "latestMood": "Latest Mood",
+  "recentHealthEntries": "Recent Health & Wellbeing Entries",
+  "date": "Date",
+  "activity": "Activity",
+  "duration": "Duration",
+  "intensity": "Intensity",
+  "emotion": "Emotion"
 }
