@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { UsersIcon, HeartIcon, MessageCircleIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { API_HOST, API_PROTOCOL } from "@/lib/consts";
+import { useTranslation } from "react-i18next";
 
 const fetchRelationshipsData = async () => {
   const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/relationships`);
@@ -37,6 +38,7 @@ const fetchMostFrequentPerson = async () => {
 };
 
 export function RelationshipsContent() {
+  const { t } = useTranslation();
   const { data: relationshipsData } = useQuery({
     queryKey: ["relationships"],
     queryFn: fetchRelationshipsData,
@@ -55,7 +57,7 @@ export function RelationshipsContent() {
       <div className="grid gap-8 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Total Interactions</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("totalInteractions")}</CardTitle>
             <UsersIcon className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -67,7 +69,7 @@ export function RelationshipsContent() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">
-              Most Frequent Person
+              {t("mostFrequentPerson")}
             </CardTitle>
             <HeartIcon className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
@@ -79,7 +81,7 @@ export function RelationshipsContent() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Latest Interaction</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("latestInteraction")}</CardTitle>
             <MessageCircleIcon className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -92,16 +94,16 @@ export function RelationshipsContent() {
       <div>
         <Card>
           <CardHeader>
-            <CardTitle>Recent Relationship Entries</CardTitle>
+            <CardTitle>{t("recentRelationshipEntries")}</CardTitle>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Person</TableHead>
-                  <TableHead>Interaction Type</TableHead>
-                  <TableHead>Feelings</TableHead>
+                  <TableHead>{t("date")}</TableHead>
+                  <TableHead>{t("person")}</TableHead>
+                  <TableHead>{t("interactionType")}</TableHead>
+                  <TableHead>{t("feelings")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
