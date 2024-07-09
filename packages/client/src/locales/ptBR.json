@@ -1,2 +1,17 @@
 {
+  "establishingConnection": "Estabelecendo conexão...",
+  "dockerNotRunning": "O Docker não está em execução. Por favor, inicie o Ollama Docker e atualize a página.",
+  "installingAIModel": "Instalando modelo de IA...",
+  "categorizeEntries": "Categorizar entradas",
+  "typeYourMessage": "Digite sua mensagem...",
+  "aiJournal": "Diário de IA",
+  "selectLanguage": "Selecionar idioma",
+  "dashboard": "Painel",
+  "chatbot": "Chatbot",
+  "settings": "Configurações",
+  "unknown": "Desconhecido",
+  "toggleMenu": "Alternar menu",
+  "companyName": "Nome da Empresa",
+  "home": "Início",
+  "changeLanguage": "Mudar idioma"
 }

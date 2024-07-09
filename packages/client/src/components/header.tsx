@@ -60,7 +60,7 @@ export function Header() {
               className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
             >
               <Package2Icon className="h-5 w-5 transition-all group-hover:scale-110" />
-              <span className="sr-only">{t("companyName")}</span>
+              <span className="sr-only">{t("aiJournal")}</span>
             </Link>
             <Link
               to="/"
@@ -94,7 +94,7 @@ export function Header() {
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon">
             <GlobeIcon className="h-4 w-4" />
-            <span className="sr-only">{t("changeLanguage")}</span>
+            <span className="sr-only">{t("selectLanguage")}</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>

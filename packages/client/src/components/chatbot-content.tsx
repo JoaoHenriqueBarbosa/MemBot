@@ -20,7 +20,7 @@ export function ChatbotContent() {
   const [message, setMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [pullingStatus, setPullingStatus] = useState<string>(
-    "Establishing connection..."
+    t("establishingConnection")
   );
   const [pageStatus, setPageStatus] = useState<
     "chat" | "pulling" | "idle" | "docker-not-running"
@@ -137,10 +137,7 @@ export function ChatbotContent() {
         <CardContent>
           <div className="space-y-4">
             {pageStatus === "docker-not-running" && (
-              <p>
-                Docker is not running. Please start Ollama Docker and refresh
-                the page.
-              </p>
+              <p>{t("dockerNotRunning")}</p>
             )}
             {pageStatus === "idle" && (
               <div
@@ -159,7 +156,7 @@ export function ChatbotContent() {
                   height: "calc(100vh - 60px - 40px)",
                 }}
               >
-                <h2>Installing AI model...</h2>
+                <h2>{t("installingAIModel")}</h2>
                 {pullProgress !== null &&
                   modelSize !== null &&
                   pullingStatus.includes("pulling") && (
@@ -201,7 +198,7 @@ export function ChatbotContent() {
             onChange={(e) => setCategorize(e.target.checked)}
             className="form-checkbox h-4 w-4 text-primary"
           />
-          <span className="text-sm">Categorize entries</span>
+          <span className="text-sm">{t("categorizeEntries")}</span>
         </label>
       </CardHeader>
       <CardContent ref={messagesContentRef} className="messages">
@@ -238,7 +235,7 @@ export function ChatbotContent() {
             id="message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder={"Type your message..."}
+            placeholder={t("typeYourMessage")}
             className="flex-1"
             autoComplete="off"
           />
