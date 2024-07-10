@@ -30,5 +30,15 @@
   "recentRelationshipEntries": "Entradas Recentes de Relacionamentos",
   "person": "Pessoa",
   "interactionType": "Tipo de Interação",
-  "notes": "Notas"
+  "notes": "Notas",
+  "totalIncome": "Renda Total",
+  "totalExpenses": "Despesas Totais",
+  "balance": "Saldo",
+  "recentTransactions": "Transações Recentes",
+  "description": "Descrição",
+  "amount": "Valor",
+  "type": "Tipo",
+  "paymentMethod": "Método de Pagamento",
+  "income": "Renda",
+  "expense": "Despesa"
 }

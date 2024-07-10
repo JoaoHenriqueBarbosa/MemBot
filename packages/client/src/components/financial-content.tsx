@@ -12,6 +12,7 @@ import { DollarSignIcon, WalletIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { formatCurrency } from "@/lib/utils";
 import { API_HOST, API_PROTOCOL } from "@/lib/consts";
+import { useTranslation } from "react-i18next";
 
 const fetchFinancialData = async () => {
   const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/financial`);
@@ -46,6 +47,7 @@ const fetchBalance = async () => {
 };
 
 export function FinancialContent() {
+  const { t } = useTranslation();
   const { data: financialData } = useQuery({
     queryKey: ["financial"],
     queryFn: fetchFinancialData,
@@ -68,7 +70,7 @@ export function FinancialContent() {
       <div className="grid gap-8 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Total Income</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("totalIncome")}</CardTitle>
             <DollarSignIcon className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -80,7 +82,7 @@ export function FinancialContent() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">
-              Total Expenses
+              {t("totalExpenses")}
             </CardTitle>
             <WalletIcon className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
@@ -92,7 +94,7 @@ export function FinancialContent() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Balance</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("balance")}</CardTitle>
             <WalletIcon className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -105,17 +107,17 @@ export function FinancialContent() {
       <div>
         <Card>
           <CardHeader>
-            <CardTitle>Recent Transactions</CardTitle>
+            <CardTitle>{t("recentTransactions")}</CardTitle>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Description</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Payment Method</TableHead>
+                  <TableHead>{t("date")}</TableHead>
+                  <TableHead>{t("description")}</TableHead>
+                  <TableHead>{t("amount")}</TableHead>
+                  <TableHead>{t("type")}</TableHead>
+                  <TableHead>{t("paymentMethod")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -130,7 +132,7 @@ export function FinancialContent() {
                     </TableCell>
                     <TableCell>
                       <Badge variant="secondary">
-                        {transaction.direction === "in" ? "Income" : "Expense"}
+                        {transaction.direction === "in" ? t("income") : t("expense")}
                       </Badge>
                     </TableCell>
                     <TableCell>{transaction.payment_method}</TableCell>
