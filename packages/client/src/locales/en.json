@@ -24,5 +24,11 @@
   "activity": "Activity",
   "duration": "Duration",
   "intensity": "Intensity",
-  "emotion": "Emotion"
+  "emotion": "Emotion",
+  "totalInteractions": "Total Interactions",
+  "mostFrequentPerson": "Most Frequent Person",
+  "recentRelationshipEntries": "Recent Relationship Entries",
+  "person": "Person",
+  "interactionType": "Interaction Type",
+  "notes": "Notes"
 }
