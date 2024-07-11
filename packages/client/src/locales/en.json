@@ -30,5 +30,15 @@
   "recentRelationshipEntries": "Recent Relationship Entries",
   "person": "Person",
   "interactionType": "Interaction Type",
-  "notes": "Notes"
+  "notes": "Notes",
+  "totalIncome": "Total Income",
+  "totalExpenses": "Total Expenses",
+  "balance": "Balance",
+  "recentTransactions": "Recent Transactions",
+  "description": "Description",
+  "amount": "Amount",
+  "type": "Type",
+  "paymentMethod": "Payment Method",
+  "income": "Income",
+  "expense": "Expense"
 }
