@@ -40,5 +40,7 @@
   "type": "Tipo",
   "paymentMethod": "Método de Pagamento",
   "income": "Renda",
-  "expense": "Despesa"
+  "expense": "Despesa",
+  "latestInteraction": "Última Interação",
+  "feelings": "Sentimentos"
 }
