@@ -9,8 +9,6 @@ const MODEL_NAME = process.env.MODEL_NAME || "gemma2";
 // Store chat history                                                                                                                                     
 let chatHistory: Message[] = [];
 
-const strings = getLanguageStrings();
-
 export const handleInit = async (ws: ServerWebSocket<{ authToken: string }>) => {
     const list = await ollama.list();
 
@@ -32,7 +30,7 @@ export const handleInit = async (ws: ServerWebSocket<{ authToken: string }>) => 
     }
 };
 
-export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string }>, messageData: string, categorize: boolean = false) => {
+export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string }>, messageData: string, language: string, categorize: boolean = false) => {
     // Add user message to chat history
     let userMessage: Message = { role: "user", content: messageData };
     ws.send(JSON.stringify({ type: "message", content: messageData, role: "user" } as WebSocketMessage));
@@ -49,6 +47,7 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
             try {
                 await storeEntry(category, entities);
                 console.log("Entry stored successfully");
+                const strings = getLanguageStrings(language);
                 userMessage = { role: "user", content: `${strings.instructionFeedback1} ${category}. ${strings.instructionFeedback2}: ${JSON.stringify(entities)}.` };
             } catch (error) {
                 console.error("Error storing entry:", error);

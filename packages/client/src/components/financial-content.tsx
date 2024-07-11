@@ -47,7 +47,7 @@ const fetchBalance = async () => {
 };
 
 export function FinancialContent() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { data: financialData } = useQuery({
     queryKey: ["financial"],
     queryFn: fetchFinancialData,
@@ -75,7 +75,7 @@ export function FinancialContent() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {formatCurrency(totalIncome?.totalIncome || 0)}
+              {formatCurrency(totalIncome?.totalIncome || 0, i18n.language)}
             </div>
           </CardContent>
         </Card>
@@ -88,7 +88,7 @@ export function FinancialContent() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {formatCurrency(totalExpense?.totalExpense || 0)}
+              {formatCurrency(totalExpense?.totalExpense || 0, i18n.language)}
             </div>
           </CardContent>
         </Card>
@@ -99,7 +99,7 @@ export function FinancialContent() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {formatCurrency(balance?.balance || 0)}
+              {formatCurrency(balance?.balance || 0, i18n.language)}
             </div>
           </CardContent>
         </Card>
@@ -128,7 +128,7 @@ export function FinancialContent() {
                     </TableCell>
                     <TableCell>{transaction.description}</TableCell>
                     <TableCell className="text-right">
-                      {formatCurrency(transaction.amount)}
+                      {formatCurrency(transaction.amount, i18n.language)}
                     </TableCell>
                     <TableCell>
                       <Badge variant="secondary">

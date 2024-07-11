@@ -7,6 +7,7 @@ export type WebSocketMessage = {
     content?: any;
     category?: Category;
     entityName?: string;
+    language?: string;
 };
 
 export type Category = "financial" | "health and well-being" | "work/projects" | "relationships" | "goals/progress";

@@ -2,10 +2,10 @@ import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+    return twMerge(clsx(inputs))
 }
 
-export function ucFirst (str: string) { 
+export function ucFirst(str: string) {
     return str[0].toUpperCase() + str.slice(1);
 }
 
@@ -13,11 +13,13 @@ export function formatDate(date: string): string {
     return new Date(date).toLocaleDateString();
 }
 
-export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-  }).format(amount)
+export function formatCurrency(amount: number, lang: string): string {
+    const locale = lang === 'ptBR' ? 'pt-BR' : 'en-US';
+    const currency = lang === 'ptBR' ? 'BRL' : 'USD';
+    return new Intl.NumberFormat(locale, {
+        style: 'currency',
+        currency
+    }).format(amount)
 }
 
 export function adaptativeHumanByteReader(bytes: number): string {

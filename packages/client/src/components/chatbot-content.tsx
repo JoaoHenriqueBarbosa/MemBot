@@ -14,8 +14,10 @@ import { WebSocketMessage } from "@ai-jrnl/server/utils/types";
 import { adaptativeHumanByteReader } from "@/lib/utils";
 import { Remark } from "react-remark";
 import { API_HOST } from "@/lib/consts";
+import { useTranslation } from "react-i18next";
 
 export function ChatbotContent() {
+  const { t, i18n } = useTranslation();
   const [messages, setMessages] = useState<WebSocketMessage[]>([]);
   const [message, setMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -118,6 +120,7 @@ export function ChatbotContent() {
         type: "message",
         content: message,
         categorize: categorize,
+        language: i18n.language,
       })
     );
   };
@@ -187,7 +190,7 @@ export function ChatbotContent() {
           <div>
             <p className="text-sm font-medium leading-none">AI Journal</p>
             <p className="text-sm text-muted-foreground">
-              Your personal assistant
+              {t("assistantDescription")}
             </p>
           </div>
         </div>
@@ -216,7 +219,7 @@ export function ChatbotContent() {
                 <div
                   className={`category ${message.category.replace(/\s/g, "-")}`}
                 >
-                  {message.category}
+                  {t(message.category)}
                 </div>
               )}
               <div className="remark-content">

@@ -46,7 +46,9 @@
   "general": "Geral",
   "financial": "Financeiro",
   "healthWellbeing": "Saúde e Bem-estar",
+  "health and well-being": "Saúde e Bem-estar",
   "relationships": "Relacionamentos",
   "welcomeBack": "Bem-vindo de volta!",
-  "progressSummary": "Aqui está um resumo do seu progresso"
+  "progressSummary": "Aqui está um resumo do seu progresso",
+  "assistantDescription": "Seu assistente pessoal"
 }

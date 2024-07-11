@@ -40,5 +40,15 @@
   "type": "Type",
   "paymentMethod": "Payment Method",
   "income": "Income",
-  "expense": "Expense"
+  "expense": "Expense",
+  "latestInteraction": "Latest Interaction",
+  "feelings": "Feelings",
+  "general": "General",
+  "financial": "Financial",
+  "healthWellbeing": "Health & Wellbeing",
+  "health and well-being": "Health & Wellbeing",
+  "relationships": "Relationships",
+  "welcomeBack": "Welcome back!",
+  "progressSummary": "Here's a summary of your progress",
+  "assistantDescription": "Your personal assistant"
 }

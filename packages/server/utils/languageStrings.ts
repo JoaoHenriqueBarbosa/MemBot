@@ -9,7 +9,6 @@ export const languageStrings = {
     }
 };
 
-export function getLanguageStrings() {
-    const language = process.env.LANGUAGE || 'ptBR';
+export function getLanguageStrings(language: string) {
     return languageStrings[language as keyof typeof languageStrings] || languageStrings.ptBR;
 }

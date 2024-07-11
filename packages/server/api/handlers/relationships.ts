@@ -1,8 +1,10 @@
 import { db } from "../../db/connection.js";
 import { ClientResponse } from "../../db/response.js";
 
+// Get the database pool
 const pool = db.getPool();
 
+// Handler to get relationships entries
 export const getRelationships = async (req: Request) => {
     try {
         const result = await pool.query('SELECT * FROM relationships ORDER BY entry_date DESC LIMIT 10');
@@ -13,6 +15,7 @@ export const getRelationships = async (req: Request) => {
     }
 };
 
+// Handler to get total number of interactions
 export const getTotalInteractions = async (req: Request) => {
     try {
         const result = await pool.query('SELECT COUNT(*) as total FROM relationships');
@@ -23,6 +26,7 @@ export const getTotalInteractions = async (req: Request) => {
     }
 };
 
+// Handler to get the most frequent person in interactions
 export const getMostFrequentPerson = async (req: Request) => {
     try {
         const result = await pool.query(`

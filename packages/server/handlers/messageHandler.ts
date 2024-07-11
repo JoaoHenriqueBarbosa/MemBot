@@ -9,7 +9,7 @@ export const handleMessage = async (ws: ServerWebSocket<{ authToken: string }>, 
         if (messageObject.type === "init") {
             await handleInit(ws);
         } else if (messageObject.type === "message") {
-            await handleUserMessage(ws, messageObject.content, messageObject.categorize);
+            await handleUserMessage(ws, messageObject.content, messageObject.language, messageObject.categorize);
         }
     } catch (e: any) {
         if (e.toString().toLowerCase().includes("refused")) {

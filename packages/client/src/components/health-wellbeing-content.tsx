@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { ActivityIcon, HeartPulseIcon, BrainIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { API_HOST, API_PROTOCOL } from "@/lib/consts";
+import { useTranslation } from "react-i18next";
 
 const fetchHealthData = async () => {
   const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/health-wellbeing`);
@@ -37,6 +38,7 @@ const fetchAverageEmotionIntensity = async () => {
 };
 
 export function HealthWellbeingContent() {
+  const { t } = useTranslation();
   const { data: healthData } = useQuery({
     queryKey: ["health-wellbeing"],
     queryFn: fetchHealthData,
@@ -55,31 +57,31 @@ export function HealthWellbeingContent() {
       <div className="grid gap-8 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Total Exercise Time</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("totalExerciseTime")}</CardTitle>
             <ActivityIcon className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {totalExerciseTime?.totalHours || 0} hours
+              {t("hoursValue", { value: totalExerciseTime?.totalHours || 0 })}
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">
-              Average Emotion Intensity
+              {t("averageEmotionIntensity")}
             </CardTitle>
             <HeartPulseIcon className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {averageEmotionIntensity?.average || 0}/10
+              {t("intensityValue", { value: averageEmotionIntensity?.average || 0 })}
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Latest Mood</CardTitle>
+            <CardTitle className="text-sm font-medium">{t("latestMood")}</CardTitle>
             <BrainIcon className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -92,17 +94,17 @@ export function HealthWellbeingContent() {
       <div>
         <Card>
           <CardHeader>
-            <CardTitle>Recent Health & Wellbeing Entries</CardTitle>
+            <CardTitle>{t("recentHealthEntries")}</CardTitle>
           </CardHeader>
           <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Activity</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Intensity</TableHead>
-                  <TableHead>Emotion</TableHead>
+                  <TableHead>{t("date")}</TableHead>
+                  <TableHead>{t("activity")}</TableHead>
+                  <TableHead>{t("duration")}</TableHead>
+                  <TableHead>{t("intensity")}</TableHead>
+                  <TableHead>{t("emotion")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

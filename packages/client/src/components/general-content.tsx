@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { formatDate } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { API_HOST, API_PROTOCOL } from "@/lib/consts";
+import { useTranslation } from "react-i18next";
 
 interface GeneralEntry {
   id: number;
@@ -19,6 +20,7 @@ async function getGeneralEntries(): Promise<GeneralEntry[]> {
 }
 
 export function GeneralContent() {
+  const { t } = useTranslation();
   const {
     data: entries = [],
     isLoading,
@@ -46,7 +48,7 @@ export function GeneralContent() {
                 {formatDate(entry.entry_date)}
               </div>
               <div className={`category ${entry.category.replace(/\s/g, "-")}`}>
-                {entry.category}
+                {t(entry.category)}
               </div>
             </div>
             <p className="text-muted-foreground line-clamp-2">
