@@ -42,5 +42,11 @@
   "income": "Renda",
   "expense": "Despesa",
   "latestInteraction": "Última Interação",
-  "feelings": "Sentimentos"
+  "feelings": "Sentimentos",
+  "general": "Geral",
+  "financial": "Financeiro",
+  "healthWellbeing": "Saúde e Bem-estar",
+  "relationships": "Relacionamentos",
+  "welcomeBack": "Bem-vindo de volta!",
+  "progressSummary": "Aqui está um resumo do seu progresso"
 }

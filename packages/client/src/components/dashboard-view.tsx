@@ -13,15 +13,17 @@ import { HealthWellbeingContent } from "./health-wellbeing-content";
 import { RelationshipsContent } from "./relationships-content";
 import { useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export function DashboardView() {
   const [activeTab, setActiveTab] = useState("financial");
+  const { t } = useTranslation();
 
   const tabs = [
-    { value: "general", label: "General" },
-    { value: "financial", label: "Financial" },
-    { value: "health-wellbeing", label: "Health & Wellbeing" },
-    { value: "relationships", label: "Relationships" },
+    { value: "general", label: t("general") },
+    { value: "financial", label: t("financial") },
+    { value: "health-wellbeing", label: t("healthWellbeing") },
+    { value: "relationships", label: t("relationships") },
   ];
 
   return (
@@ -30,10 +32,10 @@ export function DashboardView() {
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
         <Header />
         <h1 className="text-2xl font-semibold pl-8">
-          Welcome back! 👋
+          {t("welcomeBack")} 👋
         </h1>
         <h2 className="text-md font-medium text-muted-foreground pl-8">
-          Here's a summary of your progress
+          {t("progressSummary")}
         </h2>
         <main className="grid flex-1 items-start gap-8 p-4 sm:px-6 sm:py-0 md:gap-12">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
