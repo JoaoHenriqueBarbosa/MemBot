@@ -3,6 +3,7 @@ import { formatDate } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { API_HOST, API_PROTOCOL } from "@/lib/consts";
 import { useTranslation } from "react-i18next";
+import { Loader2 } from "lucide-react";
 
 interface GeneralEntry {
   id: number;
@@ -31,7 +32,15 @@ export function GeneralContent() {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center"
+      style={{
+        height: "calc(100vh - 260px)",
+      }}
+      >
+        <Loader2 className="w-8 h-8 animate-spin" />
+      </div>
+    );
   }
 
   if (isError) {
