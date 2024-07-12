@@ -1,78 +1,85 @@
 # AI Journal
-Este projeto é uma aplicação web que permite aos usuários digitarem entradas de diário que serão categorizadas automaticamente e guardadas em um banco de dados.
 
-## Pré-requisitos
+This project is a web application that allows users to type journal entries that will be automatically categorized and stored in a database.
+
+## Prerequisites
 
 - Docker
 - Bun
 
-## Instalação das dependências do projeto:
+## Installing project dependencies:
 
 ```bash
 bun i
 ```
 
-## Execução do projeto:
+## Running the project:
 
 ```bash
 bun dev
 ```
 
-Mas antes de executar o projeto, você precisa iniciar dois contêineres Docker: um banco de dados PostgreSQL e um contêiner Ollama.
+But before running the project, you need to start two Docker containers: a PostgreSQL database and an Ollama container.
 
-## Iniciando os contêineres
+## Starting the containers
 
-### Iniciar PostgreSQL
+### Starting the PostgreSQL Database
 
-Para iniciar um contêiner PostgreSQL, execute o seguinte comando:
+To start a PostgreSQL container, run the following command in the root directory of the project:
 
 ```sh
-docker run -d \
-  --name my_postgres_db \
-  -e POSTGRES_DB=ai_journal \
-  -e POSTGRES_USER=myuser \
-  -e POSTGRES_PASSWORD=mypassword \
-  -p 5432:5432 \
-  -v db_data:/var/lib/postgresql/data \
-  -v $(pwd)/init.sql:/docker-entrypoint-initdb.d/init.sql \
-  postgres:latest
+docker-compose up -d
 ```
 
-### Iniciar Ollama
+### Starting Ollama
 
-Se o seu sistema tiver suporte a GPUs, você pode usar a primeira opção.
+There is more than one way to have Ollama running on your machine. The first option is using Docker. The second option is [installing Ollama manually](https://ollama.com/download).
+
+If you prefer to use Docker, follow the instructions below.
+
+If your system supports GPUs, you can use the first option.
 
 ```sh
 docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 ```
 
-Caso contrário, use a segunda opção.
+Otherwise, use the second option.
 
 ```sh
 docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 ```
 
-## Verificação
+## Verification
 
-Após executar os comandos acima, você pode verificar se os contêineres estão em execução usando:
+After running the above commands, you can verify if the containers are running using:
 
 ```sh
 docker ps
 ```
 
-Isso exibirá uma lista dos contêineres em execução e suas respectivas portas mapeadas.
+This will display a list of running containers and their respective mapped ports.
 
-## Finalizando os contêineres
+## Stopping the containers
 
-Para parar e remover os contêineres, execute os seguintes comandos:
+To stop and remove the containers, run the following commands:
 
 ```sh
 docker stop my_postgres_db ollama
 docker rm my_postgres_db ollama
 ```
 
-## Notas
+## Troubleshooting
 
-- Certifique-se de que o arquivo `init.sql` esteja no diretório atual de onde você está executando o comando `docker run` para o PostgreSQL.
-- O volume `ollama` é utilizado para armazenar dados persistentes do contêiner Ollama. Você pode verificar o conteúdo deste volume conforme necessário.
-- Por que não usar o Docker Compose? Porque o Docker Compose não permite que eu possa te dar a escolha de usar ou não a GPU.
+- If you encounter issues running the `docker-compose up -d` command and identify that the problem is related to the `init.sql` file, ensure that the `init.sql` file has execution permissions. If not, run the following command:
+
+Linux and macOS:
+
+```sh
+chmod +x init.sql
+```
+
+Windows:
+
+```sh
+icacls init.sql /grant Everyone:F
+```
