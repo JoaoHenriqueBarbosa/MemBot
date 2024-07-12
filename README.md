@@ -114,11 +114,17 @@ ai-journal/
 
 ## API Endpoints
 
-- `POST /api/journal-entry`: Submit a new journal entry
-- `GET /api/entries`: Retrieve all journal entries
-- `GET /api/entries/:category`: Retrieve entries by category
-- `PUT /api/entries/:id`: Update a specific entry
-- `DELETE /api/entries/:id`: Delete a specific entry
+- `/api/financial`: Get financial entries
+- `/api/financial/income`: Get total income
+- `/api/financial/expense`: Get total expenses
+- `/api/financial/balance`: Get current balance
+- `/api/general`: Get general entries
+- `/api/health-wellbeing`: Get health and well-being entries
+- `/api/health-wellbeing/exercise-time`: Get total exercise time
+- `/api/health-wellbeing/emotion-intensity`: Get average emotion intensity
+- `/api/relationships`: Get relationship entries
+- `/api/relationships/total-interactions`: Get total interactions
+- `/api/relationships/most-frequent-person`: Get most frequent person interacted with
 
 For more detailed API documentation, refer to the API documentation file (if available) or the source code in the `packages/server/api/` directory.
 
