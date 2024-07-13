@@ -56,13 +56,21 @@ Before you begin, ensure you have the following installed:
 
 ## Configuration
 
-1. Create a `.env` file in the root directory and add the following environment variables:
+1. Create two `.env` files:
+
+   a. In the root directory, create a `.env` file for the backend:
    ```
-   DB_USER=your_db_user
+   DB_USER=myuser
    DB_HOST=localhost
-   DB_NAME=your_db_name
-   DB_PASSWORD=your_db_password
+   DB_NAME=ai_journal
+   DB_PASSWORD=mypassword
    DB_PORT=5432
+   OLLAMA_HOST=http://localhost:11434
+   ```
+
+   b. In the `packages/client` directory, create a `.env` file for the frontend:
+   ```
+   VITE_API_URL=http://localhost:3000/api
    ```
 
 2. Adjust the `docker-compose.yml` file if you need to change any default settings for the PostgreSQL container.
