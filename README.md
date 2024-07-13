@@ -58,11 +58,12 @@ Before you begin, ensure you have the following installed:
 
 1. Create two `.env` files:
 
-   a. In the root directory, create a `.env` file for the backend:
+   a. In the `packages/server` directory, create a `.env` file for the backend:
    ```
+   PORT=3000
    DB_USER=myuser
    DB_HOST=localhost
-   DB_NAME=ai_journal
+   DB_NAME=ai_jrnl
    DB_PASSWORD=mypassword
    DB_PORT=5432
    OLLAMA_HOST=http://localhost:11434
