@@ -26,10 +26,11 @@ This project is a web application that allows users to type journal entries that
 
 ## Technologies Used
 
-- Frontend: React, TypeScript, Vite, Tailwind CSS
-- Backend: Node.js, Express.js, TypeScript
+- Frontend: React, TypeScript, Vite, Tailwind CSS and shadcn/ui
+- Backend: Bun, WebSocket (Native), REST API (From Scratch)
 - Database: PostgreSQL
-- AI Model: Ollama (for local AI processing)
+- AI Backend: Ollama (for local AI processing)
+- AI Model: Gemma2 by default, but can be changed in the `packages/server/.env` file
 - Containerization: Docker
 
 ## Prerequisites
@@ -44,6 +45,7 @@ Before you begin, ensure you have the following installed:
 ## Installation
 
 1. Clone the repository:
+
    ```
    git clone https://github.com/your-username/ai-journal.git
    cd ai-journal
@@ -59,31 +61,40 @@ Before you begin, ensure you have the following installed:
 1. Create two `.env` files:
 
    a. In the `packages/server` directory, create a `.env` file for the backend:
+
    ```
    PORT=3000
-   DB_USER=myuser
+   HOST=localhost
+   MODEL_NAME=gemma2
    DB_HOST=localhost
-   DB_NAME=ai_jrnl
-   DB_PASSWORD=mypassword
    DB_PORT=5432
-   OLLAMA_HOST=http://localhost:11434
+   DB_NAME=ai_jrnl
+   DB_USER=myuser
+   DB_PASSWORD=mypassword
+   DEFAULT_LANGUAGE=en
    ```
 
    b. In the `packages/client` directory, create a `.env` file for the frontend:
+
    ```
-   VITE_API_URL=http://localhost:3000/api
+   VITE_API_PROTOCOL=http
+   VITE_API_URL=localhost:3000
    ```
+
+   Note: The protocol and URL in the frontend are separated to allow for easier configuration one the WebSocket connection is implemented in the same backend server.
 
 2. Adjust the `docker-compose.yml` file if you need to change any default settings for the PostgreSQL container.
 
 ## Running the Project
 
 1. Start the PostgreSQL database container:
+
    ```
    docker-compose up -d
    ```
 
 2. Start the Ollama container:
+
    - For systems with GPU support:
      ```
      docker run -d --gpus=all -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
@@ -94,6 +105,7 @@ Before you begin, ensure you have the following installed:
      ```
 
 3. Run the project:
+
    ```
    bun dev
    ```
@@ -150,11 +162,13 @@ For more detailed API documentation, refer to the API documentation file (if ava
 - If you encounter issues running the `docker-compose up -d` command and identify that the problem is related to the `init.sql` file, ensure that the `init.sql` file has execution permissions. If not, run the following command:
 
   Linux and macOS:
+
   ```sh
   chmod +x init.sql
   ```
 
   Windows:
+
   ```sh
   icacls init.sql /grant Everyone:F
   ```
