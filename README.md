@@ -177,6 +177,24 @@ For more detailed API documentation, refer to the API documentation file (if ava
 
 - For issues related to Ollama, check if the Ollama container is running correctly and the port 11434 is accessible.
 
+## Project Philosophy
+
+This project was implemented largely from scratch or using native APIs, not because it's the easiest or most efficient approach, but as a proof of concept. The goal was to demonstrate that a complex application could be built without relying heavily on third-party libraries or frameworks, while still maintaining a reasonable level of simplicity and maintainability.
+
+Key aspects of this philosophy include:
+
+1. **Minimal Dependencies**: By using native APIs and implementing features from scratch, we reduce external dependencies, which can lead to a more stable and controllable codebase.
+
+2. **Learning Opportunity**: Building components from the ground up provides a deeper understanding of how things work under the hood, which is invaluable for developers looking to enhance their skills.
+
+3. **Customization**: With a from-scratch approach, every aspect of the application can be tailored to specific needs without being constrained by the limitations of third-party libraries.
+
+4. **Performance**: In some cases, custom implementations can be optimized for the specific use case, potentially leading to better performance.
+
+5. **Proof of Concept**: This project serves as a demonstration that complex applications can be built with minimal external dependencies, challenging the notion that modern web development always requires a multitude of frameworks and libraries.
+
+While this approach may not be suitable for all projects, especially those with tight deadlines or specific industry requirements, it showcases the possibilities and benefits of a more hands-on, from-the-ground-up development philosophy.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
