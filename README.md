@@ -19,11 +19,24 @@ This project is a web application that allows users to type journal entries that
 
 ## Features
 
+Current features:
 - User-friendly interface for writing journal entries
 - Automatic categorization of entries using AI
 - Secure storage of entries in a PostgreSQL database
 - Multi-language support (English and Brazilian Portuguese)
 - Responsive design for desktop and mobile use
+
+Upcoming features and improvements:
+- Implementation of LangChain for improved AI chat flow and decision-making
+- Enhanced AI interaction to request additional information when needed
+- User authentication and session management
+- Deployment strategy and implementation
+- Automated testing suite
+- AI-generated reports based on user data
+- Integration with external APIs for additional data sources (e.g., weather, news)
+- Data visualization tools for better insights
+- Customizable user preferences and settings
+- Regular security audits and updates
 
 ## Technologies Used
 
