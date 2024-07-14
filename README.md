@@ -33,6 +33,21 @@ This project is a web application that allows users to type journal entries that
 - AI Model: Gemma2 by default, but can be changed in the `packages/server/.env` file
 - Containerization: Docker
 
+While the project aims to implement many features from scratch, we also leverage some well-designed tools and libraries to enhance development efficiency and maintain best practices:
+
+### Frontend Libraries
+- React Query: For efficient data fetching and state management
+- i18next: For internationalization
+- Recharts: For creating responsive charts
+- Radix UI: For accessible and customizable UI components
+
+### Backend Libraries
+- pg: For PostgreSQL database interactions
+- Zod: For runtime type checking and validation
+- Ollama: For interfacing with the local AI model
+
+These libraries were chosen for their reliability, performance, and alignment with our project goals. They complement our from-scratch approach by providing robust solutions for specific functionalities, allowing us to focus on building custom features where it matters most.
+
 ## Prerequisites
 
 Before you begin, ensure you have the following installed:
