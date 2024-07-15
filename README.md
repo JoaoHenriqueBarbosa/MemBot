@@ -24,6 +24,7 @@ Ready to embark on a journey of self-discovery? Let AI Journal guide you! 🌟
 12. [License](#license)
 
 ## A Note for Portuguese Speakers
+
 Você está vendo a versão em inglês deste arquivo. Para acessar a versão em português 🇧🇷, clique [aqui](README.ptBR.md).
 
 ## Features
@@ -43,7 +44,7 @@ Você está vendo a versão em inglês deste arquivo. Para acessar a versão em 
 - AI Model: Gemma2 by default, but can be changed in the `packages/server/.env` file
 - Containerization: Docker
 
-While the project aims to implement many features from scratch (see [Project Philosophy](#project-philosophy)), we also leverage some well-designed tools and libraries to enhance development efficiency and maintain best practices:
+While the project aims to implement many features from scratch (see [Project Philosophy](#project-philosophy)), I also leverage some well-designed tools and libraries to enhance development efficiency and maintain best practices:
 
 ### Frontend Libraries
 
@@ -221,7 +222,7 @@ This project was implemented largely from scratch or using native APIs, not beca
 
 Key aspects of this philosophy include:
 
-1. **Minimal Dependencies**: By using native APIs and implementing features from scratch, we reduce external dependencies, which can lead to a more stable and controllable codebase.
+1. **Minimal Dependencies**: By using native APIs and implementing features from scratch, I aimed to reduce reliance on external dependencies, which can lead to a more stable and controllable codebase.
 
 2. **Learning Opportunity**: Building components from the ground up provides a deeper understanding of how things work under the hood, which is invaluable for developers looking to enhance their skills.
 

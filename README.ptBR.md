@@ -43,7 +43,7 @@ You are viewing the 🇧🇷 portuguese version of this file. To switch to the �
 - Modelo de IA: Gemma2 por padrão, mas pode ser alterado no arquivo `packages/server/.env`
 - Containerização: Docker
 
-Enquanto o projeto busca implementar muitas funcionalidades do zero (veja [Filosofia do Projeto](#filosofia-do-projeto)), também utilizamos algumas ferramentas e bibliotecas bem projetadas para melhorar a eficiência do desenvolvimento e manter as melhores práticas:
+Enquanto o projeto busca implementar muitas funcionalidades do zero (veja [Filosofia do Projeto](#filosofia-do-projeto)), também utilizei algumas ferramentas e bibliotecas bem projetadas para melhorar a eficiência do desenvolvimento e manter as melhores práticas:
 
 ### Bibliotecas de Frontend
 
@@ -56,7 +56,7 @@ Enquanto o projeto busca implementar muitas funcionalidades do zero (veja [Filos
 - pg: Para interações com o banco de dados PostgreSQL
 - Ollama: Para interface com o modelo de IA local
 
-Essas bibliotecas foram escolhidas por sua confiabilidade, desempenho e alinhamento com os objetivos do nosso projeto. Elas complementam nossa abordagem "do zero" ao fornecer soluções robustas para funcionalidades específicas, permitindo que nos concentremos em construir recursos personalizados onde mais importa.
+Essas bibliotecas foram escolhidas por sua confiabilidade, desempenho e alinhamento com os objetivos do nosso projeto. Elas complementam a abordagem "do zero" ao fornecer soluções robustas para funcionalidades específicas, permitindo concentrar-se em construir recursos personalizados onde mais importa.
 
 ## Pré-requisitos
 
@@ -221,7 +221,7 @@ Este projeto foi implementado em grande parte do zero ou usando APIs nativas, n�
 
 Aspectos chave dessa filosofia incluem:
 
-1. **Dependências Mínimas**: Ao utilizar APIs nativas e implementar funcionalidades do zero, reduzimos dependências externas, o que pode resultar em uma base de código mais estável e controlável.
+1. **Dependências Mínimas**: Ao utilizar APIs nativas e implementar funcionalidades do zero, eu reduzi as dependências externas, o que pode resultar em uma base de código mais estável e controlável.
 
 2. **Oportunidade de Aprendizado**: Construir componentes desde o início proporciona um entendimento mais profundo de como as coisas funcionam internamente, o que é inestimável para desenvolvedores que desejam aprimorar suas habilidades.
 
