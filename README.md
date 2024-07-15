@@ -1,6 +1,12 @@
-# AI Journal
+# AI Journal: Your Personal Thought Curator 🧠✨
 
-This project is a web application that allows users to type journal entries that will be automatically categorized and stored in a database. It uses AI to analyze and categorize the entries, providing insights and organization to the user's thoughts and experiences.
+Welcome to AI Journal! 🚀
+
+AI Journal is your digital companion that listens, organizes, and provides insights into your daily thoughts. Write your entries freely, and our intelligent system will categorize and analyze them automatically. Track your finances 💰, monitor your health 🧘‍♀️, nurture relationships 💖, or simply capture your day.
+
+AI Journal also offers insights and suggestions for improvement while keeping your data secure and private.
+
+Ready to embark on a journey of self-discovery? Let AI Journal guide you! 🌟
 
 ## Table of Contents
 
@@ -20,23 +26,12 @@ This project is a web application that allows users to type journal entries that
 ## Features
 
 Current features:
+
 - User-friendly interface for writing journal entries
 - Automatic categorization of entries using AI
 - Secure storage of entries in a PostgreSQL database
 - Multi-language support (English and Brazilian Portuguese)
 - Responsive design for desktop and mobile use
-
-Upcoming features and improvements:
-- Implementation of LangChain for improved AI chat flow and decision-making
-- Enhanced AI interaction to request additional information when needed
-- User authentication and session management
-- Deployment strategy and implementation
-- Automated testing suite
-- AI-generated reports based on user data
-- Integration with external APIs for additional data sources (e.g., weather, news)
-- Data visualization tools for better insights
-- Customizable user preferences and settings
-- Regular security audits and updates
 
 ## Technologies Used
 
@@ -50,11 +45,13 @@ Upcoming features and improvements:
 While the project aims to implement many features from scratch (see [Project Philosophy](#project-philosophy)), we also leverage some well-designed tools and libraries to enhance development efficiency and maintain best practices:
 
 ### Frontend Libraries
+
 - TanStack's React Query: For efficient data fetching and state management
 - i18next: For internationalization
 - shadcn/ui: For UI components, that implments Tailwind CSS, Radix UI, Recharts, and more
 
 ### Backend Libraries
+
 - pg: For PostgreSQL database interactions
 - Ollama: For interfacing with the local AI model
 
@@ -203,6 +200,21 @@ For more detailed API documentation, refer to the API documentation file (if ava
 - If you're having trouble connecting to the database, make sure the PostgreSQL container is running and the environment variables in your `.env` file match the settings in `docker-compose.yml`.
 
 - For issues related to Ollama, check if the Ollama container is running correctly and the port 11434 is accessible.
+
+## TODO
+
+As a proof of concept, this project demonstrates the core functionality of an AI journal application. However, there are many areas where it could be expanded and improved. Some potential enhancements include:
+
+- [ ] Implementation of LangChain for improved AI chat flow and decision-making
+- [ ] Enhanced AI interaction to request additional information when needed
+- [ ] User authentication and session management
+- [ ] Deployment strategy and implementation
+- [ ] Automated testing suite
+- [ ] AI-generated reports based on user data
+- [ ] Integration with external models such as OpenAI's GPT or Anthropic's Claude
+- [ ] Customizable user preferences and settings
+
+Please feel free to contribute to this project (see [Contributing](#contributing)) by implementing any of these features or suggesting new ones.
 
 ## Project Philosophy
 
