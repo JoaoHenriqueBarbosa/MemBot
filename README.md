@@ -23,9 +23,10 @@ Ready to embark on a journey of self-discovery? Let AI Journal guide you! 🌟
 11. [Project Philosophy](#project-philosophy)
 12. [License](#license)
 
-## Features
+## A Note for Portuguese Speakers
+Você está vendo a versão em inglês deste arquivo. Para acessar a versão em português 🇧🇷, clique [aqui](README.ptBR.md).
 
-Current features:
+## Features
 
 - User-friendly interface for writing journal entries
 - Automatic categorization of entries using AI
@@ -63,8 +64,6 @@ Before you begin, ensure you have the following installed:
 
 - Docker
 - Bun (JavaScript runtime and package manager)
-- Node.js (v14 or later)
-- npm (usually comes with Node.js)
 
 ## Installation
 
