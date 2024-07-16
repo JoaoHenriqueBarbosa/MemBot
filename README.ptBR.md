@@ -8,6 +8,8 @@ O AI Journal também oferece insights e sugestões para melhorias, mantendo seus
 
 Pronto para embarcar em uma jornada de autodescoberta? Deixe o AI Journal te guiar! 🌟
 
+🌐 [English](README.md)
+
 ## Índice
 
 1. [Recursos](#recursos)
@@ -22,9 +24,6 @@ Pronto para embarcar em uma jornada de autodescoberta? Deixe o AI Journal te gui
 10. [Resolução de Problemas](#resolucao-de-problemas)
 11. [Filosofia do Projeto](#filosofia-do-projeto)
 12. [Licença](#licenca)
-
-## Nota para Falantes de Inglês
-You are viewing the 🇧🇷 portuguese version of this file. To switch to the 🇺🇸 English version, click [here](README.md).
 
 ## Recursos
 

@@ -8,6 +8,8 @@ AI Journal also offers insights and suggestions for improvement while keeping yo
 
 Ready to embark on a journey of self-discovery? Let AI Journal guide you! 🌟
 
+🌐 [Português](README.ptBR.md)
+
 ## Table of Contents
 
 1. [Features](#features)
@@ -22,10 +24,6 @@ Ready to embark on a journey of self-discovery? Let AI Journal guide you! 🌟
 10. [Troubleshooting](#troubleshooting)
 11. [Project Philosophy](#project-philosophy)
 12. [License](#license)
-
-## A Note for Portuguese Speakers
-
-Você está vendo a versão em inglês deste arquivo. Para acessar a versão em português 🇧🇷, clique [aqui](README.ptBR.md).
 
 ## Features
 
