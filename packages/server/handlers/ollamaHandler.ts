@@ -125,48 +125,13 @@ Fields to extract:`;
 - activity_type ("exercise", "meditation", or "other")
 - duration (string, e.g. "30 minutes")
 - intensity ("low", "medium", or "high")
-- meal_description (string)
-- calories (number)
-- emotion_description (string)
-- emotion_intensity (number between 1 and 10)
-- trigger (string)
-- medical_appointment_date (date string)
-- specialty (string)
-- consultation_reason (string)
-- recommendations (string)`;
-            break;
-        case "work/projects":
-            prompt += `
-- task_description (string)
-- task_status ("pending", "in_progress", or "completed")
-- priority ("low", "medium", or "high")
-- meeting_date (date string)
-- participants (string)
-- topics_discussed (string)
-- decisions_made (string)
-- progress_report (string)
-- obstacles_faced (string)`;
+- emotion_description (string)`;
             break;
         case "relationships":
             prompt += `
 - person (string)
 - interaction_type ("conversation", "activity", or "other")
-- interaction_description (string)
-- feelings (string)
-- event_date (date string)
-- event_description (string)
-- emotional_impact (string)
-- conflict_description (string)
-- resolution (string)`;
-            break;
-        case "goals/progress":
-            prompt += `
-- goal_start_date (date string)
-- goal_end_date (date string)
-- goal_description (string)
-- status ("not_started", "in_progress", "completed", or "abandoned")
-- milestones (string)
-- progress (string)`;
+- feelings (string)`;
             break;
         default:
             return {};

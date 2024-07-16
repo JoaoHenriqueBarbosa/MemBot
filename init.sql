@@ -30,15 +30,7 @@ CREATE TABLE health_wellbeing (
     activity_type VARCHAR(50),
     duration INTERVAL,
     intensity VARCHAR(50),
-    meal_description TEXT,
-    calories INT,
     emotion_description TEXT,
-    emotion_intensity INT,
-    trigger TEXT,
-    medical_appointment_date DATE,
-    specialty VARCHAR(50),
-    consultation_reason TEXT,
-    recommendations TEXT,
     CONSTRAINT chk_health_activity_type CHECK (activity_type IN ('exercise', 'meditation', 'other')),
 CONSTRAINT chk_health_intensity CHECK (intensity IN ('low', 'medium', 'high')),
 CONSTRAINT chk_health_emotion_intensity CHECK (emotion_intensity BETWEEN 1 AND 10)
@@ -50,13 +42,7 @@ CREATE TABLE relationships (
     entry_date DATE NOT NULL,
     person TEXT,
     interaction_type VARCHAR(50),
-    interaction_description TEXT,
     feelings TEXT,
-    event_date DATE,
-    event_description TEXT,
-    emotional_impact TEXT,
-    conflict_description TEXT,
-    resolution TEXT,
     CONSTRAINT chk_interaction_type CHECK (interaction_type IN ('conversation', 'activity', 'other'))
 );
 
