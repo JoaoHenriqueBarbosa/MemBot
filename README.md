@@ -71,8 +71,8 @@ Before you begin, ensure you have the following installed:
 1. Clone the repository:
 
    ```
-   git clone https://github.com/your-username/ai-journal.git
-   cd ai-journal
+   git clone https://github.com/JoaoHenriqueBarbosa/AI-Journal.git
+   cd AI-Journal
    ```
 
 2. Install project dependencies:
