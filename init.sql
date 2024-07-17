@@ -31,6 +31,7 @@ CREATE TABLE health_wellbeing (
     duration INTERVAL,
     intensity VARCHAR(50),
     emotion_description TEXT,
+    emotion_intensity INTEGER,
     CONSTRAINT chk_health_activity_type CHECK (activity_type IN ('exercise', 'meditation', 'other')),
 CONSTRAINT chk_health_intensity CHECK (intensity IN ('low', 'medium', 'high')),
 CONSTRAINT chk_health_emotion_intensity CHECK (emotion_intensity BETWEEN 1 AND 10)

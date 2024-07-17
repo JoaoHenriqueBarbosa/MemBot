@@ -8,6 +8,6 @@ RUN bun install
 
 COPY /packages/server .
 
-EXPOSE 3000
+EXPOSE 3000/tcp
 
 CMD ["bun", "index.ts"]
