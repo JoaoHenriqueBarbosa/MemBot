@@ -1,11 +1,13 @@
-import ollama, { Message } from "ollama";
+import { Message, Ollama } from "ollama";
 import { ServerWebSocket } from "bun";
 import { WebSocketMessage, Category } from "../utils/types.js";
 import { storeEntry } from "../utils/storeEntry.js";
 import { getLanguageStrings } from "../utils/languageStrings.js";
 
 const MODEL_NAME = process.env.MODEL_NAME || "gemma2";
-
+const ollama = new Ollama({
+    host: process.env.OLLAMA_HOST || "http://localhost:11434",
+});
 // Store chat history                                                                                                                                     
 let chatHistory: Message[] = [];
 

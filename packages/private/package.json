@@ -1,0 +1,19 @@
+{
+  "name": "private",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.ts",
+  "scripts": {
+    "dev": "bun --watch run server.ts"
+  },
+  "keywords": [],
+  "author": "Joao Henrique Barbosa <joaohenriquebarbosa21@gmail.com>",
+  "dependencies": {
+    "ollama": "^0.5.2",
+    "pg": "^8.12.0"
+  },
+  "devDependencies": {
+    "bun-types": "latest",
+    "@types/pg": "^8.11.6"
+  }
+}

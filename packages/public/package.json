@@ -1,14 +1,15 @@
 {
-  "name": "@ai-jrnl/client",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "name": "public",
+  "version": "1.0.0",
+  "description": "",
   "scripts": {
     "dev": "bun vite",
     "build": "tsc -b && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
+  "keywords": [],
+  "author": "Joao Henrique Barbosa <joaohenriquebarbosa21@gmail.com>",
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-dialog": "^1.1.1",
@@ -33,7 +34,7 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "@ai-jrnl/server": "0.0.1",
+    "private": "latest",
     "@tanstack/eslint-plugin-query": "^5.51.1",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

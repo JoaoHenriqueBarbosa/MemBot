@@ -1,9 +1,3 @@
--- Create the database
-CREATE DATABASE ai_jrnl;
-
--- Connect to the database
-\c ai_jrnl;
-
 -- General Entries Table
 CREATE TABLE general_entries (
     id SERIAL PRIMARY KEY,

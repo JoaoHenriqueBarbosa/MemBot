@@ -1,17 +1,11 @@
 {
-  "name": "ai-jrnl",
-  "private": "true",
-  "module": "index.ts",
-  "type": "module",
-  "workspaces": [
-    "packages/server",
-    "packages/client"
-  ],
+  "name": "ai-journal",
+  "private": true,
   "scripts": {
-    "dev": "bun run --filter '@ai-jrnl/*' dev",
-    "clean": "rm -rf node_modules packages/server/node_modules packages/client/node_modules bun.lockb packages/server/bun.lockb packages/client/bun.lockb"
+    "dev": "bun run --filter '*' dev"
   },
-  "devDependencies": {
-    "bun-types": "^1.1.18"
-  }
+  "workspaces": [
+    "packages/*"
+  ],
+  "version": "1.0.0"
 }
