@@ -13,43 +13,61 @@ import { useQuery } from "@tanstack/react-query";
 import { API_HOST, API_PROTOCOL } from "@/lib/consts";
 import { useTranslation } from "react-i18next";
 
-const fetchRelationshipsData = async () => {
-  const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/relationships`);
+const fetchRelationshipsData = (token: string | null) => async () => {
+  const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/relationships`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
   return response.json();
 };
 
-const fetchTotalInteractions = async () => {
-  const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/relationships/total-interactions`);
+const fetchTotalInteractions = (token: string | null) => async () => {
+  const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/relationships/total-interactions`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
   return response.json();
 };
 
-const fetchMostFrequentPerson = async () => {
-  const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/relationships/most-frequent-person`);
+const fetchMostFrequentPerson = (token: string | null) => async () => {
+  const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/relationships/most-frequent-person`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
   return response.json();
 };
 
-export function RelationshipsContent() {
+export function RelationshipsContent({ token }: { token: string | null }) {
   const { t } = useTranslation();
   const { data: relationshipsData } = useQuery({
     queryKey: ["relationships"],
-    queryFn: fetchRelationshipsData,
+    queryFn: fetchRelationshipsData(token),
   });
   const { data: totalInteractions } = useQuery({
     queryKey: ["totalInteractions"],
-    queryFn: fetchTotalInteractions,
+    queryFn: fetchTotalInteractions(token),
   });
   const { data: mostFrequentPerson } = useQuery({
     queryKey: ["mostFrequentPerson"],
-    queryFn: fetchMostFrequentPerson,
+    queryFn: fetchMostFrequentPerson(token),
   });
 
   return (

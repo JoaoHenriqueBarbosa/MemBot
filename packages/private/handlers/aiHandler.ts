@@ -19,6 +19,7 @@ const ollama = new Ollama({
 let chatHistory: Message[] = [];
 
 export const handleInit = async (ws: ServerWebSocket<{ authToken: string }>) => {
+    
     if (MODEL_NAME !== "gemini-1.5-flash") {
         const list = await ollama.list();
 

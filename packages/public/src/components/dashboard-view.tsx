@@ -15,7 +15,7 @@ import { useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-export function DashboardView() {
+export function DashboardView({ token, onLogout }: { token: string | null; onLogout: () => void }) {
   const [activeTab, setActiveTab] = useState("financial");
   const { t } = useTranslation();
 
@@ -30,7 +30,7 @@ export function DashboardView() {
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <Sidebar />
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-        <Header />
+        <Header onLogout={onLogout} />
         <h1 className="text-2xl font-semibold pl-8">
           {t("welcomeBack")} 👋
         </h1>
@@ -66,16 +66,16 @@ export function DashboardView() {
             </div>
             <div className="mt-6">
               <TabsContent value="general">
-                <GeneralContent />
+                <GeneralContent token={token} />
               </TabsContent>
               <TabsContent value="financial">
-                <FinancialContent />
+                <FinancialContent token={token} />
               </TabsContent>
               <TabsContent value="health-wellbeing">
-                <HealthWellbeingContent />
+                <HealthWellbeingContent token={token} />
               </TabsContent>
               <TabsContent value="relationships">
-                <RelationshipsContent />
+                <RelationshipsContent token={token} />
               </TabsContent>
             </div>
           </Tabs>

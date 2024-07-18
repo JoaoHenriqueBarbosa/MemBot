@@ -14,55 +14,80 @@ import { formatCurrency } from "@/lib/utils";
 import { API_HOST, API_PROTOCOL } from "@/lib/consts";
 import { useTranslation } from "react-i18next";
 
-const fetchFinancialData = async () => {
-  const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/financial`);
+const fetchFinancialData = (token: string | null) => async () => {
+  const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/financial`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
   return response.json();
 };
 
-const fetchTotalIncome = async () => {
-  const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/financial/income`);
+const fetchTotalIncome = (token: string | null) => async () => {
+  const response = await fetch(
+    `${API_PROTOCOL}://${API_HOST}/api/financial/income`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
   return response.json();
 };
 
-const fetchTotalExpense = async () => {
-  const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/financial/expense`);
+const fetchTotalExpense = (token: string | null) => async () => {
+  const response = await fetch(
+    `${API_PROTOCOL}://${API_HOST}/api/financial/expense`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
   return response.json();
 };
 
-const fetchBalance = async () => {
-  const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/financial/balance`);
+const fetchBalance = (token: string | null) => async () => {
+  const response = await fetch(
+    `${API_PROTOCOL}://${API_HOST}/api/financial/balance`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
   return response.json();
 };
 
-export function FinancialContent() {
+export function FinancialContent({ token }: { token: string | null }) {
   const { t, i18n } = useTranslation();
   const { data: financialData } = useQuery({
     queryKey: ["financial"],
-    queryFn: fetchFinancialData,
+    queryFn: fetchFinancialData(token),
   });
   const { data: totalIncome } = useQuery({
     queryKey: ["totalIncome"],
-    queryFn: fetchTotalIncome,
+    queryFn: fetchTotalIncome(token),
   });
   const { data: totalExpense } = useQuery({
     queryKey: ["totalExpense"],
-    queryFn: fetchTotalExpense,
+    queryFn: fetchTotalExpense(token),
   });
   const { data: balance } = useQuery({
     queryKey: ["balance"],
-    queryFn: fetchBalance,
+    queryFn: fetchBalance(token),
   });
 
   return (
@@ -70,7 +95,9 @@ export function FinancialContent() {
       <div className="grid gap-8 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">{t("totalIncome")}</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("totalIncome")}
+            </CardTitle>
             <DollarSignIcon className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -94,7 +121,9 @@ export function FinancialContent() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">{t("balance")}</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("balance")}
+            </CardTitle>
             <WalletIcon className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -132,7 +161,9 @@ export function FinancialContent() {
                     </TableCell>
                     <TableCell>
                       <Badge variant="secondary">
-                        {transaction.direction === "in" ? t("income") : t("expense")}
+                        {transaction.direction === "in"
+                          ? t("income")
+                          : t("expense")}
                       </Badge>
                     </TableCell>
                     <TableCell>{transaction.payment_method}</TableCell>

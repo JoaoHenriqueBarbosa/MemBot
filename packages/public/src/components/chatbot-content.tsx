@@ -16,7 +16,7 @@ import { Remark } from "react-remark";
 import { API_HOST } from "@/lib/consts";
 import { useTranslation } from "react-i18next";
 
-export function ChatbotContent() {
+export function ChatbotContent( { token, onLogout }: { token: string | null; onLogout: () => void }) {
   const { t, i18n } = useTranslation();
   const [messages, setMessages] = useState<WebSocketMessage[]>([]);
   const [message, setMessage] = useState<string>("");
@@ -34,7 +34,7 @@ export function ChatbotContent() {
   const conn = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    const socket = new WebSocket(`ws://${API_HOST}`);
+    const socket = new WebSocket(`ws://${API_HOST}`, [token!]);
 
     socket.addEventListener("message", (event) => {
       if (event.data === "docker-not-running") {

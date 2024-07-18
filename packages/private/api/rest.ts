@@ -1,20 +1,14 @@
 import { ClientResponse } from "../db/response.js";
+import { User } from "../utils/types.js";
 import { routeActions } from "./routes.js";
 
-export async function serveRest(req: Request): Promise<boolean | Response> {
-    const url = new URL(req.url);
+export async function serveRest(req: Request, url: any, user?: Partial<User>): Promise<boolean | Response> {
     if (url.pathname in routeActions) {
         if (req.method === "OPTIONS") {
-            return new ClientResponse(null, {
-                headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    "Access-Control-Allow-Methods": "OPTIONS, GET",
-                    "Access-Control-Allow-Headers": "Content-Type",
-                },
-            });
+            return new ClientResponse("OK");
         }
 
-        const response = await routeActions[url.pathname](req);
+        const response = await routeActions[url.pathname](req, user);
         return response;
     }
     return false;

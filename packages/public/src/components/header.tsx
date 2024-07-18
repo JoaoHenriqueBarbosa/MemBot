@@ -22,8 +22,10 @@ import {
   GlobeIcon,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { ExitIcon } from "@radix-ui/react-icons";
 
-export function Header() {
+export function Header({onLogout}: {onLogout: () => void}) {
+  
   const location = useLocation();
   const { t, i18n } = useTranslation();
 
@@ -90,6 +92,7 @@ export function Header() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
+      <div className="flex items-center gap-4">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon">
@@ -106,6 +109,10 @@ export function Header() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+      <Button variant="outline" size="icon" onClick={onLogout}>
+        <ExitIcon className="h-4 w-4" />
+      </Button>
+      </div>
     </header>
   );
 }

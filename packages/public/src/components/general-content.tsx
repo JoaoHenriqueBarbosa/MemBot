@@ -12,15 +12,22 @@ interface GeneralEntry {
   description: string;
 }
 
-async function getGeneralEntries(): Promise<GeneralEntry[]> {
-  const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/general`);
+const getGeneralEntries = (token: string | null) => async () => {
+  const response = await fetch(
+    `${API_PROTOCOL}://${API_HOST}/api/general`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   if (!response.ok) {
     throw new Error("Failed to fetch general entries");
   }
   return response.json();
 }
 
-export function GeneralContent() {
+export function GeneralContent({ token }: { token: string | null }) {
   const { t } = useTranslation();
   const {
     data: entries = [],
@@ -28,7 +35,7 @@ export function GeneralContent() {
     isError,
   } = useQuery<GeneralEntry[]>({
     queryKey: ["generalEntries"],
-    queryFn: getGeneralEntries,
+    queryFn: getGeneralEntries(token),
   });
 
   if (isLoading) {

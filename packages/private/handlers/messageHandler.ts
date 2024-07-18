@@ -4,6 +4,7 @@ import { handleInit, handleUserMessage } from "./aiHandler.js";
 const MODEL_NAME = process.env.MODEL_NAME || "gemma2";
 
 export const handleMessage = async (ws: ServerWebSocket<{ authToken: string }>, message: string | Buffer) => {
+
     try {
         const messageObject = JSON.parse(message as string);
         console.log(`Received message: ${message}`);

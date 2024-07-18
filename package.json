@@ -1,11 +1,11 @@
 {
   "name": "ai-journal",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "bun run --filter '*' dev"
   },
   "workspaces": [
     "packages/*"
-  ],
-  "version": "1.0.0"
+  ]
 }

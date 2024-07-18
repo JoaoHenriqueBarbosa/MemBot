@@ -13,43 +13,64 @@ import { useQuery } from "@tanstack/react-query";
 import { API_HOST, API_PROTOCOL } from "@/lib/consts";
 import { useTranslation } from "react-i18next";
 
-const fetchHealthData = async () => {
-  const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/health-wellbeing`);
+const fetchHealthData = (token: string | null) => async () => {
+  const response = await fetch(
+    `${API_PROTOCOL}://${API_HOST}/api/health-wellbeing`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
   return response.json();
 };
 
-const fetchTotalExerciseTime = async () => {
-  const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/health-wellbeing/exercise-time`);
+const fetchTotalExerciseTime = (token: string | null) => async () => {
+  const response = await fetch(
+    `${API_PROTOCOL}://${API_HOST}/api/health-wellbeing/exercise-time`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
   return response.json();
 };
 
-const fetchAverageEmotionIntensity = async () => {
-  const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/health-wellbeing/emotion-intensity`);
+const fetchAverageEmotionIntensity = (token: string | null) => async () => {
+  const response = await fetch(
+    `${API_PROTOCOL}://${API_HOST}/api/health-wellbeing/emotion-intensity`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
   return response.json();
 };
 
-export function HealthWellbeingContent() {
+export function HealthWellbeingContent({ token }: { token: string | null }) {
   const { t } = useTranslation();
   const { data: healthData } = useQuery({
     queryKey: ["health-wellbeing"],
-    queryFn: fetchHealthData,
+    queryFn: fetchHealthData(token),
   });
   const { data: totalExerciseTime } = useQuery({
     queryKey: ["totalExerciseTime"],
-    queryFn: fetchTotalExerciseTime,
+    queryFn: fetchTotalExerciseTime(token),
   });
   const { data: averageEmotionIntensity } = useQuery({
     queryKey: ["averageEmotionIntensity"],
-    queryFn: fetchAverageEmotionIntensity,
+    queryFn: fetchAverageEmotionIntensity(token),
   });
 
   return (
@@ -57,7 +78,9 @@ export function HealthWellbeingContent() {
       <div className="grid gap-8 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">{t("totalExerciseTime")}</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("totalExerciseTime")}
+            </CardTitle>
             <ActivityIcon className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -75,18 +98,22 @@ export function HealthWellbeingContent() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {t("intensityValue", { value: averageEmotionIntensity?.average || 0 })}
+              {t("intensityValue", {
+                value: averageEmotionIntensity?.average || 0,
+              })}
             </div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">{t("latestMood")}</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              {t("latestMood")}
+            </CardTitle>
             <BrainIcon className="w-4 h-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {healthData?.[0]?.emotion_description || 'N/A'}
+              {healthData?.[0]?.emotion_description || "N/A"}
             </div>
           </CardContent>
         </Card>
@@ -116,9 +143,7 @@ export function HealthWellbeingContent() {
                     <TableCell>{entry.activity_type}</TableCell>
                     <TableCell>{entry.duration?.minutes}</TableCell>
                     <TableCell>
-                      <Badge variant="secondary">
-                        {entry.intensity}
-                      </Badge>
+                      <Badge variant="secondary">{entry.intensity}</Badge>
                     </TableCell>
                     <TableCell>{entry.emotion_description}</TableCell>
                   </TableRow>

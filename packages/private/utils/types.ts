@@ -22,4 +22,5 @@ export type AuthResponse = {
     success: boolean;
     message: string;
     user?: Partial<User>;
+    token?: string;
 };

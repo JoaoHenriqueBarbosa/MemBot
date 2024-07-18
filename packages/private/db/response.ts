@@ -4,6 +4,6 @@ export class ClientResponse extends Response {
         this.headers.set('Content-Type', 'application/json');
         this.headers.set("Access-Control-Allow-Origin", "*");
         this.headers.set("Access-Control-Allow-Methods", "OPTIONS, GET");
-        this.headers.set("Access-Control-Allow-Headers", "Content-Type");
+        this.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
     }
 }
