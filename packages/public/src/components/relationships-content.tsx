@@ -12,7 +12,7 @@ import { UsersIcon, HeartIcon, MessageCircleIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { API_HOST, API_PROTOCOL } from "@/lib/consts";
 import { useTranslation } from "react-i18next";
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 
 const fetchRelationshipsData = (token: string | null) => async () => {
   const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/relationships`,

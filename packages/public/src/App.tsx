@@ -5,7 +5,7 @@ import { ChatbotView } from "./components/chatbot-view";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthComponents } from "./components/auth-components";
 import { AuthProvider } from "./contexts/AuthContext";
-import { useAuth } from './contexts/AuthContext';
+import { useAuth } from './hooks/useAuth';
 import { handleLogin, handleRegister, handleLogout } from './utils/auth';
 
 const queryClient = new QueryClient({

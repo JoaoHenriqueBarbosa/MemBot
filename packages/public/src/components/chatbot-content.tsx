@@ -15,7 +15,7 @@ import { adaptativeHumanByteReader } from "@/lib/utils";
 import { Remark } from "react-remark";
 import { API_HOST } from "@/lib/consts";
 import { useTranslation } from "react-i18next";
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/hooks/useAuth';
 
 export function ChatbotContent() {
   const { t, i18n } = useTranslation();
