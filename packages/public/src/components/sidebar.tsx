@@ -13,9 +13,9 @@ import { handleLogout } from "@/utils/auth";
 
 export function Sidebar() {
   const location = useLocation();
-  const { setToken } = useAuth();
+  const { setAuth } = useAuth();
   const onLogout = () => {
-    handleLogout(setToken);
+    handleLogout(setAuth);
   };
 
   return (

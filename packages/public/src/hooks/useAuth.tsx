@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import { User } from "private/utils/types";
 
 export const useAuth = (): {
   token: string | null;
-  setToken: (token: string | null) => void;
+  user: Partial<User> | null;
+  setAuth: (token: string | null, user: Partial<User> | null) => void;
 } => {
   const context = useContext(AuthContext);
   if (context === undefined) {

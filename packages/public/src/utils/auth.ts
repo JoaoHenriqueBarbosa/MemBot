@@ -1,6 +1,6 @@
 import { API_HOST, API_PROTOCOL } from "../lib/consts";
 
-export const handleLogin = async (username: string, password: string, setToken: (token: string) => void) => {
+export const handleLogin = async (username: string, password: string, setAuth: (token: string, user: { id: number, username: string }) => void) => {
   try {
     const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/auth/login`, {
       method: 'POST',
@@ -9,8 +9,7 @@ export const handleLogin = async (username: string, password: string, setToken: 
     });
     if (response.ok) {
       const data = await response.json();
-      setToken(data.token);
-      localStorage.setItem('token', data.token);
+      setAuth(data.token, data.user);
       return true;
     } else {
       console.error('Login failed');
@@ -22,7 +21,7 @@ export const handleLogin = async (username: string, password: string, setToken: 
   }
 };
 
-export const handleRegister = async (username: string, password: string, setToken: (token: string) => void) => {
+export const handleRegister = async (username: string, password: string, setAuth: (token: string, user: { id: number, username: string }) => void) => {
   try {
     const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/auth/register`, {
       method: 'POST',
@@ -31,8 +30,7 @@ export const handleRegister = async (username: string, password: string, setToke
     });
     if (response.ok) {
       const data = await response.json();
-      setToken(data.token);
-      localStorage.setItem('token', data.token);
+      setAuth(data.token, data.user);
       return true;
     } else {
       console.error('Registration failed');
@@ -44,7 +42,6 @@ export const handleRegister = async (username: string, password: string, setToke
   }
 };
 
-export const handleLogout = (setToken: (token: string | null) => void) => {
-  setToken(null);
-  localStorage.removeItem('token');
+export const handleLogout = (setAuth: (token: string | null, user: null) => void) => {
+  setAuth(null, null);
 };

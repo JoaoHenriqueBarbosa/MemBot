@@ -19,7 +19,7 @@ import { useAuth } from '@/hooks/useAuth';
 
 export function ChatbotContent() {
   const { t, i18n } = useTranslation();
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const [messages, setMessages] = useState<WebSocketMessage[]>([]);
   const [message, setMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -127,6 +127,7 @@ export function ChatbotContent() {
         content: message,
         categorize: categorize,
         language: i18n.language,
+        user
       })
     );
   };

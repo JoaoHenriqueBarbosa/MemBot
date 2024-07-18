@@ -10,7 +10,8 @@ CREATE TABLE general_entries (
     id SERIAL PRIMARY KEY,
     entry_date DATE NOT NULL,
     description TEXT NOT NULL,
-    category VARCHAR(50) NOT NULL
+    category VARCHAR(50) NOT NULL,
+    user_id INTEGER REFERENCES users(id)
 );
 
 -- Financial Table
@@ -21,6 +22,7 @@ CREATE TABLE financial (
     amount DECIMAL(10, 2) NOT NULL,
     direction VARCHAR(50) NOT NULL, -- "in" or "out"
     payment_method VARCHAR(50),
+    user_id INTEGER REFERENCES users(id),
     CONSTRAINT chk_financial_direction CHECK (direction IN ('in', 'out'))
 );
 
@@ -33,6 +35,7 @@ CREATE TABLE health_wellbeing (
     intensity VARCHAR(50),
     emotion_description TEXT,
     emotion_intensity INTEGER,
+    user_id INTEGER REFERENCES users(id),
     CONSTRAINT chk_health_activity_type CHECK (activity_type IN ('exercise', 'meditation', 'other')),
 CONSTRAINT chk_health_intensity CHECK (intensity IN ('low', 'medium', 'high')),
 CONSTRAINT chk_health_emotion_intensity CHECK (emotion_intensity BETWEEN 1 AND 10)
@@ -45,6 +48,7 @@ CREATE TABLE relationships (
     person TEXT,
     interaction_type VARCHAR(50),
     feelings TEXT,
+    user_id INTEGER REFERENCES users(id),
     CONSTRAINT chk_interaction_type CHECK (interaction_type IN ('conversation', 'activity', 'other'))
 );
 

@@ -19,7 +19,7 @@ const ollama = new Ollama({
 let chatHistory: Message[] = [];
 
 export const handleInit = async (ws: ServerWebSocket<{ authToken: string }>) => {
-    
+
     if (MODEL_NAME !== "gemini-1.5-flash") {
         const list = await ollama.list();
 
@@ -44,7 +44,7 @@ export const handleInit = async (ws: ServerWebSocket<{ authToken: string }>) => 
     }
 };
 
-export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string }>, messageData: string, language: string, categorize: boolean = false) => {
+export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string }>, { content: messageData, categorize, language, user }: WebSocketMessage) => {
     // Add user message to chat history
     let userMessage: Message = { role: "user", content: messageData };
     ws.send(JSON.stringify({ type: "message", content: messageData, role: "user" } as WebSocketMessage));
@@ -59,7 +59,7 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
         // Store the entry in the database
         if (category) {
             try {
-                await storeEntry(category, entities);
+                await storeEntry(category, entities, user);
                 console.log("Entry stored successfully");
                 const strings = getLanguageStrings(language);
                 userMessage = { role: "user", content: `${strings.instructionFeedback1} ${category}. ${strings.instructionFeedback2}: ${JSON.stringify(entities)}.` };

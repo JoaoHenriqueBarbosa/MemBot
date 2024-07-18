@@ -1,13 +1,14 @@
 import { db } from "../../db/connection.js";
 import { ClientResponse } from "../../db/response.js";
+import { User } from "../../utils/types.js";
 
 // Get the database pool
 const pool = db.getPool();
 
 // Handler to get relationships entries
-export const getRelationships = async (req: Request) => {
+export const getRelationships = async (req: Request, user: Partial<User>) => {
     try {
-        const result = await pool.query('SELECT * FROM relationships ORDER BY entry_date DESC LIMIT 10');
+        const result = await pool.query('SELECT * FROM relationships WHERE user_id = $1 ORDER BY entry_date DESC LIMIT 10', [user.id]);
         return new ClientResponse(JSON.stringify(result.rows));
     } catch (error) {
         console.error('Error fetching relationships entries:', error);
@@ -16,9 +17,9 @@ export const getRelationships = async (req: Request) => {
 };
 
 // Handler to get total number of interactions
-export const getTotalInteractions = async (req: Request) => {
+export const getTotalInteractions = async (req: Request, user: Partial<User>) => {
     try {
-        const result = await pool.query('SELECT COUNT(*) as total FROM relationships');
+        const result = await pool.query('SELECT COUNT(*) as total FROM relationships WHERE user_id = $1', [user.id]);
         return new ClientResponse(JSON.stringify({ total: parseInt(result.rows[0].total) || 0 }));
     } catch (error) {
         console.error('Error fetching total interactions:', error);
@@ -27,15 +28,16 @@ export const getTotalInteractions = async (req: Request) => {
 };
 
 // Handler to get the most frequent person in interactions
-export const getMostFrequentPerson = async (req: Request) => {
+export const getMostFrequentPerson = async (req: Request, user: Partial<User>) => {
     try {
         const result = await pool.query(`
             SELECT person, COUNT(*) as interaction_count
             FROM relationships
+            WHERE user_id = $1
             GROUP BY person
             ORDER BY interaction_count DESC
             LIMIT 1
-        `);
+        `, [user.id]);
         return new ClientResponse(JSON.stringify({ person: result.rows[0]?.person || 'N/A' }));
     } catch (error) {
         console.error('Error fetching most frequent person:', error);

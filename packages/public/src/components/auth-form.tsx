@@ -11,22 +11,23 @@ export const AuthForm: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { setToken } = useAuth();
+  const { setAuth } = useAuth();
   const { t } = useTranslation();
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setToken(storedToken);
+    const storedUser = localStorage.getItem("user");
+    if (storedToken && storedUser) {
+      setAuth(storedToken, JSON.parse(storedUser));
     }
-  }, [setToken]);
+  }, [setAuth]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (isLogin) {
-      handleLogin(username, password, setToken);
+      handleLogin(username, password, setAuth);
     } else {
-      handleRegister(username, password, setToken);
+      handleRegister(username, password, setAuth);
     }
   };
 

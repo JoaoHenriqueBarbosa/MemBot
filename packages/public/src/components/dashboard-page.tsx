@@ -15,7 +15,7 @@ import { useState } from "react";
 import { ChevronDownIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-export function DashboardView() {
+export function DashboardPage() {
   const [activeTab, setActiveTab] = useState("financial");
   const { t } = useTranslation();
 

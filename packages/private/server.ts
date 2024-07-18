@@ -1,4 +1,4 @@
-import { serveRest } from "./api/rest";
+import { serveAuth, serveRest } from "./api/rest";
 import { handleMessage } from "./handlers/messageHandler";
 import { TextEncoderStream, TextDecoderStream } from "./polyfills/text-encoder-decoder";
 import { authenticateRequest, authenticateWebSocket } from "./middleware/auth";
@@ -25,10 +25,23 @@ const server = Bun.serve({
                 }
                 return new ClientResponse("Upgrade failed", { status: 500 });
             } else {
+                const url = new URL(req.url);
+                const pathname = url.pathname;
+                const method = req.method;
+            
+                if (["/api/auth/register", "/api/auth/login"].includes(pathname) || method === "OPTIONS") {
+                    const authResponse = await serveAuth(req, url);
+                    if (authResponse) {
+                        return authResponse as Response;
+                    }
+                }
+                
                 const user = await authenticateRequest(req);
-                const restResponse = await serveRest(req, url, user);
-                if (restResponse) {
-                    return restResponse as Response;
+                if (user) {
+                    const restResponse = await serveRest(req, url, user);
+                    if (restResponse) {
+                        return restResponse as Response;
+                    }
                 }
             }
         } catch (error) {

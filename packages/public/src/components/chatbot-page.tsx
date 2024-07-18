@@ -2,7 +2,7 @@ import { Sidebar } from "./sidebar"
 import { Header } from "./header"
 import { ChatbotContent } from "./chatbot-content"
 
-export function ChatbotView() {
+export function ChatbotPage() {
   
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">

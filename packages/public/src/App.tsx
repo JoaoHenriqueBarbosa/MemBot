@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { DashboardView } from "./components/dashboard-view";
-import { ChatbotView } from "./components/chatbot-view";
+import { DashboardPage } from "./components/dashboard-page";
+import { ChatbotPage } from "./components/chatbot-page";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthForm } from "./components/auth-form";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -26,8 +26,8 @@ function AppContent() {
         <Route path="/auth" element={
           isAuthenticated ? <Navigate to="/" /> : <AuthForm />
         } />
-        <Route path="/" element={isAuthenticated ? <DashboardView /> : <Navigate to="/auth" />} />
-        <Route path="/chatbot" element={isAuthenticated ? <ChatbotView /> : <Navigate to="/auth" />} />
+        <Route path="/" element={isAuthenticated ? <DashboardPage /> : <Navigate to="/auth" />} />
+        <Route path="/chatbot" element={isAuthenticated ? <ChatbotPage /> : <Navigate to="/auth" />} />
       </Routes>
     </Router>
   );

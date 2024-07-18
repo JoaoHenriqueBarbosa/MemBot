@@ -6,7 +6,7 @@ import { handleRegister, handleLogin } from "./handlers/auth.js";
 import { User } from "../utils/types.js";
 import { ClientResponse } from "../db/response.js";
 
-export const routeActions: Record<string, (req: Request, user?: Partial<User>) => Promise<ClientResponse>> = {
+export const routeActions: Record<string, (req: Request, user: Partial<User>) => Promise<ClientResponse>> = {
     "/api/financial": getFinancial,
     "/api/financial/income": getTotalIncome,
     "/api/financial/expense": getTotalExpense,
@@ -18,6 +18,9 @@ export const routeActions: Record<string, (req: Request, user?: Partial<User>) =
     "/api/relationships": getRelationships,
     "/api/relationships/total-interactions": getTotalInteractions,
     "/api/relationships/most-frequent-person": getMostFrequentPerson,
+};
+
+export const authRouteActions: Record<string, (req: Request) => Promise<ClientResponse>> = {
     "/api/auth/register": handleRegister,
     "/api/auth/login": handleLogin,
 };
