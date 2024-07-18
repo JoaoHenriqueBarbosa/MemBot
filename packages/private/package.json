@@ -9,6 +9,7 @@
   "keywords": [],
   "author": "Joao Henrique Barbosa <joaohenriquebarbosa21@gmail.com>",
   "dependencies": {
+    "@google/generative-ai": "^0.15.0",
     "ollama": "^0.5.2",
     "pg": "^8.12.0"
   },

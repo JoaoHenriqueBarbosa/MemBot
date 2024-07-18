@@ -1,5 +1,7 @@
 import { ServerWebSocket } from "bun";
-import { handleInit, handleUserMessage } from "./ollamaHandler.js";
+import { handleInit, handleUserMessage } from "./aiHandler.js";
+
+const MODEL_NAME = process.env.MODEL_NAME || "gemma2";
 
 export const handleMessage = async (ws: ServerWebSocket<{ authToken: string }>, message: string | Buffer) => {
     try {
@@ -12,7 +14,8 @@ export const handleMessage = async (ws: ServerWebSocket<{ authToken: string }>, 
             await handleUserMessage(ws, messageObject.content, messageObject.language, messageObject.categorize);
         }
     } catch (e: any) {
-        if (e.toString().toLowerCase().includes("refused")) {
+        console.log(e.toString());
+        if (MODEL_NAME !== "gemini-1.5-flash" && e.toString().includes("ConnectionRefused: Unable to connect. Is the computer able to access the url?")) {
             ws.send("docker-not-running");
         }
         console.log(e);

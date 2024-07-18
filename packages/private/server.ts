@@ -1,5 +1,10 @@
 import { serveRest } from "./api/rest";
 import { handleMessage } from "./handlers/messageHandler";
+import { TextEncoderStream, TextDecoderStream } from "./polyfills/text-encoder-decoder";
+// @ts-ignore
+globalThis.TextEncoderStream ||= TextEncoderStream
+// @ts-ignore
+globalThis.TextDecoderStream ||= TextDecoderStream
 
 const server = Bun.serve({
     port: 8081,

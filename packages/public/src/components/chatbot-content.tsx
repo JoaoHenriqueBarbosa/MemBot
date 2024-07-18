@@ -10,8 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { SendIcon, Loader2 } from "lucide-react";
-import { WebSocketMessage } from "@ai-jrnl/server/utils/types";
-import { adaptativeHumanByteReader } from "@/lib/utils";
+import { WebSocketMessage } from "private/utils/types";
+import { adaptativeHumanByteReader, cn } from "@/lib/utils";
 import { Remark } from "react-remark";
 import { API_HOST } from "@/lib/consts";
 import { useTranslation } from "react-i18next";
@@ -46,20 +46,24 @@ export function ChatbotContent() {
       switch (wsMessage.type) {
         case "message":
           setMessages((prevMessages) => {
-            const newMessages = wsMessage.id && prevMessages.find((msg) => msg.id === wsMessage.id)
-              ? prevMessages.map((msg) =>
-                  msg.id === wsMessage.id
-                    ? {
-                        ...msg,
-                        content: (msg.content || "") + (wsMessage.content || ""),
-                      }
-                    : msg
-                )
-              : [...prevMessages, wsMessage];
+            const newMessages =
+              wsMessage.id &&
+              prevMessages.find((msg) => msg.id === wsMessage.id)
+                ? prevMessages.map((msg) =>
+                    msg.id === wsMessage.id
+                      ? {
+                          ...msg,
+                          content:
+                            (msg.content || "") + (wsMessage.content || ""),
+                        }
+                      : msg
+                  )
+                : [...prevMessages, wsMessage];
 
             setTimeout(() => {
               if (messagesContentRef.current) {
-                messagesContentRef.current.scrollTop = messagesContentRef.current.scrollHeight;
+                messagesContentRef.current.scrollTop =
+                  messagesContentRef.current.scrollHeight;
               }
             }, 0);
 
@@ -81,7 +85,7 @@ export function ChatbotContent() {
             setModelSize(null);
             setTimeout(() => {
               const offsetTop = messagesContentRef.current?.offsetTop;
-  
+
               messagesContentRef.current?.style.setProperty(
                 "height",
                 `calc(100vh - ${offsetTop}px - 60px - 25px)`
@@ -164,9 +168,13 @@ export function ChatbotContent() {
                   modelSize !== null &&
                   pullingStatus.includes("pulling") && (
                     <div className="w-full max-w-xs">
-                      <Progress value={(pullProgress / modelSize) * 100} className="mb-2" />
+                      <Progress
+                        value={(pullProgress / modelSize) * 100}
+                        className="mb-2"
+                      />
                       <div className="text-sm text-center">
-                        {adaptativeHumanByteReader(pullProgress)} / {adaptativeHumanByteReader(modelSize)}
+                        {adaptativeHumanByteReader(pullProgress)} /{" "}
+                        {adaptativeHumanByteReader(modelSize)}
                       </div>
                     </div>
                   )}
@@ -205,26 +213,29 @@ export function ChatbotContent() {
         </label>
       </CardHeader>
       <CardContent ref={messagesContentRef} className="messages">
-        <div className="space-y-4">
+        <div className="space-y-4 flex flex-col items-start">
           {messages.map((message, i) => (
-            <div
-              key={i}
-              className={`flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm ${
-                message.role === "user"
-                  ? "ml-auto bg-primary text-primary-foreground"
-                  : "bg-muted"
-              }`}
-            >
-              {message.category && (
-                <div
-                  className={`category ${message.category.replace(/\s/g, "-")}`}
-                >
-                  {t(message.category)}
+              <div
+                key={i}
+                className={`flex flex-col gap-2 rounded-lg px-3 py-2 text-sm ${
+                  message.role === "user"
+                    ? "bg-primary text-primary-foreground self-end"
+                    : "bg-muted"
+                }`}
+              >
+                {message.category && (
+                  <div
+                    className={`category ${message.category.replace(
+                      /\s/g,
+                      "-"
+                    )}`}
+                  >
+                    {t(message.category)}
+                  </div>
+                )}
+                <div className="remark-content">
+                  <Remark>{message.content}</Remark>
                 </div>
-              )}
-              <div className="remark-content">
-                <Remark>{message.content}</Remark>
-              </div>
             </div>
           ))}
         </div>
