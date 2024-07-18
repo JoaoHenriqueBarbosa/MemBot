@@ -3,6 +3,7 @@ import { handleMessage } from "./handlers/messageHandler";
 import { TextEncoderStream, TextDecoderStream } from "./polyfills/text-encoder-decoder";
 import { authenticateRequest, authenticateWebSocket } from "./middleware/auth";
 import { ClientResponse } from "./db/response";
+import { authRoutes } from "./api/routes";
 
 // @ts-ignore
 globalThis.TextEncoderStream ||= TextEncoderStream
@@ -29,7 +30,7 @@ const server = Bun.serve({
                 const pathname = url.pathname;
                 const method = req.method;
             
-                if (["/api/auth/register", "/api/auth/login"].includes(pathname) || method === "OPTIONS") {
+                if (authRoutes.includes(pathname) || method === "OPTIONS") {
                     const authResponse = await serveAuth(req, url);
                     if (authResponse) {
                         return authResponse as Response;

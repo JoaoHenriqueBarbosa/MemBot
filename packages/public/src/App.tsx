@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthForm } from "./components/auth-form";
 import { AuthProvider } from "./contexts/AuthContext";
 import { useAuth } from './hooks/useAuth';
+import { EmailVerification } from "./components/email-verification";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -16,7 +17,7 @@ const queryClient = new QueryClient({
 });
 
 function AppContent() {
-  const {  token } = useAuth();
+  const { token } = useAuth();
 
   const isAuthenticated = useMemo(() => !!token, [token]);
 
@@ -28,6 +29,7 @@ function AppContent() {
         } />
         <Route path="/" element={isAuthenticated ? <DashboardPage /> : <Navigate to="/auth" />} />
         <Route path="/chatbot" element={isAuthenticated ? <ChatbotPage /> : <Navigate to="/auth" />} />
+        <Route path="/verify-email" element={<EmailVerification />} />
       </Routes>
     </Router>
   );

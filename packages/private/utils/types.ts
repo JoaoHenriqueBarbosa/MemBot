@@ -16,6 +16,7 @@ export type Category = "financial" | "health and well-being" | "work/projects" |
 export type User = {
     id: number;
     username: string;
+    email: string;
     password: string;
 };
 

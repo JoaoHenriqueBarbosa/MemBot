@@ -21,24 +21,37 @@ export const handleLogin = async (username: string, password: string, setAuth: (
   }
 };
 
-export const handleRegister = async (username: string, password: string, setAuth: (token: string, user: { id: number, username: string }) => void) => {
+export const handleRegister = async (username: string, email: string, password: string) => {
   try {
     const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ username, email, password }),
     });
+    const data = await response.json();
     if (response.ok) {
-      const data = await response.json();
-      setAuth(data.token, data.user);
-      return true;
+      return { success: true, message: data.message };
     } else {
-      console.error('Registration failed');
-      return false;
+      return { success: false, message: data.message };
     }
   } catch (error) {
     console.error('Registration error:', error);
-    return false;
+    return { success: false, message: 'registrationError' };
+  }
+};
+
+export const handleVerifyEmail = async (token: string) => {
+  try {
+    const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/auth/verify-email`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token }),
+    });
+    const data = await response.json();
+    return { success: response.ok, message: data.message };
+  } catch (error) {
+    console.error('emailVerificationError', error);
+    return { success: false, message: 'emailVerificationError' };
   }
 };
 
