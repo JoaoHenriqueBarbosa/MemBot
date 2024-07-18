@@ -12,6 +12,7 @@ import { UsersIcon, HeartIcon, MessageCircleIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { API_HOST, API_PROTOCOL } from "@/lib/consts";
 import { useTranslation } from "react-i18next";
+import { useAuth } from '@/contexts/AuthContext';
 
 const fetchRelationshipsData = (token: string | null) => async () => {
   const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/relationships`,
@@ -55,8 +56,9 @@ const fetchMostFrequentPerson = (token: string | null) => async () => {
   return response.json();
 };
 
-export function RelationshipsContent({ token }: { token: string | null }) {
+export function RelationshipsContent() {
   const { t } = useTranslation();
+  const { token } = useAuth();
   const { data: relationshipsData } = useQuery({
     queryKey: ["relationships"],
     queryFn: fetchRelationshipsData(token),

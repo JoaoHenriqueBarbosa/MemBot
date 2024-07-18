@@ -12,6 +12,7 @@ import { ActivityIcon, HeartPulseIcon, BrainIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { API_HOST, API_PROTOCOL } from "@/lib/consts";
 import { useTranslation } from "react-i18next";
+import { useAuth } from '@/contexts/AuthContext';
 
 const fetchHealthData = (token: string | null) => async () => {
   const response = await fetch(
@@ -58,8 +59,9 @@ const fetchAverageEmotionIntensity = (token: string | null) => async () => {
   return response.json();
 };
 
-export function HealthWellbeingContent({ token }: { token: string | null }) {
+export function HealthWellbeingContent() {
   const { t } = useTranslation();
+  const { token } = useAuth();
   const { data: healthData } = useQuery({
     queryKey: ["health-wellbeing"],
     queryFn: fetchHealthData(token),

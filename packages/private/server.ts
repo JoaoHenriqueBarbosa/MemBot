@@ -1,8 +1,9 @@
 import { serveRest } from "./api/rest";
 import { handleMessage } from "./handlers/messageHandler";
 import { TextEncoderStream, TextDecoderStream } from "./polyfills/text-encoder-decoder";
-import { verifyToken } from "./utils/jwt";
-import { User } from "./utils/types";
+import { authenticateRequest, authenticateWebSocket } from "./middleware/auth";
+import { ClientResponse } from "./db/response";
+
 // @ts-ignore
 globalThis.TextEncoderStream ||= TextEncoderStream
 // @ts-ignore
@@ -11,48 +12,32 @@ globalThis.TextDecoderStream ||= TextDecoderStream
 const server = Bun.serve({
     port: 8081,
     async fetch(req, server) {
-        let user: Partial<User> | undefined;
-        const url = new URL(req.url);
+        try {
+            const url = new URL(req.url);
+            const connectionHeader = req.headers.get('connection');
 
-        const connectionHeader = req.headers.get('connection');
-        if (connectionHeader !== null && connectionHeader.toLocaleLowerCase() === 'upgrade') {
-            console.log("WebSocket connection upgrade requested");
-            const wsProtocol = req.headers.get('sec-websocket-protocol') || '';
-        
-            user = verifyToken(wsProtocol);
-            if (!user) {
-                console.log("Unauthorized: Invalid WebSocket token");
-                return new Response("Unauthorized", { status: 401 });
-            }
-        } else {
-            const pathname = url.pathname;
-            const method = req.method;
-        
-            // Verificação para autenticação de API
-            if (!["/api/auth/register", "/api/auth/login"].includes(pathname) && method !== "OPTIONS") {
-                const authHeader = req.headers.get('Authorization');
-        
-                if (authHeader && authHeader.startsWith('Bearer ')) {
-                    const token = authHeader.substring(7);
-                    user = verifyToken(token);
-                    if (!user) {
-                        console.log("Unauthorized: Invalid Token");
-                        return new Response("Unauthorized", { status: 401 });
-                    }
-                } else {
-                    console.log("Unauthorized: No Bearer Token");
-                    return new Response("Unauthorized", { status: 401 });
+            if (connectionHeader !== null && connectionHeader.toLowerCase() === 'upgrade') {
+                console.log("WebSocket connection upgrade requested");
+                const wsProtocol = req.headers.get('sec-websocket-protocol') || '';
+                authenticateWebSocket(wsProtocol);
+                if (server.upgrade(req)) {
+                    return;
+                }
+                return new ClientResponse("Upgrade failed", { status: 500 });
+            } else {
+                const user = await authenticateRequest(req);
+                const restResponse = await serveRest(req, url, user);
+                if (restResponse) {
+                    return restResponse as Response;
                 }
             }
+        } catch (error) {
+            if (error instanceof Error && error.message === "Unauthorized") {
+                return new ClientResponse("Unauthorized", { status: 401 });
+            }
+            console.error("Server error:", error);
+            return new ClientResponse("Internal Server Error", { status: 500 });
         }
-        
-        const restResponse = await serveRest(req, url, user);
-        if (restResponse) {
-            return restResponse as Response;
-        } else if (server.upgrade(req)) {
-            return;
-        }
-        return new Response("Upgrade failed", { status: 500 });
     },
     websocket: {
         message: handleMessage,

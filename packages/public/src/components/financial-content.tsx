@@ -13,6 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import { formatCurrency } from "@/lib/utils";
 import { API_HOST, API_PROTOCOL } from "@/lib/consts";
 import { useTranslation } from "react-i18next";
+import { useAuth } from '@/contexts/AuthContext';
 
 const fetchFinancialData = (token: string | null) => async () => {
   const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/financial`, {
@@ -71,8 +72,9 @@ const fetchBalance = (token: string | null) => async () => {
   return response.json();
 };
 
-export function FinancialContent({ token }: { token: string | null }) {
+export function FinancialContent() {
   const { t, i18n } = useTranslation();
+  const { token } = useAuth();
   const { data: financialData } = useQuery({
     queryKey: ["financial"],
     queryFn: fetchFinancialData(token),

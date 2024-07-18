@@ -15,9 +15,11 @@ import { adaptativeHumanByteReader } from "@/lib/utils";
 import { Remark } from "react-remark";
 import { API_HOST } from "@/lib/consts";
 import { useTranslation } from "react-i18next";
+import { useAuth } from '@/contexts/AuthContext';
 
-export function ChatbotContent( { token, onLogout }: { token: string | null; onLogout: () => void }) {
+export function ChatbotContent() {
   const { t, i18n } = useTranslation();
+  const { token } = useAuth();
   const [messages, setMessages] = useState<WebSocketMessage[]>([]);
   const [message, setMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -215,27 +217,24 @@ export function ChatbotContent( { token, onLogout }: { token: string | null; onL
       <CardContent ref={messagesContentRef} className="messages">
         <div className="space-y-4 flex flex-col items-start">
           {messages.map((message, i) => (
-              <div
-                key={i}
-                className={`flex flex-col gap-2 rounded-lg px-3 py-2 text-sm ${
-                  message.role === "user"
-                    ? "bg-primary text-primary-foreground self-end"
-                    : "bg-muted"
-                }`}
-              >
-                {message.category && (
-                  <div
-                    className={`category ${message.category.replace(
-                      /\s/g,
-                      "-"
-                    )}`}
-                  >
-                    {t(message.category)}
-                  </div>
-                )}
-                <div className="remark-content">
-                  <Remark>{message.content}</Remark>
+            <div
+              key={i}
+              className={`flex flex-col gap-2 rounded-lg px-3 py-2 text-sm ${
+                message.role === "user"
+                  ? "bg-primary text-primary-foreground self-end"
+                  : "bg-muted"
+              }`}
+            >
+              {message.category && (
+                <div
+                  className={`category ${message.category.replace(/\s/g, "-")}`}
+                >
+                  {t(message.category)}
                 </div>
+              )}
+              <div className="remark-content">
+                <Remark>{message.content}</Remark>
+              </div>
             </div>
           ))}
         </div>
