@@ -10,14 +10,14 @@ export const handleLogin = async (username: string, password: string, setAuth: (
     if (response.ok) {
       const data = await response.json();
       setAuth(data.token, data.user);
-      return true;
+      return { success: true, message: data.message };
     } else {
-      console.error('Login failed');
-      return false;
+      const data = await response.json();
+      return { success: false, message: data.message };
     }
   } catch (error) {
     console.error('Login error:', error);
-    return false;
+    return { success: false, message: 'loginError' };
   }
 };
 

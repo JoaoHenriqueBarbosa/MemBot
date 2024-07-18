@@ -61,7 +61,8 @@
   "loginError": "Erro de login",
   "registrationError": "Ocorreu um erro durante o registro",
   "emailVerificationError": "Ocorreu um erro durante a verificação do e-mail",
-  "missingCredentials": "Nome de usuário, e-mail e senha são obrigatórios",
+  "missingRegisterCredentials": "Nome de usuário e senha são obrigatórios",
+  "missingLoginCredentials": "Nome de usuário, e-mail e senha são obrigatórios",
   "userAlreadyExists": "Nome de usuário ou e-mail já existe",
   "emailNotVerified": "Por favor, verifique seu e-mail antes de fazer login",
   "invalidCredentials": "Nome de usuário ou senha inválidos",
@@ -75,5 +76,9 @@
   "checkEmailForVerification": "Por favor, verifique seu e-mail para confirmar sua conta.",
   "emailVerification": "Verificação de E-mail",
   "verifyingEmail": "Verificando e-mail...",
-  "backToLogin": "Voltar para o Login"
+  "backToLogin": "Voltar para o Login",
+  "verificationTokenRequired": "Token de verificação obrigatório",
+  "emailAlreadyVerified": "E-mail ja verificado",
+  "invalidVerificationToken": "Token de verificação inválido",
+  "emailVerifiedSuccessfully": "E-mail verificado com sucesso"
 }

@@ -28,16 +28,19 @@ export const AuthForm: React.FC = () => {
 
     try {
       if (isLogin) {
-        const success = await handleLogin(username, password, setAuth);
-        if (!success) {
-          setMessage(t("loginFailed"));
+        const result = await handleLogin(username, password, setAuth);
+        if (result.success) {
+          setIsSuccess(true);
+        } else {
+          setMessage(result.message);
         }
       } else {
         const result = await handleRegister(username, email, password);
         if (result.success) {
           setIsSuccess(true);
+        } else {
+          setMessage(result.message);
         }
-        setMessage(result.message);
       }
     } finally {
       setIsLoading(false);

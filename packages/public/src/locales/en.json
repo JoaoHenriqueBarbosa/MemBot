@@ -61,7 +61,8 @@
   "loginError": "Login error",
   "registrationError": "An error occurred during registration",
   "emailVerificationError": "An error occurred during email verification",
-  "missingCredentials": "Username, email, and password are required",
+  "missingRegisterCredentials": "Username, email, and password are required",
+  "missingLoginCredentials": "Username and password are required",
   "userAlreadyExists": "Username or email already exists",
   "emailNotVerified": "Please verify your email before logging in",
   "invalidCredentials": "Invalid username or password",
@@ -75,5 +76,9 @@
   "checkEmailForVerification": "Please check your email for a verification link.",
   "emailVerification": "Email Verification",
   "verifyingEmail": "Verifying email...",
-  "backToLogin": "Back to Login"
+  "backToLogin": "Back to Login",
+  "verificationTokenRequired": "Verification token is required",
+  "emailAlreadyVerified": "Email already verified",
+  "invalidVerificationToken": "Invalid verification token",
+  "emailVerifiedSuccessfully": "Email verified successfully"
 }
