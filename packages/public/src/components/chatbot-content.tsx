@@ -31,7 +31,6 @@ export function ChatbotContent() {
   >("idle");
   const [pullProgress, setPullProgress] = useState<number | null>(null);
   const [modelSize, setModelSize] = useState<number | null>(null);
-  const [categorize, setCategorize] = useState<boolean>(false);
   const messagesContentRef = useRef<HTMLDivElement | null>(null);
   const conn = useRef<WebSocket | null>(null);
 
@@ -125,7 +124,7 @@ export function ChatbotContent() {
       JSON.stringify({
         type: "message",
         content: message,
-        categorize: categorize,
+        categorize: true,
         language: i18n.language,
         user
       })
@@ -205,15 +204,6 @@ export function ChatbotContent() {
             </p>
           </div>
         </div>
-        <label className="flex items-center space-x-2">
-          <input
-            type="checkbox"
-            checked={categorize}
-            onChange={(e) => setCategorize(e.target.checked)}
-            className="form-checkbox h-4 w-4 text-primary"
-          />
-          <span className="text-sm">{t("categorizeEntries")}</span>
-        </label>
       </CardHeader>
       <CardContent ref={messagesContentRef} className="messages">
         <div className="space-y-4 flex flex-col items-start">
