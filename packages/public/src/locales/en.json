@@ -50,5 +50,11 @@
   "relationships": "Relationships",
   "welcomeBack": "Welcome back!",
   "progressSummary": "Here's a summary of your progress",
-  "assistantDescription": "Your personal assistant"
+  "assistantDescription": "Your personal assistant",
+  "login": "Login",
+  "register": "Register",
+  "username": "Username",
+  "password": "Password",
+  "needAccount": "Need an account? Register",
+  "alreadyHaveAccount": "Already have an account? Login"
 }

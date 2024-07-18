@@ -11,3 +11,15 @@ export type WebSocketMessage = {
 };
 
 export type Category = "financial" | "health and well-being" | "work/projects" | "relationships" | "goals/progress";
+
+export type User = {
+    id: number;
+    username: string;
+    password: string;
+};
+
+export type AuthResponse = {
+    success: boolean;
+    message: string;
+    user?: Partial<User>;
+};

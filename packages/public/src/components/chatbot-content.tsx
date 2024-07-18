@@ -11,7 +11,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { SendIcon, Loader2 } from "lucide-react";
 import { WebSocketMessage } from "private/utils/types";
-import { adaptativeHumanByteReader, cn } from "@/lib/utils";
+import { adaptativeHumanByteReader } from "@/lib/utils";
 import { Remark } from "react-remark";
 import { API_HOST } from "@/lib/consts";
 import { useTranslation } from "react-i18next";

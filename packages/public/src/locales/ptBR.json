@@ -50,5 +50,11 @@
   "relationships": "Relacionamentos",
   "welcomeBack": "Bem-vindo de volta!",
   "progressSummary": "Aqui está um resumo do seu progresso",
-  "assistantDescription": "Seu assistente pessoal"
+  "assistantDescription": "Seu assistente pessoal",
+  "login": "Entrar",
+  "register": "Registrar",
+  "username": "Nome de usuário",
+  "password": "Senha",
+  "needAccount": "Precisa de uma conta? Registre-se",
+  "alreadyHaveAccount": "Já tem uma conta? Entre"
 }
