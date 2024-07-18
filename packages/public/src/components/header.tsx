@@ -9,25 +9,17 @@ import {
   BreadcrumbPage,
 } from "@/components/ui/breadcrumb";
 import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-import {
   MenuIcon,
   Package2Icon,
   LayoutDashboardIcon,
   BotIcon,
-  GlobeIcon,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { ExitIcon } from "@radix-ui/react-icons";
+import { LanguageSwitcher } from "./language-switcher";
 
-export function Header({onLogout}: {onLogout: () => void}) {
-  
+export function Header() {
   const location = useLocation();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const getBreadcrumbTitle = () => {
     switch (location.pathname) {
@@ -40,10 +32,6 @@ export function Header({onLogout}: {onLogout: () => void}) {
       default:
         return t("unknown");
     }
-  };
-
-  const changeLanguage = (lang: string) => {
-    i18n.changeLanguage(lang);
   };
 
   return (
@@ -93,25 +81,7 @@ export function Header({onLogout}: {onLogout: () => void}) {
         </BreadcrumbList>
       </Breadcrumb>
       <div className="flex items-center gap-4">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon">
-            <GlobeIcon className="h-4 w-4" />
-            <span className="sr-only">{t("selectLanguage")}</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => changeLanguage("en")} selected={i18n.language === "en"}>
-            English
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => changeLanguage("ptBR")} selected={i18n.language === "ptBR"}>
-            Português (BR)
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <Button variant="outline" size="icon" onClick={onLogout}>
-        <ExitIcon className="h-4 w-4" />
-      </Button>
+        <LanguageSwitcher />
       </div>
     </header>
   );
