@@ -124,7 +124,7 @@ Antes de começar, certifique-se de ter os seguintes itens instalados:
 
 ## Executando o Projeto
 
-1. Inicie o contêiner do banco de dados PostgreSQL:
+1. Inicie o contêiner do banco de dados PostgreSQL, o frontend e o backend:
 
    ```
    docker-compose up -d
@@ -141,13 +141,7 @@ Antes de começar, certifique-se de ter os seguintes itens instalados:
      docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
      ```
 
-3. Execute o projeto:
-
-   ```
-   bun dev
-   ```
-
-4. Abra seu navegador e acesse `http://localhost:3000` para acessar a aplicação.
+3. Abra seu navegador e acesse `http://localhost:5173` para acessar a aplicação.
 
 ## Estrutura do Projeto
 
@@ -183,6 +177,9 @@ MemBot/
 - `/api/relationships`: Obter entradas de relacionamentos
 - `/api/relationships/total-interactions`: Obter total de interações
 - `/api/relationships/most-frequent-person`: Obter pessoa mais frequentemente interagida
+- `/api/auth/register`: Registrar um novo usuário
+- `/api/auth/login`: Fazer login
+- `/api/auth/verify-email`: Verificar e-mail
 
 Para uma documentação mais detalhada da API, consulte o arquivo de documentação da API (se disponível) ou o código-fonte no diretório `packages/server/api/`.
 
