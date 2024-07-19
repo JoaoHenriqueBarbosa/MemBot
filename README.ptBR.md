@@ -74,8 +74,8 @@ Antes de começar, certifique-se de ter os seguintes itens instalados:
 1. Clone o repositório:
 
    ```
-   git clone https://github.com/JoaoHenriqueBarbosa/AI-Journal.git
-   cd AI-Journal
+   git clone https://github.com/JoaoHenriqueBarbosa/MemBot.git
+   cd MemBot
    ```
 
 2. Instale as dependências do projeto:
@@ -152,7 +152,7 @@ Antes de começar, certifique-se de ter os seguintes itens instalados:
 ## Estrutura do Projeto
 
 ```
-ai-journal/
+MemBot/
 ├── packages/
 │   ├── client/          # Aplicação frontend React
 │   │   ├── src/
