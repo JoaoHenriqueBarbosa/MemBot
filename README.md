@@ -1,12 +1,12 @@
-# AI Journal: Your Personal Thought Curator 🧠✨
+# MemBot: Your Personal Thought Curator 🧠✨
 
-Welcome to AI Journal! 🚀
+Welcome to MemBot! 🚀
 
-AI Journal is your digital companion that listens, organizes, and provides insights into your daily thoughts. Write your entries freely, and our intelligent system will categorize and analyze them automatically. Track your finances 💰, monitor your health 🧘‍♀️, nurture relationships 💖, or simply capture your day.
+MemBot is your digital companion that listens, organizes, and provides insights into your daily thoughts. Write your entries freely, and our intelligent system will categorize and analyze them automatically. Track your finances 💰, monitor your health 🧘‍♀️, nurture relationships 💖, or simply capture your day.
 
-AI Journal also offers insights and suggestions for improvement while keeping your data secure and private.
+MemBot also offers insights and suggestions for improvement while keeping your data secure and private.
 
-Ready to embark on a journey of self-discovery? Let AI Journal guide you! 🌟
+Ready to embark on a journey of self-discovery? Let MemBot guide you! 🌟
 
 🌐 [Português](README.ptBR.md)
 
@@ -212,7 +212,7 @@ For more detailed API documentation, refer to the API documentation file (if ava
 
 ## TODO
 
-As a proof of concept, this project demonstrates the core functionality of an AI journal application. However, there are many areas where it could be expanded and improved. Some potential enhancements include:
+As a proof of concept, this project demonstrates the core functionality of an MemBot application. However, there are many areas where it could be expanded and improved. Some potential enhancements include:
 
 - [ ] Implementation of LangChain for improved AI chat flow and decision-making
 - [ ] Enhanced AI interaction to request additional information when needed

@@ -1,12 +1,12 @@
-# AI Journal: Seu Curador Pessoal de Pensamentos 🧠✨
+# MemBot: Seu Curador Pessoal de Pensamentos 🧠✨
 
-Bem-vindo ao AI Journal! 🚀
+Bem-vindo ao MemBot! 🚀
 
-AI Journal é seu companheiro digital que escuta, organiza e fornece insights sobre seus pensamentos diários. Escreva suas entradas livremente, e nosso sistema inteligente irá categorizá-las e analisá-las automaticamente. Acompanhe suas finanças 💰, monitore sua saúde 🧘‍♀️, cultive relacionamentos 💖 ou simplesmente registre seu dia.
+MemBot é seu companheiro digital que escuta, organiza e fornece insights sobre seus pensamentos diários. Escreva suas entradas livremente, e nosso sistema inteligente irá categorizá-las e analisá-las automaticamente. Acompanhe suas finanças 💰, monitore sua saúde 🧘‍♀️, cultive relacionamentos 💖 ou simplesmente registre seu dia.
 
-O AI Journal também oferece insights e sugestões para melhorias, mantendo seus dados seguros e privados.
+O MemBot também oferece insights e sugestões para melhorias, mantendo seus dados seguros e privados.
 
-Pronto para embarcar em uma jornada de autodescoberta? Deixe o AI Journal te guiar! 🌟
+Pronto para embarcar em uma jornada de autodescoberta? Deixe o MemBot te guiar! 🌟
 
 🌐 [English](README.md)
 

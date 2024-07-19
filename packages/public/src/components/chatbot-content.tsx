@@ -198,7 +198,7 @@ export function ChatbotContent() {
             <AvatarFallback>AI</AvatarFallback>
           </Avatar>
           <div>
-            <p className="text-sm font-medium leading-none">AI Journal</p>
+            <p className="text-sm font-medium leading-none">MemBot</p>
             <p className="text-sm text-muted-foreground">
               {t("assistantDescription")}
             </p>
