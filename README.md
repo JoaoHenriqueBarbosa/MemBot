@@ -1,5 +1,9 @@
 # MemBot: Your Personal Thought Curator 🧠✨
 
+<p align="center">
+  <img src="https://github.com/JoaoHenriqueBarbosa/MemBot/blob/main/packages/public/public/logo-membot-svg.svg" />
+</p>
+
 Welcome to MemBot! 🚀
 
 MemBot is your digital companion that listens, organizes, and provides insights into your daily thoughts. Write your entries freely, and our intelligent system will categorize and analyze them automatically. Track your finances 💰, monitor your health 🧘‍♀️, nurture relationships 💖, or simply capture your day.
