@@ -6,6 +6,7 @@ export const useAuth = (): {
   token: string | null;
   user: Partial<User> | null;
   setAuth: (token: string | null, user: Partial<User> | null) => void;
+  isLoading: boolean;
 } => {
   const context = useContext(AuthContext);
   if (context === undefined) {

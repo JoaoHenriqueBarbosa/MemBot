@@ -13,7 +13,7 @@ import { SendIcon, Loader2 } from "lucide-react";
 import { WebSocketMessage } from "private/utils/types";
 import { adaptativeHumanByteReader } from "@/lib/utils";
 import { Remark } from "react-remark";
-import { API_HOST } from "@/lib/consts";
+import { API_HOST, WS_PROTOCOL } from "@/lib/consts";
 import { useTranslation } from "react-i18next";
 import { useAuth } from '@/hooks/useAuth';
 
@@ -35,7 +35,7 @@ export function ChatbotContent() {
   const conn = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    const socket = new WebSocket(`ws://${API_HOST}`, [token!]);
+    const socket = new WebSocket(`${WS_PROTOCOL}://${API_HOST}`, [token!]);
 
     socket.addEventListener("message", (event) => {
       if (event.data === "docker-not-running") {
@@ -117,7 +117,7 @@ export function ChatbotContent() {
     return () => {
       socket.close();
     };
-  }, []);
+  }, [token]);
 
   const sendMessage = (message: string) => {
     conn.current?.send(
