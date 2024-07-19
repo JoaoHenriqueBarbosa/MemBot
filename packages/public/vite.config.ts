@@ -12,5 +12,13 @@ export default defineConfig({
   server: {
     host: true,
     port: 5173
-  }
+  },
+  build: {
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, "index.html"),
+        404: path.resolve(__dirname, "public/404.html"),
+      },
+    },
+  },
 })
