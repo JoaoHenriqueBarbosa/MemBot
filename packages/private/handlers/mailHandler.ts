@@ -10,15 +10,21 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-export async function sendVerificationEmail(to: string, token: string) {
+export async function sendVerificationEmail(to: string, token: string, language: string) {
     const verificationLink = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
 
     const mailOptions = {
         from: process.env.MAIL_USER,
         to: to,
         subject: 'Verify Your Email',
-        html: `
-            <h1>Welcome to Our App!</h1>
+        html: 
+        language === 'ptBR' ? `
+            <h1>Bem-vindo(a) ao MemBot!</h1>
+            <p>Por favor, clique no link abaixo para verificar seu endereço de e-mail:</p>
+            <a href="${verificationLink}">Verifique seu e-mail</a>
+        ` :
+        `
+            <h1>Welcome to MemBot!</h1>
             <p>Please click the link below to verify your email address:</p>
             <a href="${verificationLink}">Verify Email</a>
         `

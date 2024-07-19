@@ -49,25 +49,6 @@ export async function storeEntry(category: Category, entities: Record<string, an
           user.id,
         ];
         break;
-      case 'work/projects':
-        categoryQuery = `
-          INSERT INTO public.work_projects (entry_date, task_description, task_status, priority, meeting_date, participants, topics_discussed, decisions_made, progress_report, obstacles_faced, user_id)
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-        `;
-        categoryValues = [
-          new Date(),
-          entities.task_description || '',
-          entities.task_status || '',
-          entities.priority || '',
-          entities.meeting_date || null,
-          entities.participants || '',
-          entities.topics_discussed || '',
-          entities.decisions_made || '',
-          entities.progress_report || '',
-          entities.obstacles_faced || '',
-          user.id,
-        ];
-        break;
       case 'relationships':
         categoryQuery = `
           INSERT INTO public.relationships (entry_date, person, interaction_type, feelings, user_id)
@@ -78,21 +59,6 @@ export async function storeEntry(category: Category, entities: Record<string, an
           entities.person || '',
           entities.interaction_type || '',
           entities.feelings || '',
-          user.id,
-        ];
-        break;
-      case 'goals/progress':
-        categoryQuery = `
-          INSERT INTO public.goals_progress (goal_start_date, goal_end_date, goal_description, status, milestones, progress, user_id)
-          VALUES ($1, $2, $3, $4, $5, $6, $7)
-        `;
-        categoryValues = [
-          entities.goal_start_date || null,
-          entities.goal_end_date || null,
-          entities.goal_description || '',
-          entities.status || '',
-          entities.milestones || '',
-          entities.progress || '',
           user.id,
         ];
         break;

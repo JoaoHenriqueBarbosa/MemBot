@@ -60,13 +60,13 @@ async function loginUser(username: string, password: string): Promise<{ user: Pa
 }
 
 export async function handleRegister(req: Request): Promise<ClientResponse> {
-    const { username, email, password } = await req.json() as User & { email: string };
+    const { username, email, password, language } = await req.json() as User & { language: string };
     const result = await registerUser(username, email, password);
     if (!('user' in result)) {
         return new ClientResponse(JSON.stringify({ success: false, message: result.message }), { status: 400 });
     }
     
-    await sendVerificationEmail(email, result.verificationToken);
+    await sendVerificationEmail(email, result.verificationToken, language);
     
     const response: AuthResponse = { 
         success: true, 

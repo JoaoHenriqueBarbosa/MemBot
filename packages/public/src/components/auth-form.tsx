@@ -18,7 +18,7 @@ export const AuthForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const { setAuth } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,7 +35,7 @@ export const AuthForm: React.FC = () => {
           setMessage(result.message);
         }
       } else {
-        const result = await handleRegister(username, email, password);
+        const result = await handleRegister(username, email, password, i18n.language);
         if (result.success) {
           setIsSuccess(true);
         } else {

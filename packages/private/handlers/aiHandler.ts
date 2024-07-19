@@ -133,7 +133,7 @@ export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string 
 };
 
 async function categorizeEntry(entry: string): Promise<Category> {
-    const prompt = `Categorize the following diary entry into one of these categories: financial, health and well-being, work/projects, relationships, or goals/progress. Only respond with the category name.
+    const prompt = `Categorize the following diary entry into one of these categories: financial, health and well-being, or relationships. Only respond with the category name.
 
 Entry: ${entry}
 

@@ -1,5 +1,5 @@
 export type WebSocketMessage = {
-    type: "message" | "init" | "pull-progress" | "request_info" | "additional_info";
+    type: "message" | "init" | "pull-progress" | "request_info";
     categorize?: boolean;
     id?: string;
     role?: "user" | "assistant";
@@ -11,7 +11,7 @@ export type WebSocketMessage = {
     user: Partial<User>;
 };
 
-export type Category = "financial" | "health and well-being" | "work/projects" | "relationships" | "goals/progress";
+export type Category = "financial" | "health and well-being" | "relationships";
 
 export type User = {
     id: number;

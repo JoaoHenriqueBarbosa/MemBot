@@ -21,12 +21,12 @@ export const handleLogin = async (username: string, password: string, setAuth: (
   }
 };
 
-export const handleRegister = async (username: string, email: string, password: string) => {
+export const handleRegister = async (username: string, email: string, password: string, language: string) => {
   try {
     const response = await fetch(`${API_PROTOCOL}://${API_HOST}/api/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, email, password }),
+      body: JSON.stringify({ username, email, password, language }),
     });
     const data = await response.json();
     if (response.ok) {
