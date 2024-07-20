@@ -32,12 +32,11 @@ Pronto para embarcar em uma jornada de autodescoberta? Deixe o MemBot te guiar! 
 
 ## Demo
 
-<p align="center">
-  <video width="800px" height="450px" controls>
-    <source src="https://github.com/JoaoHenriqueBarbosa/MemBot/blob/main/packages/public/public/en.webm" type="video/webm">
-    Seu navegador não suporta o elemento video.
-  </video>
-</p>
+
+
+https://github.com/user-attachments/assets/e59fe3ac-22ac-4caa-9528-c50833ce0a45
+
+
 
 Se o vídeo acima não carregar, [clique aqui](https://github.com/JoaoHenriqueBarbosa/MemBot/blob/main/packages/public/public/en.webm).
 
