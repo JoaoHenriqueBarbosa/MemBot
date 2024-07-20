@@ -33,10 +33,11 @@ Ready to embark on a journey of self-discovery? Let MemBot guide you! 🌟
 ## Demo
 
 <p align="center">
-  <video width="800px" height="450px" controls>
-    <source src="https://github.com/JoaoHenriqueBarbosa/MemBot/blob/main/packages/public/public/en.webm" type="video/webm">
-    Your browser does not support the video tag.
-  </video>
+  
+
+https://github.com/user-attachments/assets/1eca611f-2807-43dc-98c4-b3bab9252230
+
+
 </p>
 
 If the video above didn't load, [click here](https://github.com/JoaoHenriqueBarbosa/MemBot/blob/main/packages/public/public/en.webm).
