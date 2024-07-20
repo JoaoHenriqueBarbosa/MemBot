@@ -16,18 +16,34 @@ Ready to embark on a journey of self-discovery? Let MemBot guide you! 🌟
 
 ## Table of Contents
 
-1. [Features](#features)
-2. [Technologies Used](#technologies-used)
-3. [Prerequisites](#prerequisites)
-4. [Installation](#installation)
-5. [Configuration](#configuration)
-6. [Running the Project](#running-the-project)
-7. [Project Structure](#project-structure)
-8. [API Endpoints](#api-endpoints)
-9. [Contributing](#contributing)
-10. [Troubleshooting](#troubleshooting)
-11. [Project Philosophy](#project-philosophy)
-12. [License](#license)
+1. [Demo](#demo)
+2. [Features](#features)
+3. [Technologies Used](#technologies-used)
+4. [Prerequisites](#prerequisites)
+5. [Installation](#installation)
+6. [Configuration](#configuration)
+7. [Running the Project](#running-the-project)
+8. [Project Structure](#project-structure)
+9. [API Endpoints](#api-endpoints)
+10. [Contributing](#contributing)
+11. [Troubleshooting](#troubleshooting)
+12. [Project Philosophy](#project-philosophy)
+13. [License](#license)
+
+## Demo
+
+<p align="center">
+  <video width="800px" height="450px" controls>
+    <source src="https://github.com/JoaoHenriqueBarbosa/MemBot/blob/main/packages/public/public/en.webm" type="video/webm">
+    Your browser does not support the video tag.
+  </video>
+</p>
+
+If the video above didn't load, [click here](https://github.com/JoaoHenriqueBarbosa/MemBot/blob/main/packages/public/public/en.webm).
+
+The demo showcases the main features of MemBot, including writing journal entries, viewing insights, and interacting with the AI model. The application is responsive and user-friendly, making it easy to use on both desktop and mobile devices.
+
+Also you can play around with the [live demo](https://membot.vercel.app/). But remember, this is a project in development, so if you find any bugs, please report them opening a issue. Or if you have skills in programming, feel free to contribute to the project.
 
 ## Features
 

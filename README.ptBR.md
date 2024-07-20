@@ -16,18 +16,34 @@ Pronto para embarcar em uma jornada de autodescoberta? Deixe o MemBot te guiar! 
 
 ## Índice
 
-1. [Recursos](#recursos)
-2. [Tecnologias Utilizadas](#tecnologias-utilizadas)
-3. [Pré-requisitos](#pré-requisitos)
-4. [Instalação](#instalação)
-5. [Configuração](#configuração)
-6. [Executando o Projeto](#executando-o-projeto)
-7. [Estrutura do Projeto](#estrutura-do-projeto)
-8. [Endpoints da API](#endpoints-da-api)
-9. [Contribuindo](#contribuindo)
-10. [Resolução de Problemas](#resolucao-de-problemas)
-11. [Filosofia do Projeto](#filosofia-do-projeto)
-12. [Licença](#licenca)
+1. [Demo](#demo)
+2. [Recursos](#recursos)
+3. [Tecnologias Utilizadas](#tecnologias-utilizadas)
+4. [Pré-requisitos](#pré-requisitos)
+5. [Instalação](#instalação)
+6. [Configuração](#configuração)
+7. [Executando o Projeto](#executando-o-projeto)
+8. [Estrutura do Projeto](#estrutura-do-projeto)
+9. [Endpoints da API](#endpoints-da-api)
+10. [Contribuindo](#contribuindo)
+11. [Resolução de Problemas](#resolucao-de-problemas)
+12. [Filosofia do Projeto](#filosofia-do-projeto)
+13. [Licença](#licenca)
+
+## Demo
+
+<p align="center">
+  <video width="800px" height="450px" controls>
+    <source src="https://github.com/JoaoHenriqueBarbosa/MemBot/blob/main/packages/public/public/en.webm" type="video/webm">
+    Seu navegador não suporta o elemento video.
+  </video>
+</p>
+
+Se o vídeo acima não carregar, [clique aqui](https://github.com/JoaoHenriqueBarbosa/MemBot/blob/main/packages/public/public/en.webm).
+
+A demonstração apresenta os principais recursos do MemBot, incluindo escrever entradas no diário, visualizar insights e interagir com o modelo de IA. A aplicação é responsiva e amigável ao usuário, facilitando o uso em desktops e dispositivos móveis.
+
+Você também pode brincar com a [demo em si](https://membot.vercel.app/). Mas lembre-se, este é um projeto em desenvolvimento, então se encontrar algum bug, por favor, relate-o abrindo uma issue. Ou se você tem habilidades em programação, sinta-se à vontade para contribuir com o projeto.
 
 ## Recursos
 
