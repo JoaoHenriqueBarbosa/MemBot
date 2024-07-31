@@ -196,8 +196,6 @@ MemBot/
 - `/api/auth/login`: Fazer login
 - `/api/auth/verify-email`: Verificar e-mail
 
-Para uma documentação mais detalhada da API, consulte o arquivo de documentação da API (se disponível) ou o código-fonte no diretório `packages/server/api/`.
-
 ## Contribuindo
 
 1. Faça um fork do repositório
