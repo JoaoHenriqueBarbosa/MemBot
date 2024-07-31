@@ -198,8 +198,6 @@ MemBot/
 - `/api/auth/login`: Log in a user
 - `/api/auth/verify-email`: Verify a user's email
 
-For more detailed API documentation, refer to the API documentation file (if available) or the source code in the `packages/server/api/` directory.
-
 ## Contributing
 
 1. Fork the repository
