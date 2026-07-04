@@ -88,9 +88,19 @@ Essas bibliotecas foram escolhidas por sua confiabilidade, desempenho e alinhame
 
 A camada de raciocínio é um `StateGraph` tipado:
 
-```
-START ─▶ classify ─(categoria?)─▶ extract ─▶ persist ─▶ respond ─▶ END
-             └────────────(nenhuma)──────────────────────▲
+```mermaid
+flowchart TD
+    START([START]) --> classify
+    classify -- categoria --> extract
+    classify -- nenhuma --> respond
+    extract --> persist
+    persist --> respond
+    respond --> END([END])
+
+    classify[classify]
+    extract[extract]
+    persist[persist]
+    respond[respond]
 ```
 
 - **classify / extract** usam `model.withStructuredOutput(schemaZod)` — categorias e

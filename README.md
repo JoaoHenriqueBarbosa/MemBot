@@ -90,9 +90,19 @@ These libraries were chosen for their reliability, performance, and alignment wi
 
 The reasoning layer is a typed `StateGraph`:
 
-```
-START ─▶ classify ─(category?)─▶ extract ─▶ persist ─▶ respond ─▶ END
-             └────────────(none)───────────────────────▲
+```mermaid
+flowchart TD
+    START([START]) --> classify
+    classify -- category --> extract
+    classify -- none --> respond
+    extract --> persist
+    persist --> respond
+    respond --> END([END])
+
+    classify[classify]
+    extract[extract]
+    persist[persist]
+    respond[respond]
 ```
 
 - **classify / extract** use `model.withStructuredOutput(zodSchema)`, so categories and
