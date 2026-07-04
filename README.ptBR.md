@@ -58,7 +58,7 @@ Você também pode brincar com a [demo em si](https://membot.vercel.app/). Mas l
 - Backend: Bun, WebSocket (Nativo), REST API (Do Zero)
 - Banco de Dados: PostgreSQL
 - Orquestração de IA: LangChain + LangGraph (`StateGraph` tipado, agnóstico de provedor)
-- Provedores de IA: Google Gemini (nuvem) ou Ollama (local) — alternável por uma variável de ambiente
+- Provedores de IA: Google Gemini ou Anthropic Claude (nuvem) e Ollama (local) — alternável por uma variável de ambiente
 - Saída estruturada: schemas Zod (sem JSON parseado na mão)
 - Containerização: Docker
 
@@ -72,8 +72,11 @@ Enquanto o projeto implementa muitas funcionalidades do zero (veja [Filosofia do
 
 ### Bibliotecas de Backend
 
+- LangGraph / LangChain: Orquestra o agente de diário como um grafo de estados tipado
+- Integrações de provedor: `@langchain/google-genai`, `@langchain/anthropic`, `@langchain/ollama`
+- Zod: Saída estruturada validada por schema para classificação e extração de entidades
 - pg: Para interações com o banco de dados PostgreSQL
-- Ollama: Para interface com o modelo de IA local
+- Ollama: Runtime de modelo local (opcional, ao usar modelos locais em vez de um provedor em nuvem)
 - jsonwebtoken: Para autenticação baseada em JWT
 
 Essas bibliotecas foram escolhidas por sua confiabilidade, desempenho e alinhamento com os objetivos do nosso projeto. Elas complementam a abordagem "do zero" ao fornecer soluções robustas para funcionalidades específicas, permitindo concentrar-se em construir recursos personalizados onde mais importa.
@@ -95,7 +98,8 @@ START ─▶ classify ─(categoria?)─▶ extract ─▶ persist ─▶ respon
 - **persist** grava pelo helper transacional de Postgres já existente.
 - **respond** faz streaming da resposta pelo WebSocket.
 - Todo node chama uma única fábrica `createChatModel()` (LangChain `BaseChatModel`), então
-  **Gemini** e **Ollama** são um só caminho de código — troca com `LLM_PROVIDER`.
+  **Gemini**, **Anthropic Claude** e **Ollama** são um só caminho de código — troca com
+  `LLM_PROVIDER`. Um proxy compatível com a Anthropic também funciona via `ANTHROPIC_BASE_URL`.
 - O histórico de conversa é **por conexão** (por socket), corrigindo um bug em que um
   array global era compartilhado entre todos os usuários.
 
@@ -129,26 +133,45 @@ Antes de começar, certifique-se de ter os seguintes itens instalados:
    a. No diretório `packages/private`, crie um arquivo `.env` para o backend:
 
    ```
-   PORT=3000
+   PORT=8081
    HOST=localhost
-   MODEL_NAME=gemma2
+   JWT_SECRET=seu_segredo_jwt_aqui
+   FRONTEND_URL=http://localhost:5173
+   DEFAULT_LANGUAGE=en
+
    DB_HOST=localhost
    DB_PORT=5432
    DB_NAME=ai_jrnl
    DB_USER=meu_usuario
    DB_PASSWORD=minha_senha
-   DEFAULT_LANGUAGE=en
-   JWT_SECRET=seu_segredo_jwt_aqui
-   FRONTEND_URL=http://localhost:5173
 
-   # Variáveis de ambiente opcionais:
-   # GOOGLE_AI_API_KEY=sua-chave-api-google  # Necessária apenas se não estiver usando Ollama
-   # OLLAMA_HOST=ollama  # Necessária apenas se o Ollama estiver no Docker Compose ou em outro PC
+   # Provedor LLM: "google", "anthropic" ou "ollama".
+   # Se não definido, é inferido: GOOGLE_AI_API_KEY => google,
+   # senão ANTHROPIC_API_KEY => anthropic, senão ollama.
+   LLM_PROVIDER=google
+
+   # Google (nuvem)
+   GOOGLE_AI_API_KEY=sua-chave-api-google
+   GOOGLE_MODEL=gemini-2.0-flash
+
+   # Anthropic (nuvem)
+   ANTHROPIC_API_KEY=sua-chave-api-anthropic
+   ANTHROPIC_MODEL=claude-sonnet-4-6
+   # Opcional: aponta para um proxy compatível com a Anthropic em vez da API oficial.
+   # ANTHROPIC_BASE_URL=https://seu-proxy.example.com
+
+   # Ollama (local)
+   MODEL_NAME=gemma2
+   OLLAMA_HOST=http://localhost:11434
+
+   # E-mail opcional (verificação de e-mail):
    # MAIL_HOST=seu-host-de-email
    # MAIL_PORT=587
    # MAIL_USER=seu-usuario-de-email
    # MAIL_PASSWORD=sua-senha-de-email
    ```
+
+   Um template pronto para copiar está em `packages/private/.env.example`.
 
    b. No diretório `packages/public`, crie um arquivo `.env` para o frontend:
 
@@ -169,7 +192,7 @@ Antes de começar, certifique-se de ter os seguintes itens instalados:
    docker-compose up -d
    ```
 
-2. Inicie o contêiner do Ollama:
+2. Inicie o contêiner do Ollama (apenas se `LLM_PROVIDER=ollama` — pule ao usar um provedor em nuvem como Gemini ou Claude):
 
    - Para sistemas com suporte a GPU:
      ```
@@ -253,16 +276,17 @@ MemBot/
 Como prova de conceito, este projeto demonstra a funcionalidade central de uma aplicação de diário com IA. No entanto, há muitas áreas onde ele pode ser expandido e melhorado. Algumas melhorias potenciais incluem:
 
 - [x] Implementação do LangChain / LangGraph para melhorar o fluxo de conversa e tomada de decisões da IA
-- [ ] Interação aprimorada da IA para solicitar informações adicionais quando necessário
+- [ ] Interação aprimorada da IA para solicitar informações adicionais quando necessário (Fase 2: agente com tools — veja docs/ARCHITECTURE.md)
 - [x] Autenticação de usuário e gerenciamento de sessão
 - [x] Verificação de e-mail para novos registros de usuários
 - [ ] Estratégia e implementação de deployment
 - [ ] Suite de testes automatizados
 - [ ] Relatórios gerados pela IA com base nos dados do usuário
-- [ ] Suporte a outros modelos de IA:
-  - [ ] GPT da OpenAI
-  - [ ] Claude da Anthropic
+- [~] Integração com modelos externos (agnóstico de provedor via LangChain `BaseChatModel`):
   - [x] Gemini do Google
+  - [x] Claude da Anthropic (funciona também com um proxy compatível com a Anthropic)
+  - [x] Ollama (modelos locais: Gemma, Llama, etc.)
+  - [ ] GPT da OpenAI (adicionar `@langchain/openai` à fábrica de modelos)
 - [ ] Preferências e configurações personalizáveis do usuário
 - [ ] Funcionalidade de redefinição de senha
 - [ ] Autenticação de múltiplos fatores
