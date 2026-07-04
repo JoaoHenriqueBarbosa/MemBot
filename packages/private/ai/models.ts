@@ -1,17 +1,20 @@
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
 import { ChatOllama } from "@langchain/ollama";
+import { ChatAnthropic } from "@langchain/anthropic";
 import type { BaseChatModel } from "@langchain/core/language_models/chat_models";
 
-export type Provider = "google" | "ollama";
+export type Provider = "google" | "anthropic" | "ollama";
 
 /**
- * Provider is chosen explicitly via LLM_PROVIDER, otherwise inferred:
- * a Google API key means cloud, its absence means a local Ollama.
+ * Provider is chosen explicitly via LLM_PROVIDER, otherwise inferred from
+ * whichever cloud key is present; with no key, a local Ollama.
  */
 export function resolveProvider(): Provider {
   const p = process.env.LLM_PROVIDER?.toLowerCase();
-  if (p === "google" || p === "ollama") return p;
-  return process.env.GOOGLE_AI_API_KEY ? "google" : "ollama";
+  if (p === "google" || p === "anthropic" || p === "ollama") return p;
+  if (process.env.GOOGLE_AI_API_KEY) return "google";
+  if (process.env.ANTHROPIC_API_KEY) return "anthropic";
+  return "ollama";
 }
 
 export function ollamaModelName(): string {
@@ -32,6 +35,19 @@ export function createChatModel(opts?: { temperature?: number }): BaseChatModel 
       model: process.env.GOOGLE_MODEL ?? "gemini-2.0-flash",
       apiKey: process.env.GOOGLE_AI_API_KEY,
       temperature,
+    });
+  }
+
+  if (provider === "anthropic") {
+    return new ChatAnthropic({
+      model: process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-6",
+      apiKey: process.env.ANTHROPIC_API_KEY,
+      // Optional: point at an Anthropic-compatible proxy instead of the official API.
+      anthropicApiUrl: process.env.ANTHROPIC_BASE_URL,
+      temperature,
+      // The client defaults top_p/top_k to -1 and always sends them; Claude 4.x
+      // rejects those sentinels. Drop them so the server picks its own defaults.
+      invocationKwargs: { top_p: undefined, top_k: undefined },
     });
   }
 

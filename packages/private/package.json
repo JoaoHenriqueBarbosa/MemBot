@@ -12,6 +12,7 @@
   "keywords": ["langgraph", "langchain", "journaling", "bun"],
   "author": "Joao Henrique Barbosa <joaohenriquebarbosa21@gmail.com>",
   "dependencies": {
+    "@langchain/anthropic": "0.3.34",
     "@langchain/core": "^0.3.66",
     "@langchain/google-genai": "^0.2.16",
     "@langchain/langgraph": "^0.4.9",
