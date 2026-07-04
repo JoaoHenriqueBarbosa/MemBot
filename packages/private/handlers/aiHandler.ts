@@ -1,230 +1,121 @@
-import { Message, Ollama } from "ollama";
-import { ServerWebSocket } from "bun";
-import { WebSocketMessage, Category } from "../utils/types.js";
-import { storeEntry } from "../utils/storeEntry.js";
-import { getLanguageStrings } from "../utils/languageStrings.js";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import type { ServerWebSocket } from "bun";
+import { Ollama } from "ollama";
+import { HumanMessage, AIMessage, type BaseMessage } from "@langchain/core/messages";
+import { WebSocketMessage } from "../utils/types.js";
+import { journalGraph } from "../ai/graph.js";
+import { resolveProvider, ollamaModelName } from "../ai/models.js";
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY!);
-
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-const MODEL_NAME = process.env.MODEL_NAME || "gemma2";
+/**
+ * Per-connection conversation history. The old implementation kept a single
+ * module-level `chatHistory` array, so every user shared (and corrupted) the
+ * same context. History now lives keyed by the socket and is GC'd on close.
+ */
+const historyBySocket = new WeakMap<ServerWebSocket<unknown>, BaseMessage[]>();
 
 const ollama = new Ollama({
-    host: process.env.OLLAMA_HOST || "http://localhost:11434",
+  host: process.env.OLLAMA_HOST || "http://localhost:11434",
 });
 
-// Store chat history
-let chatHistory: Message[] = [];
+export const handleInit = async (
+  ws: ServerWebSocket<{ authToken: string }>,
+) => {
+  historyBySocket.set(ws, []);
 
-export const handleInit = async (ws: ServerWebSocket<{ authToken: string }>) => {
+  // Cloud provider: nothing to install.
+  if (resolveProvider() !== "ollama") {
+    ws.send('{ "type": "init" }');
+    return;
+  }
 
-    if (MODEL_NAME !== "gemini-1.5-flash") {
-        const list = await ollama.list();
+  // Local Ollama: make sure the model is present, streaming pull progress.
+  const modelName = ollamaModelName();
+  const list = await ollama.list();
+  const installed = list.models.some((m) => m.name === `${modelName}:latest`);
 
-        if (list.models.find(model => model.name === `${MODEL_NAME}:latest`) === undefined) {
-            console.log(`Installing ${MODEL_NAME}...`);
-            const puller = await ollama.pull({
-                model: MODEL_NAME,
-                stream: true
-            });
+  if (installed) {
+    ws.send('{ "type": "init" }');
+    return;
+  }
 
-            for await (const progress of puller) {
-                ws.send(JSON.stringify({
-                    type: "pull-progress",
-                    content: progress
-                }));
-            }
-        } else {
-            ws.send('{ "type": "init" }');
-        }
-    } else {
-        ws.send('{ "type": "init" }');
-    }
+  console.log(`Installing ${modelName}...`);
+  const puller = await ollama.pull({ model: modelName, stream: true });
+  for await (const progress of puller) {
+    ws.send(JSON.stringify({ type: "pull-progress", content: progress }));
+  }
+  ws.send('{ "type": "init" }');
 };
 
-export const handleUserMessage = async (ws: ServerWebSocket<{ authToken: string }>, { content: messageData, categorize, language, user }: WebSocketMessage) => {
-    // Add user message to chat history
-    let userMessage: Message = { role: "user", content: messageData };
-    ws.send(JSON.stringify({ type: "message", content: messageData, role: "user" } as WebSocketMessage));
+export const handleUserMessage = async (
+  ws: ServerWebSocket<{ authToken: string }>,
+  { content, categorize, language, user }: WebSocketMessage,
+) => {
+  // Echo the user's message back so the UI can render it.
+  ws.send(
+    JSON.stringify({
+      type: "message",
+      content,
+      role: "user",
+    } as WebSocketMessage),
+  );
 
-    let category: Category | undefined;
-    let entities: Record<string, any> = {};
+  const history = historyBySocket.get(ws) ?? [];
+  const id = Math.random().toString(36).substring(7);
+  let category: WebSocketMessage["category"];
+  let assistantText = "";
 
-    if (categorize) {
-        category = await categorizeEntry(messageData);
-        entities = await extractEntitiesBasedOnCategory(messageData, category);
+  // streamMode ["updates","messages"]:
+  //  - "updates" gives us each node's partial state (we read `category`)
+  //  - "messages" streams LLM tokens; we forward only the `respond` node's.
+  const stream = await journalGraph.stream(
+    { input: content, categorize: Boolean(categorize), language, user, messages: history },
+    { streamMode: ["updates", "messages"] },
+  );
 
-        // Store the entry in the database
-        if (category) {
-            try {
-                await storeEntry(category, entities, user);
-                console.log("Entry stored successfully");
-                const strings = getLanguageStrings(language);
-                userMessage = { role: "user", content: `${strings.instructionFeedback1} ${category}. ${strings.instructionFeedback2}: ${JSON.stringify(entities)}.` };
-            } catch (error) {
-                console.error("Error storing entry:", error);
-            }
-        }
+  for await (const [mode, payload] of stream) {
+    if (mode === "updates") {
+      const update = payload as Record<string, { category?: WebSocketMessage["category"] }>;
+      if (update.classify && "category" in update.classify) {
+        category = update.classify.category ?? undefined;
+      }
+      continue;
     }
 
-    const id = Math.random().toString(36).substring(7);
-    chatHistory.push(userMessage);
+    // mode === "messages": payload is [messageChunk, metadata]
+    const [chunk, metadata] = payload as [
+      { content: unknown },
+      { langgraph_node?: string },
+    ];
+    if (metadata?.langgraph_node !== "respond") continue;
 
-    if (MODEL_NAME !== "gemini-1.5-flash") {
-        const response = await ollama.chat({
-            model: MODEL_NAME,
-            messages: chatHistory,
-            stream: true
-        });
+    const text = typeof chunk.content === "string" ? chunk.content : "";
+    if (!text) continue;
 
-        let fullResponse = "";
+    assistantText += text;
+    ws.send(
+      JSON.stringify({
+        type: "message",
+        id,
+        content: text,
+        role: "assistant",
+        done: false,
+        category,
+      } as WebSocketMessage),
+    );
+  }
 
-        for await (const chunk of response) {
-            fullResponse += chunk.message.content;
-            ws.send(JSON.stringify({
-                type: "message",
-                id,
-                content: chunk.message.content,
-                role: "assistant",
-                done: chunk.done,
-                category: category,
-            } as WebSocketMessage));
-        }
+  // Close out the streamed message.
+  ws.send(
+    JSON.stringify({
+      type: "message",
+      id,
+      content: "",
+      role: "assistant",
+      done: true,
+      category,
+    } as WebSocketMessage),
+  );
 
-        // Add assistant's full response to chat history
-        const assistantMessage: Message = { role: "assistant", content: fullResponse };
-        chatHistory.push(assistantMessage);
-    } else {
-        const chat = model.startChat({
-            history: chatHistory.map(message => ({ role: message.role, parts: [{ text: message.content }] })),
-        });
-
-        const response = await chat.sendMessageStream(userMessage.content);
-
-        let fullResponse = '';
-        for await (const chunk of response.stream) {
-            const chunkText = chunk.text();
-            fullResponse += chunkText;
-            ws.send(JSON.stringify({
-                id,
-                type: "message",
-                content: chunkText,
-                role: "assistant",
-                done: false,
-                category: category,
-            } as WebSocketMessage));
-        }
-
-        ws.send(JSON.stringify({
-            id,
-            type: "message",
-            content: "",
-            role: "assistant",
-            done: true,
-            category: category,
-        } as WebSocketMessage));
-
-        // Add assistant's full response to chat history
-        const assistantMessage: Message = { role: "model", content: fullResponse };
-        chatHistory.push(assistantMessage);
-    }
+  // Persist the turn into this connection's history for follow-up context.
+  history.push(new HumanMessage(content), new AIMessage(assistantText));
+  historyBySocket.set(ws, history);
 };
-
-async function categorizeEntry(entry: string): Promise<Category> {
-    const prompt = `Categorize the following diary entry into one of these categories: financial, health and well-being, or relationships. Only respond with the category name.
-
-Entry: ${entry}
-
-Category:`;
-
-    if (MODEL_NAME !== "gemini-1.5-flash") {
-        const response = await ollama.generate({
-            model: MODEL_NAME,
-            prompt: prompt,
-        });
-
-        const category = response.response.trim().toLowerCase() as Category;
-        return category;
-    } else {
-        const result = await model.generateContent(prompt);
-        const response = result.response.text().trim();
-
-        const category = response.toLowerCase() as Category;
-        return category;
-    }
-}
-
-function trimJSON(entry: string) {
-    const firstOccurrence = entry.indexOf("{");
-    const lastOccurrence = entry.lastIndexOf("}");
-    const trimmed = entry.substring(firstOccurrence + 1, lastOccurrence);
-    return `{${trimmed}}`;
-}
-
-async function extractEntitiesBasedOnCategory(entry: string, category: Category) {
-    let prompt = `Extract the following information from this ${category} diary entry. Respond with a JSON object containing the specified fields. If any field is not present, set its value to null.
-
-Entry: ${entry}
-
-Fields to extract:`;
-
-    switch (category) {
-        case "financial":
-            prompt += `
-- description (string)
-- amount (number)
-- direction ("in" or "out")
-- payment_method (string)`;
-            break;
-        case "health and well-being":
-            prompt += `
-- activity_type ("exercise", "meditation", or "other")
-- duration (string, e.g. "30 minutes")
-- intensity ("low", "medium", or "high")
-- emotion_description (string)`;
-            break;
-        case "relationships":
-            prompt += `
-- person (string)
-- interaction_type ("conversation", "activity", or "other")
-- feelings (string)`;
-            break;
-        default:
-            return {};
-    }
-
-    prompt += `
-
-JSON:`;
-
-    if (MODEL_NAME !== "gemini-1.5-flash") {
-        const result = await ollama.generate({
-            model: MODEL_NAME,
-            prompt: prompt,
-        });
-        const response = trimJSON(result.response.trim());
-        console.log("Extracted entities:", response);
-
-        try {
-            const result = JSON.parse(response);
-            return result;
-        } catch (error) {
-            console.error("Failed to parse JSON response:", error);
-            return {};
-        }
-    } else {
-        const result = await model.generateContent(prompt);
-        const response = trimJSON(result.response.text().trim());
-        console.log("Extracted entities:", response);
-
-        try {
-            const parsedResult = JSON.parse(response);
-            return parsedResult;
-        } catch (error) {
-            console.error("Failed to parse JSON response:", error);
-            return {};
-        }
-    }
-}

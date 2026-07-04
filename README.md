@@ -59,8 +59,9 @@ Also you can play around with the [live demo](https://membot.vercel.app/). But r
 - Frontend: React, TypeScript, Vite, Tailwind CSS, and shadcn/ui
 - Backend: Bun, WebSocket (Native), REST API (From Scratch)
 - Database: PostgreSQL
-- AI Backend: Ollama (for local AI processing)
-- AI Model: Gemma2 by default, configurable in `packages/private/.env`
+- AI Orchestration: LangChain + LangGraph (typed `StateGraph`, provider-agnostic)
+- AI Providers: Google Gemini or Anthropic Claude (cloud) and Ollama (local) — switchable via one env var
+- Structured output: Zod schemas (no hand-parsed JSON)
 - Containerization: Docker
 
 While the project implements many features from scratch (see [Project Philosophy](#project-philosophy)), it also leverages well-designed tools and libraries to enhance development efficiency and maintain best practices:
@@ -73,11 +74,38 @@ While the project implements many features from scratch (see [Project Philosophy
 
 ### Backend Libraries
 
+- LangGraph / LangChain: Orchestrates the journaling agent as a typed state graph
+- Provider integrations: `@langchain/google-genai`, `@langchain/anthropic`, `@langchain/ollama`
+- Zod: Schema-validated structured output for classification and entity extraction
 - pg: For PostgreSQL database interactions
-- Ollama: For interfacing with the local AI model
+- Ollama: Local model runtime (optional, when using local models instead of a cloud provider)
 - jsonwebtoken: For JWT-based authentication
 
 These libraries were chosen for their reliability, performance, and alignment with our project goals. They complement our from-scratch approach by providing robust solutions for specific functionalities, allowing us to focus on building custom features where it matters most.
+
+## AI Architecture
+
+> **v2 refactor.** The AI core was rebuilt as a **LangGraph** state graph. The original
+> README listed *"Implementation of LangChain"* as a TODO — this delivers it.
+
+The reasoning layer is a typed `StateGraph`:
+
+```
+START ─▶ classify ─(category?)─▶ extract ─▶ persist ─▶ respond ─▶ END
+             └────────────(none)───────────────────────▲
+```
+
+- **classify / extract** use `model.withStructuredOutput(zodSchema)`, so categories and
+  entities are schema-validated instead of parsed out of free text.
+- **persist** writes through the existing transactional Postgres helper.
+- **respond** streams a natural reply over the WebSocket.
+- Every node calls one `createChatModel()` factory returning a LangChain `BaseChatModel`,
+  so **Google Gemini**, **Anthropic Claude**, and **Ollama** are a single code path —
+  swap with `LLM_PROVIDER`. An Anthropic-compatible proxy works too via `ANTHROPIC_BASE_URL`.
+- Conversation history is **per-connection** (keyed by socket), fixing a bug where a
+  single global array was shared across all users.
+
+Full design notes and the Phase-2 (tool-calling agent) roadmap: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ## Prerequisites
 
@@ -107,32 +135,51 @@ Before you begin, ensure you have the following installed:
    a. In the `packages/private` directory, create a `.env` file for the backend:
 
    ```
-   PORT=3000
+   PORT=8081
    HOST=localhost
-   MODEL_NAME=gemma2
+   JWT_SECRET=your_jwt_secret_here
+   FRONTEND_URL=http://localhost:5173
+   DEFAULT_LANGUAGE=en
+
    DB_HOST=localhost
    DB_PORT=5432
    DB_NAME=ai_jrnl
    DB_USER=myuser
    DB_PASSWORD=mypassword
-   DEFAULT_LANGUAGE=en
-   JWT_SECRET=your_jwt_secret_here
-   FRONTEND_URL=http://localhost:5173
 
-   # Optional environment variables:
-   # GOOGLE_AI_API_KEY=your-google-api-key  # Only needed if not using Ollama
-   # OLLAMA_HOST=ollama  # Only needed if Ollama is in Docker Compose or on another PC
+   # LLM provider: "google", "anthropic" or "ollama".
+   # If unset, inferred: GOOGLE_AI_API_KEY => google,
+   # else ANTHROPIC_API_KEY => anthropic, else ollama.
+   LLM_PROVIDER=google
+
+   # Google (cloud)
+   GOOGLE_AI_API_KEY=your-google-api-key
+   GOOGLE_MODEL=gemini-2.0-flash
+
+   # Anthropic (cloud)
+   ANTHROPIC_API_KEY=your-anthropic-api-key
+   ANTHROPIC_MODEL=claude-sonnet-4-6
+   # Optional: point at an Anthropic-compatible proxy instead of the official API.
+   # ANTHROPIC_BASE_URL=https://your-proxy.example.com
+
+   # Ollama (local)
+   MODEL_NAME=gemma2
+   OLLAMA_HOST=http://localhost:11434
+
+   # Optional mail (email verification):
    # MAIL_HOST=your-mail-host
    # MAIL_PORT=587
    # MAIL_USER=your-mail-user
    # MAIL_PASSWORD=your-mail-password
    ```
 
+   A ready-to-copy template lives at `packages/private/.env.example`.
+
    b. In the `packages/public` directory, create a `.env` file for the frontend:
 
    ```
    VITE_API_PROTOCOL=http
-   VITE_API_URL=localhost:3000
+   VITE_API_URL=localhost:8081
    ```
 
    Note: The protocol and URL in the frontend are separated to allow for easier configuration once the WebSocket connection is implemented in the same backend server.
@@ -147,7 +194,7 @@ Before you begin, ensure you have the following installed:
    docker-compose up -d
    ```
 
-2. Start the Ollama container:
+2. Start the Ollama container (only if `LLM_PROVIDER=ollama` — skip it when using a cloud provider like Gemini or Claude):
 
    - For systems with GPU support:
      ```
@@ -230,17 +277,18 @@ MemBot/
 
 As a proof of concept, this project demonstrates the core functionality of an MemBot application. However, there are many areas where it could be expanded and improved. Some potential enhancements include:
 
-- [ ] Implementation of LangChain for improved AI chat flow and decision-making
-- [ ] Enhanced AI interaction to request additional information when needed
+- [x] Implementation of LangChain / LangGraph for improved AI chat flow and decision-making
+- [ ] Enhanced AI interaction to request additional information when needed (Phase 2: tool-calling agent — see docs/ARCHITECTURE.md)
 - [x] User authentication and session management
 - [x] Email verification for new user registrations
 - [ ] Deployment strategy and implementation
 - [ ] Automated testing suite
 - [ ] AI-generated reports based on user data
-- [ ] Integration with external models:
-  - [ ] OpenAI's GPT
-  - [ ] Anthropic's Claude
+- [~] Integration with external models (provider-agnostic via LangChain `BaseChatModel`):
   - [x] Google's Gemini
+  - [x] Anthropic's Claude (also works with an Anthropic-compatible proxy)
+  - [x] Ollama (local models: Gemma, Llama, etc.)
+  - [ ] OpenAI's GPT (add `@langchain/openai` to the model factory)
 - [ ] Customizable user preferences and settings
 - [ ] Password reset functionality
 - [ ] Multi-factor authentication

@@ -3,7 +3,7 @@ export class ClientResponse extends Response {
         super(body, init);
         this.headers.set('Content-Type', 'application/json');
         this.headers.set("Access-Control-Allow-Origin", "*");
-        this.headers.set("Access-Control-Allow-Methods", "OPTIONS, GET");
+        this.headers.set("Access-Control-Allow-Methods", "OPTIONS, GET, POST");
         this.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
     }
 }
