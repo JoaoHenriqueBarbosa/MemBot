@@ -23,7 +23,7 @@ services:
       - my_network
 
   postgres:
-    image: postgres:latest
+    image: postgres:16
     container_name: my_postgres_db
     environment:
       POSTGRES_DB: ai_jrnl
