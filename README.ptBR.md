@@ -57,8 +57,9 @@ Você também pode brincar com a [demo em si](https://membot.vercel.app/). Mas l
 - Frontend: React, TypeScript, Vite, Tailwind CSS e shadcn/ui
 - Backend: Bun, WebSocket (Nativo), REST API (Do Zero)
 - Banco de Dados: PostgreSQL
-- Backend de IA: Ollama (para processamento de IA local)
-- Modelo de IA: Gemma2 por padrão, configurável em `packages/private/.env`
+- Orquestração de IA: LangChain + LangGraph (`StateGraph` tipado, agnóstico de provedor)
+- Provedores de IA: Google Gemini (nuvem) ou Ollama (local) — alternável por uma variável de ambiente
+- Saída estruturada: schemas Zod (sem JSON parseado na mão)
 - Containerização: Docker
 
 Enquanto o projeto implementa muitas funcionalidades do zero (veja [Filosofia do Projeto](#filosofia-do-projeto)), também utiliza algumas ferramentas e bibliotecas bem projetadas para melhorar a eficiência do desenvolvimento e manter as melhores práticas:
@@ -76,6 +77,29 @@ Enquanto o projeto implementa muitas funcionalidades do zero (veja [Filosofia do
 - jsonwebtoken: Para autenticação baseada em JWT
 
 Essas bibliotecas foram escolhidas por sua confiabilidade, desempenho e alinhamento com os objetivos do nosso projeto. Elas complementam a abordagem "do zero" ao fornecer soluções robustas para funcionalidades específicas, permitindo concentrar-se em construir recursos personalizados onde mais importa.
+
+## Arquitetura de IA
+
+> **Refactor v2.** O núcleo de IA foi reconstruído como um grafo de estados **LangGraph**.
+> O README original listava *"Implementação do LangChain"* como tarefa pendente — aqui ela é entregue.
+
+A camada de raciocínio é um `StateGraph` tipado:
+
+```
+START ─▶ classify ─(categoria?)─▶ extract ─▶ persist ─▶ respond ─▶ END
+             └────────────(nenhuma)──────────────────────▲
+```
+
+- **classify / extract** usam `model.withStructuredOutput(schemaZod)` — categorias e
+  entidades são validadas por schema, não extraídas de texto livre (adeus `trimJSON`).
+- **persist** grava pelo helper transacional de Postgres já existente.
+- **respond** faz streaming da resposta pelo WebSocket.
+- Todo node chama uma única fábrica `createChatModel()` (LangChain `BaseChatModel`), então
+  **Gemini** e **Ollama** são um só caminho de código — troca com `LLM_PROVIDER`.
+- O histórico de conversa é **por conexão** (por socket), corrigindo um bug em que um
+  array global era compartilhado entre todos os usuários.
+
+Notas de design e o roadmap da Fase 2 (agente com tools): [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ## Pré-requisitos
 
@@ -130,7 +154,7 @@ Antes de começar, certifique-se de ter os seguintes itens instalados:
 
    ```
    VITE_API_PROTOCOL=http
-   VITE_API_URL=localhost:3000
+   VITE_API_URL=localhost:8081
    ```
 
    Nota: O protocolo e a URL no frontend estão separados para facilitar a configuração uma vez que a conexão WebSocket seja implementada no mesmo servidor backend.
@@ -228,7 +252,7 @@ MemBot/
 
 Como prova de conceito, este projeto demonstra a funcionalidade central de uma aplicação de diário com IA. No entanto, há muitas áreas onde ele pode ser expandido e melhorado. Algumas melhorias potenciais incluem:
 
-- [ ] Implementação do LangChain para melhorar o fluxo de conversa e tomada de decisões da IA
+- [x] Implementação do LangChain / LangGraph para melhorar o fluxo de conversa e tomada de decisões da IA
 - [ ] Interação aprimorada da IA para solicitar informações adicionais quando necessário
 - [x] Autenticação de usuário e gerenciamento de sessão
 - [x] Verificação de e-mail para novos registros de usuários

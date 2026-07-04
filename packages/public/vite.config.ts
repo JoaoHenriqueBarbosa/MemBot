@@ -1,5 +1,5 @@
 import path from "path"
-import vercel from 'vite-plugin-vercel';
+import vercel from 'vite-plugin-vercel/vite';
 import { defineConfig } from "vite"
 
 export default defineConfig({

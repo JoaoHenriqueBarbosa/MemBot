@@ -21,7 +21,7 @@ const server = Bun.serve({
                 console.log("WebSocket connection upgrade requested");
                 const wsProtocol = req.headers.get('sec-websocket-protocol') || '';
                 authenticateWebSocket(wsProtocol);
-                if (server.upgrade(req)) {
+                if (server.upgrade(req, { data: { authToken: wsProtocol } })) {
                     return;
                 }
                 return new ClientResponse("Upgrade failed", { status: 500 });
